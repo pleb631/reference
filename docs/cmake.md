@@ -1,7 +1,7 @@
 CMake 备忘清单
 ===
 
-这份快速参考备忘单整理了 CMake 项目配置、生成、构建、测试、安装、目标管理与 Presets 的常用命令和写法
+这份快速参考备忘单整理了 CMake 项目配置、生成、构建、测试、安装、目标管理与 Presets 的常用命令和写法。
 
 入门
 ---
@@ -182,6 +182,22 @@ target_sources(plugin PRIVATE src/plugin.cpp)
 
 `STATIC` 生成静态库，`SHARED` 生成动态库。不指定类型时由 `BUILD_SHARED_LIBS` 影响默认行为。
 
+### 仅头文件库
+
+```cmake
+add_library(core_headers INTERFACE)
+
+target_include_directories(core_headers
+  INTERFACE
+    include
+)
+
+target_compile_features(core_headers INTERFACE cxx_std_20)
+target_link_libraries(app PRIVATE core_headers)
+```
+
+`INTERFACE` 库不生成二进制文件，只保存并传播包含目录、编译特性和依赖等用法要求。
+
 ### 链接目标
 
 ```cmake
@@ -195,6 +211,15 @@ target_link_libraries(app
 ```
 
 链接 CMake 目标时，目标的公开包含目录、编译定义等用法需求会按 `PUBLIC` / `INTERFACE` 传播。
+
+### Include 与 Link
+
+```cmake
+target_include_directories(app PRIVATE include)
+target_link_libraries(app PRIVATE core)
+```
+
+`target_include_directories()` 告诉编译器去哪里寻找头文件；`target_link_libraries()` 声明实现来自哪个库。若 `core` 正确公开了自己的 include 目录，消费者通常只需链接 `core`，无需重复填写其头文件路径。
 
 ### 作用域
 <!--rehype:wrap-class=col-span-2-->
@@ -218,6 +243,36 @@ target_include_directories(core
 ```
 
 库的公共头文件目录通常使用 `PUBLIC` 或 `INTERFACE`，内部实现目录使用 `PRIVATE`。
+
+### 多目录项目
+
+```text
+project/
+├── CMakeLists.txt
+├── app/
+│   ├── CMakeLists.txt
+│   └── main.cpp
+└── lib/
+    ├── CMakeLists.txt
+    ├── include/math/math.hpp
+    └── src/math.cpp
+```
+
+```cmake
+# 顶层 CMakeLists.txt
+add_subdirectory(lib)
+add_subdirectory(app)
+
+# lib/CMakeLists.txt
+add_library(math src/math.cpp)
+target_include_directories(math PUBLIC include)
+
+# app/CMakeLists.txt
+add_executable(app main.cpp)
+target_link_libraries(app PRIVATE math)
+```
+
+子目录中的相对路径以该子目录为基准。`app` 链接 `math` 后会获得它公开的 include 目录。
 
 ### 编译特性
 
@@ -279,6 +334,24 @@ endif()
 
 未加 `REQUIRED` 时，找不到包不会立即失败，可以用 `<PackageName>_FOUND` 判断。
 
+### 包搜索路径
+<!--rehype:wrap-class=col-span-2-->
+
+```shell
+$ cmake -S . -B build -DCMAKE_PREFIX_PATH="D:/libs/Foo;D:/libs/Bar"
+$ cmake -S . -B build -DFoo_ROOT=D:/libs/Foo
+$ cmake -S . -B build -DFoo_DIR=D:/libs/Foo/lib/cmake/Foo
+```
+
+变量 | 指向位置
+:- | :-
+`CMAKE_PREFIX_PATH` | 一个或多个安装前缀
+`Foo_ROOT` | `Foo` 包的安装根目录
+`Foo_DIR` | `FooConfig.cmake` 所在目录
+<!--rehype:className=show-header-->
+
+机器相关路径应通过命令行、Preset 或包管理器提供，不要硬编码进共享的 `CMakeLists.txt`。
+
 ### 子目录
 
 ```cmake
@@ -315,10 +388,12 @@ target_link_libraries(app PRIVATE fmt::fmt)
 ```cmake
 include(CTest)
 
-add_executable(core_tests tests/core_tests.cpp)
-target_link_libraries(core_tests PRIVATE core)
+if(BUILD_TESTING)
+  add_executable(core_tests tests/core_tests.cpp)
+  target_link_libraries(core_tests PRIVATE core)
 
-add_test(NAME core_tests COMMAND core_tests)
+  add_test(NAME core.basic COMMAND core_tests)
+endif()
 ```
 
 ```shell
@@ -327,7 +402,21 @@ $ cmake --build build
 $ ctest --test-dir build --output-on-failure
 ```
 
-`include(CTest)` 会定义 `BUILD_TESTING` 选项，常用于统一开关测试目标。
+`include(CTest)` 会定义默认开启的 `BUILD_TESTING` 选项，并在其开启时调用 `enable_testing()`。CTest 只运行已注册的测试，不负责构建测试程序。
+
+### GoogleTest
+
+```cmake
+find_package(GTest REQUIRED)
+
+add_executable(core_tests tests/core_tests.cpp)
+target_link_libraries(core_tests PRIVATE core GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(core_tests)
+```
+
+`include(GoogleTest)` 加载测试发现模块，`GTest::gtest_main` 才是链接的测试库。顶层仍需使用 `include(CTest)` 或 `enable_testing()` 启用测试。
 
 ### 安装目标
 
@@ -466,6 +555,21 @@ target_compile_definitions(app
 ```
 
 用生成器表达式判断配置，比读取 `CMAKE_BUILD_TYPE` 更适合多配置生成器。
+
+### 常用目录变量
+<!--rehype:wrap-class=col-span-2-->
+
+变量 | 含义
+:- | :-
+`PROJECT_SOURCE_DIR` | 最近一次 `project()` 对应的源码根目录
+`PROJECT_BINARY_DIR` | 最近一次 `project()` 对应的构建根目录
+`CMAKE_SOURCE_DIR` | 最外层项目的源码根目录
+`CMAKE_BINARY_DIR` | 最外层项目的构建根目录
+`CMAKE_CURRENT_SOURCE_DIR` | 当前 `CMakeLists.txt` 对应的源码目录
+`CMAKE_CURRENT_BINARY_DIR` | 当前目录对应的构建目录
+<!--rehype:className=show-header-->
+
+可复用子项目不要假定 `CMAKE_SOURCE_DIR` 就是自己的根目录；被 `add_subdirectory()` 引入后，它会指向最外层工程。
 
 排错
 ---

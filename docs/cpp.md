@@ -1,401 +1,10 @@
 C++ 备忘清单
 ===
 
-提供基本语法和方法的 [C++](https://zh.cppreference.com/) 快速参考备忘单
-
-C++ 数组
-------
-
-### 定义
-
-```cpp
-std::array<int, 3> marks; // 定义
-marks[0] = 92;
-marks[1] = 97;
-marks[2] = 98;
-// 定义和初始化
-std::array<int, 3> marks = {92, 97, 98};
-// 有空成员
-std::array<int, 3> marks = {92, 97};
-std::cout << marks[2]; // 输出: 0
-```
-
-### 操控
-
-```cpp
-┌─────┬─────┬─────┬─────┬─────┬─────┐
-| 92  | 97  | 98  | 99  | 98  | 94  |
-└─────┴─────┴─────┴─────┴─────┴─────┘
-   0     1     2     3     4     5
-```
-
-----
-
-```cpp
-std::array<int, 6> marks = {
-  92, 97, 98, 99, 98, 94
-};
-// 打印第一个元素
-std::cout << marks[0];
-// 将第 2 个元素更改为 99
-marks[1] = 99;
-// 从用户那里获取输入
-std::cin >> marks[2];
-```
-
-### 展示
-
-```cpp
-char ref[5] = {'R', 'e', 'f'};
-// 基于范围的for循环
-for (const int &n : ref) {
-    std::cout << std::string(1, n);
-}
-// 传统的for循环
-for (int i = 0; i < sizeof(ref); ++i) {
-    std::cout << ref[i];
-}
-```
-
-### 多维
-
-```cpp
-     j0   j1   j2   j3   j4   j5
-   ┌────┬────┬────┬────┬────┬────┐
-i0 | 1  | 2  | 3  | 4  | 5  | 6  |
-   ├────┼────┼────┼────┼────┼────┤
-i1 | 6  | 5  | 4  | 3  | 2  | 1  |
-   └────┴────┴────┴────┴────┴────┘
-```
-
-----
-
-```cpp
-int x[2][6] = {
-    {1,2,3,4,5,6}, {6,5,4,3,2,1}
-};
-for (int i = 0; i < 2; ++i) {
-    for (int j = 0; j < 6; ++j) {
-        std::cout << x[i][j] << " ";
-    }
-}
-// 输出: 1 2 3 4 5 6 6 5 4 3 2 1
-```
-
-C++ 条件
-------------
-
-### If Clause
-
-```cpp
-if (a == 10) {
-    // do something
-}
-```
-
-----
-
-```cpp
-int number = 16;
-if (number % 2 == 0)
-{
-    std::cout << "even";
-}
-else
-{
-    std::cout << "odd";
-}
-// 输出: even
-```
-
-### Else if 语句
-
-```cpp
-int score = 99;
-if (score == 100) {
-    std::cout << "Superb";
-}
-else if (score >= 90) {
-    std::cout << "Excellent";
-}
-else if (score >= 80) {
-    std::cout << "Very Good";
-}
-else if (score >= 70) {
-    std::cout << "Good";
-}
-else if (score >= 60)
-    std::cout << "OK";
-else
-    std::cout << "What?";
-```
-
-### 运算符
-<!--rehype:wrap-class=row-span-2-->
-
-#### 关系运算符
-
-:--|--
-:--|--
-`a == b` | a 等于 b
-`a != b` | a 不等于 b
-`a < b`  | a 小于 b
-`a > b`  | a 大于 b
-`a <= b` | a 小于或等于 b
-`a >= b` | a 大于或等于 b
-
-#### 赋值运算符
-
-范例 | 相当于
-:--|--
-`a += b` | _Aka_ `a = a + b`
-`a -= b` | _Aka_ `a = a - b`
-`a *= b` | _Aka_ `a = a * b`
-`a /= b` | _Aka_ `a = a / b`
-`a %= b` | _Aka_ `a = a % b`
-
-#### 逻辑运算符
-
-| Example        | Meaning                |
-|----------------|------------------------|
-| `exp1 && exp2` | Both are true _(AND)_  |
-| <code>exp1 &#124;&#124; exp2</code> | Either is true _(OR)_  |
-| `!exp`         | `exp` is false _(NOT)_ |
-
-#### 位运算符
-
-| 运算符 | 描述 |
-|--------|------|
-| `a & b`  | 按位与 |
-| <code>a &#124; b</code>  | 按位或 |
-| `a ^ b`  | 按位异或 |
-| `~a`     | 按位取反 |
-| `a << b` | 左移 |
-| `a >> b` | 右移 |
-
-### 三元运算符
-
-```
-           ┌── True ──┐
-Result = Condition ? Exp1 : Exp2;
-           └───── False ─────┘
-```
-
-----
-
-```cpp
-int x = 3, y = 5, max;
-max = (x > y) ? x : y;
-// 输出: 5
-std::cout << max << std::endl;
-```
-
-----
-
-```cpp
-int x = 3, y = 5, max;
-if (x > y) {
-    max = x;
-} else {
-    max = y;
-}
-// 输出: 5
-std::cout << max << std::endl;
-```
-
-### switch 语句
-
-```cpp
-int num = 2;
-switch (num) {
-    case 0:
-        std::cout << "Zero";
-        break;
-    case 1:
-        std::cout << "One";
-        break;
-    case 2:
-        std::cout << "Two";
-        break;
-    case 3:
-        std::cout << "Three";
-        break;
-    default:
-        std::cout << "What?";
-        break;
-}
-```
-
-C++ 循环
-------------
-
-### While
-
-```cpp
-int i = 0;
-while (i < 6) {
-    std::cout << i++;
-}
-// 输出: 012345
-```
-
-### Do-while
-
-```cpp
-int i = 1;
-do {
-    std::cout << i++;
-} while (i <= 5);
-// 输出: 12345
-```
-
-### Continue 语句
-
-```cpp
-for (int i = 0; i < 10; i++) {
-    if (i % 2 == 0) {
-        continue;
-    }
-    std::cout << i;
-} // 输出: 13579
-```
-
-### 无限循环
-
-```cpp
-while (true) { // true or 1
-    std::cout << "无限循环";
-}
-```
-
-----
-
-```cpp
-for (;;) {
-    std::cout << "无限循环";
-}
-```
-
-----
-
-```cpp
-for(int i = 1; i > 0; i++) {
-    std::cout << "infinite loop";
-}
-```
-
-### for_each (C++11 起)
-
-```cpp
-#include <iostream>
-int main()
-{
-    auto print = [](int num) {
-      std::cout << num << std::endl;
-    };
-    std::array<int, 4> arr = {1, 2, 3, 4};
-    std::for_each(arr.begin(), arr.end(), print);
-    return 0;
-}
-```
-<!--rehype:className=wrap-text-->
-
-### 基于范围 (C++11 起)
-
-```cpp
-for (int n : {1, 2, 3, 4, 5}) {
-    std::cout << n << " ";
-}
-// 输出: 1 2 3 4 5
-```
-
-----
-
-```cpp
-std::string hello = "Quick Reference.ME";
-for (char c: hello)
-{
-    std::cout << c << " ";
-}
-// 输出: Q u i c k R e f . M E
-```
-
-### 中断语句
-
-```cpp
-int password, times = 0;
-while (password != 1234) {
-    if (times++ >= 3) {
-        std::cout << "Locked!\n";
-        break;
-    }
-    std::cout << "Password: ";
-    std::cin >> password; // input
-}
-```
-
-### Several variations
-
-```cpp
-for (int i = 0, j = 2; i < 3; i++, j--){
-    std::cout << "i=" << i << ",";
-    std::cout << "j=" << j << ";";
-}
-// 输出: i=0,j=2;i=1,j=1;i=2,j=0;
-```
-
-### auto
-
-```cpp
-std:: string s = "hello world";
-for(auto c: s){
-    std:: cout << c << " ";
-}
-// 输出: h e l l o   w o r l d
-```
+整理现代 [C++](https://zh.cppreference.com/) 常用写法、资源管理、智能指针与并发工具的快速参考备忘单。
 
 C++ 函数
 ------------
-
-### 参数和返回
-
-```cpp
-#include <iostream>
-int add(int a, int b) {
-    return a + b;
-}
-int main() {
-    std::cout << add(10, 20);
-}
-```
-
-`add` 是一个接受 2 个整数并返回整数的函数
-
-### 重载
-
-```cpp
-void fun(string a, string b) {
-    std::cout << a + " " + b;
-}
-void fun(string a) {
-    std::cout << a;
-}
-void fun(int a) {
-    std::cout << a;
-}
-```
-
-### 内置函数
-
-```cpp
-#include <iostream>
-#include <cmath> // 导入库
-
-int main() {
-    // sqrt() 来自 cmath
-    std::cout << sqrt(9);
-}
-```
 
 ### Lambda 表达式
 <!--rehype:wrap-class=col-span-2-->
@@ -482,6 +91,175 @@ std::for_each(vec.begin(), vec.end(),
                           << " ";
           });
 ```
+
+现代 C++ 基础
+------------
+
+### 列表初始化
+
+```cpp
+int count{2};
+double ratio{0.5};
+
+// int value{2.5}; // 错误：禁止窄化转换
+int value = 2.5;   // 允许，但会丢失小数部分
+```
+
+花括号初始化适用于内置类型、容器和自定义类型，并能在编译期阻止部分窄化转换。
+
+### 强类型枚举
+
+```cpp
+enum class Status : unsigned char {
+    idle,
+    running,
+    stopped
+};
+
+Status status{Status::running};
+auto value = static_cast<unsigned char>(status);
+```
+
+`enum class` 不会把枚举项注入外层作用域，也不会隐式转换成整数。需要数值时使用 `static_cast`。
+
+### const、constexpr 与 consteval
+<!--rehype:wrap-class=row-span-2-->
+
+```cpp
+const int runtime_value = read_value();
+constexpr int size = 4 * 8;
+
+constexpr int square(int value) {
+    return value * value;
+}
+
+consteval int checked_size(int value) {
+    return value > 0 ? value : 1;
+}
+
+static_assert(square(4) == 16);
+constexpr int buffer_size = checked_size(64);
+```
+
+- `const` 表示对象初始化后不可修改，值可在运行期确定。
+- `constexpr` 表示值或函数可以参与常量表达式，也可在运行期调用。
+- `consteval`（C++20）要求每次调用都在编译期求值。
+
+### auto 与 decltype
+
+```cpp
+int value{10};
+const int limit{20};
+int& reference{value};
+
+auto copy = reference;          // int
+decltype(reference) alias = value; // int&
+decltype(limit) fixed = 30;     // const int
+decltype((value)) ref = value;  // int&
+```
+
+`auto` 常用于从初始化器推导变量类型；`decltype` 获取表达式类型，并保留 `const` 与引用信息。对变量加括号后，`decltype((变量))` 通常得到引用类型。
+
+### 显式类型转换
+
+```cpp
+double input{3.14};
+int truncated = static_cast<int>(input);
+
+enum class Mode { read, write };
+int raw = static_cast<int>(Mode::write);
+
+Base* base = get_object();
+if (auto* derived = dynamic_cast<Derived*>(base)) {
+    derived->run();
+}
+```
+
+`static_cast` 用于已知且受语言规则支持的转换；多态类向下转换需要运行期检查时使用 `dynamic_cast`。避免用 C 风格转换隐藏转换意图。
+
+字符串与输出
+------------
+
+### string_view（C++17）
+
+```cpp
+#include <string_view>
+
+bool has_prefix(std::string_view text) {
+    return text.starts_with("ref-"); // C++20
+}
+
+std::string_view view{"hello world"};
+view.remove_prefix(6);
+```
+
+`std::string_view` 是不拥有字符数据的只读视图，传参时可避免复制。原字符串销毁或重新分配后，已有视图可能悬空。
+
+### print 与 println（C++23）
+
+```cpp
+#include <print>
+
+std::print("name={}, score={}", "Ada", 98);
+std::println("result={:.2f}", 3.14159);
+```
+
+`std::print()` 不自动换行，`std::println()` 会在格式化结果后追加换行。两者使用与 `std::format` 相同的格式字符串语法。
+
+### 返回多个值
+
+```cpp
+struct ParseResult {
+    std::string name;
+    int value;
+};
+
+ParseResult parse() {
+    return {"port", 8080};
+}
+
+auto [name, value] = parse();
+```
+
+字段有明确含义时优先返回结构体；临时组合也可返回 `std::pair` 或 `std::tuple`，并用结构化绑定解包。
+
+资源与对象语义
+--------------
+
+### RAII
+
+```cpp
+#include <fstream>
+#include <mutex>
+
+std::ofstream output{"result.txt"};
+
+std::mutex mutex;
+{
+    std::lock_guard lock{mutex};
+    output << "protected\n";
+} // 自动解锁；output 离开作用域时自动关闭文件
+```
+
+RAII 将资源生命周期绑定到对象生命周期：构造时获取资源，析构时释放。标准流、容器、智能指针和锁管理器都遵循这一模式。
+
+### Rule of Zero / Five
+
+```cpp
+class Buffer {
+public:
+    Buffer(const Buffer&) = delete;
+    Buffer& operator=(const Buffer&) = delete;
+
+    Buffer(Buffer&&) noexcept = default;
+    Buffer& operator=(Buffer&&) noexcept = default;
+
+private:
+    std::unique_ptr<char[]> data_;
+};
+```
+
+优先用标准容器和智能指针管理资源，让编译器生成析构、拷贝和移动操作，即 Rule of Zero。必须直接管理资源时，应一并考虑析构函数、拷贝构造、拷贝赋值、移动构造和移动赋值，即 Rule of Five。
 
 ## C++智能指针
 
@@ -928,337 +706,6 @@ std::shared_future<T> result;
 ```
 
 对于不可拷贝对象，可以在`std::shared_future`中存储对象的指针，而非指针本身。
-
-### 创建线程
-
-```cpp
-void threadFunction() {
-  // 线程函数体
-  std::cout << "From thread" << std::endl;
-}
-
-int main() {
-  // 创建线程并开始执行线程函数
-  std::thread t(threadFunction);
-  
-  // 等待线程执行完毕
-  t.join();
-  
-  return 0;
-}
-```
-
-### 传递参数给线程函数
-
-```cpp
-void threadFunction(int value) {
-  // 线程函数体
-  std::cout << "Received value: " << value << std::endl;
-}
-
-int main() {
-  int data = 42;
-  std::thread t(threadFunction, data);
-  t.join();
-  return 0;
-}
-```
-
-### 使用Lambda表达式创建线程
-
-```cpp
-int main() {
-  int data = 42;
-  std::thread t([data]() {
-      // Lambda 表达式作为线程函数
-      std::cout << "Received value: " << data << std::endl;
-  });
-  t.join();
-  return 0;
-}
-```
-
-### **处理线程间的同步：**
-
-```cpp
-#include <mutex>
-
-std::mutex mtx;
-
-void threadFunction() {
-  std::lock_guard<std::mutex> lock(mtx);
-  std::cout << "Thread safe output." << std::endl;
-}
-
-int main() {
-  std::thread t1(threadFunction);
-  std::thread t2(threadFunction);
-  t1.join();
-  t2.join();
-  return 0;
-}
-```
-
-### **使用`std::async`启动异步任务：**
-
-```cpp
-#include <future>
-
-int taskFunction() {
-  // 异步任务
-  return 42;
-}
-
-int main() {
-  // 启动异步任务
-  std::future<int> fut = std::async(std::launch::async, taskFunction);
-  
-  // 获取异步任务的结果
-  int result = fut.get();
-  
-  std::cout << "Result: " << result << std::endl;
-  return 0;
-}
-```
-
-C++ 预处理器
-------------
-
-### 预处理器
-<!--rehype:wrap-class=row-span-3-->
-
-- [if](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [elif](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [else](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [endif](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [ifdef](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [ifndef](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [define](https://zh.cppreference.com/w/cpp/preprocessor/replace)
-- [undef](https://zh.cppreference.com/w/cpp/preprocessor/replace)
-- [include](https://zh.cppreference.com/w/cpp/preprocessor/include)
-- [line](https://zh.cppreference.com/w/cpp/preprocessor/line)
-- [error](https://zh.cppreference.com/w/cpp/preprocessor/error)
-- [pragma](https://zh.cppreference.com/w/cpp/preprocessor/impl)
-- [defined](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [__has_include](https://zh.cppreference.com/w/cpp/feature_test)
-- [__has_cpp_attribute](https://zh.cppreference.com/w/cpp/feature_test)
-- [export](https://zh.cppreference.com/w/cpp/keyword/export)
-- [import](https://zh.cppreference.com/mwiki/index.php?title=cpp/keyword/import&amp;action=edit&amp;redlink=1)
-- [module](https://zh.cppreference.com/mwiki/index.php?title=cpp/keyword/module&amp;action=edit&amp;redlink=1)
-<!--rehype:className=style-none cols-2-->
-
-### Includes
-
-```cpp
-#include "iostream"
-#include <iostream>
-```
-
-### Defines
-
-```cpp
-#define FOO
-#define FOO "hello"
-#undef FOO
-```
-
-### If
-<!--rehype:wrap-class=row-span-2-->
-
-```cpp
-#ifdef DEBUG
-  std::cout << "hi" << std::endl;
-#elif defined VERBOSE
-  ...
-#else
-  ...
-#endif
-```
-
-### Error
-
-```cpp
-#if VERSION == 2.0
-  #error Unsupported
-  #warning Not really supported
-#endif
-```
-
-### 宏
-
-```cpp
-#define DEG(x) ((x) * 57.29)
-```
-
-### 令牌连接
-
-```cpp
-#define DST(name) name##_s name##_t
-DST(object);   #=> object_s object_t;
-```
-
-### 字符串化
-
-```cpp
-#define STR(name) #name
-char * a = STR(object);   #=> char * a = "object";
-```
-<!--rehype:className=wrap-text-->
-
-### 文件和行
-
-```cpp
-#define LOG(msg) console.log(__FILE__, __LINE__, msg)
-#=> console.log("file.txt", 3, "hey")
-```
-<!--rehype:className=wrap-text-->
-
-各种各样的
--------------
-
-### 转义序列
-
-转义序列 | 说明
-:--|--
-`\b`             | 退格键
-`\f`             | 换页
-`\n`             | 换行
-`\r`             | 返回
-`\t`             | 水平制表符
-`\v`             | 垂直制表符
-`\\`             | 反斜杠
-`\'`             | 单引号
-`\"`             | 双引号
-`\?`             | 问号
-`\0`             | 空字符
-
-### 关键字
-<!--rehype:wrap-class=row-span-2 col-span-2-->
-
-- [alignas](https://zh.cppreference.com/w/cpp/keyword/alignas)
-- [alignof](https://zh.cppreference.com/w/cpp/keyword/alignof)
-- [and](https://zh.cppreference.com/w/cpp/keyword/and)
-- [and_eq](https://zh.cppreference.com/w/cpp/keyword/and_eq)
-- [asm](https://zh.cppreference.com/w/cpp/keyword/asm)
-- [atomic_cancel](https://zh.cppreference.com/w/cpp/keyword/atomic_cancel)
-- [atomic_commit](https://zh.cppreference.com/w/cpp/keyword/atomic_commit)
-- [atomic_noexcept](https://zh.cppreference.com/w/cpp/keyword/atomic_noexcept)
-- [auto](https://zh.cppreference.com/w/cpp/keyword/auto)
-- [bitand](https://zh.cppreference.com/w/cpp/keyword/bitand)
-- [bitor](https://zh.cppreference.com/w/cpp/keyword/bitor)
-- [bool](https://zh.cppreference.com/w/cpp/keyword/bool)
-- [break](https://zh.cppreference.com/w/cpp/keyword/break)
-- [case](https://zh.cppreference.com/w/cpp/keyword/case)
-- [catch](https://zh.cppreference.com/w/cpp/keyword/catch)
-- [char](https://zh.cppreference.com/w/cpp/keyword/char)
-- [char8_t](https://zh.cppreference.com/w/cpp/keyword/char8_t)
-- [char16_t](https://zh.cppreference.com/w/cpp/keyword/char16_t)
-- [char32_t](https://zh.cppreference.com/w/cpp/keyword/char32_t)
-- [class](https://zh.cppreference.com/w/cpp/keyword/class)
-- [compl](https://zh.cppreference.com/w/cpp/keyword/compl)
-- [concept](https://zh.cppreference.com/w/cpp/keyword/concept)
-- [const](https://zh.cppreference.com/w/cpp/keyword/const)
-- [consteval](https://zh.cppreference.com/w/cpp/keyword/consteval)
-- [constexpr](https://zh.cppreference.com/w/cpp/keyword/constexpr)
-- [constinit](https://zh.cppreference.com/w/cpp/keyword/constinit)
-- [const_cast](https://zh.cppreference.com/w/cpp/keyword/const_cast)
-- [continue](https://zh.cppreference.com/w/cpp/keyword/continue)
-- [co_await](https://zh.cppreference.com/w/cpp/keyword/co_await)
-- [co_return](https://zh.cppreference.com/w/cpp/keyword/co_return)
-- [co_yield](https://zh.cppreference.com/w/cpp/keyword/co_yield)
-- [decltype](https://zh.cppreference.com/w/cpp/keyword/decltype)
-- [default](https://zh.cppreference.com/w/cpp/keyword/default)
-- [delete](https://zh.cppreference.com/w/cpp/keyword/delete)
-- [do](https://zh.cppreference.com/w/cpp/keyword/do)
-- [double](https://zh.cppreference.com/w/cpp/keyword/double)
-- [dynamic_cast](https://zh.cppreference.com/w/cpp/keyword/dynamic_cast)
-- [else](https://zh.cppreference.com/w/cpp/keyword/else)
-- [enum](https://zh.cppreference.com/w/cpp/keyword/enum)
-- [explicit](https://zh.cppreference.com/w/cpp/keyword/explicit)
-- [export](https://zh.cppreference.com/w/cpp/keyword/export)
-- [extern](https://zh.cppreference.com/w/cpp/keyword/extern)
-- [false](https://zh.cppreference.com/w/cpp/keyword/false)
-- [float](https://zh.cppreference.com/w/cpp/keyword/float)
-- [for](https://zh.cppreference.com/w/cpp/keyword/for)
-- [friend](https://zh.cppreference.com/w/cpp/keyword/friend)
-- [goto](https://zh.cppreference.com/w/cpp/keyword/goto)
-- [if](https://zh.cppreference.com/w/cpp/keyword/if)
-- [inline](https://zh.cppreference.com/w/cpp/keyword/inline)
-- [int](https://zh.cppreference.com/w/cpp/keyword/int)
-- [long](https://zh.cppreference.com/w/cpp/keyword/long)
-- [mutable](https://zh.cppreference.com/w/cpp/keyword/mutable)
-- [namespace](https://zh.cppreference.com/w/cpp/keyword/namespace)
-- [new](https://zh.cppreference.com/w/cpp/keyword/new)
-- [noexcept](https://zh.cppreference.com/w/cpp/keyword/noexcept)
-- [not](https://zh.cppreference.com/w/cpp/keyword/not)
-- [not_eq](https://zh.cppreference.com/w/cpp/keyword/not_eq)
-- [nullptr](https://zh.cppreference.com/w/cpp/keyword/nullptr)
-- [operator](https://zh.cppreference.com/w/cpp/keyword/operator)
-- [or](https://zh.cppreference.com/w/cpp/keyword/or)
-- [or_eq](https://zh.cppreference.com/w/cpp/keyword/or_eq)
-- [private](https://zh.cppreference.com/w/cpp/keyword/private)
-- [protected](https://zh.cppreference.com/w/cpp/keyword/protected)
-- [public](https://zh.cppreference.com/w/cpp/keyword/public)
-- [reflexpr](https://zh.cppreference.com/w/cpp/keyword/reflexpr)
-- [register](https://zh.cppreference.com/w/cpp/keyword/register)
-- [reinterpret_cast](https://zh.cppreference.com/w/cpp/keyword/reinterpret_cast)
-- [requires](https://zh.cppreference.com/w/cpp/keyword/requires)
-- [return](https://zh.cppreference.com/w/cpp/language/return)
-- [short](https://zh.cppreference.com/w/cpp/keyword/short)
-- [signed](https://zh.cppreference.com/w/cpp/keyword/signed)
-- [sizeof](https://zh.cppreference.com/w/cpp/keyword/sizeof)
-- [static](https://zh.cppreference.com/w/cpp/keyword/static)
-- [static_assert](https://zh.cppreference.com/w/cpp/keyword/static_assert)
-- [static_cast](https://zh.cppreference.com/w/cpp/keyword/static_cast)
-- [struct](https://zh.cppreference.com/w/cpp/keyword/struct)
-- [switch](https://zh.cppreference.com/w/cpp/keyword/switch)
-- [synchronized](https://zh.cppreference.com/w/cpp/keyword/synchronized)
-- [template](https://zh.cppreference.com/w/cpp/keyword/template)
-- [this](https://zh.cppreference.com/w/cpp/keyword/this)
-- [thread_local](https://zh.cppreference.com/w/cpp/keyword/thread_local)
-- [throw](https://zh.cppreference.com/w/cpp/keyword/throw)
-- [true](https://zh.cppreference.com/w/cpp/keyword/true)
-- [try](https://zh.cppreference.com/w/cpp/keyword/try)
-- [typedef](https://zh.cppreference.com/w/cpp/keyword/typedef)
-- [typeid](https://zh.cppreference.com/w/cpp/keyword/typeid)
-- [typename](https://zh.cppreference.com/w/cpp/keyword/typename)
-- [union](https://zh.cppreference.com/w/cpp/keyword/union)
-- [unsigned](https://zh.cppreference.com/w/cpp/keyword/unsigned)
-- [using](https://zh.cppreference.com/w/cpp/keyword/using)
-- [virtual](https://zh.cppreference.com/w/cpp/keyword/virtual)
-- [void](https://zh.cppreference.com/w/cpp/keyword/void)
-- [volatile](https://zh.cppreference.com/w/cpp/keyword/volatile)
-- [wchar_t](https://zh.cppreference.com/w/cpp/keyword/wchar_t)
-- [while](https://zh.cppreference.com/w/cpp/keyword/while)
-- [xor](https://zh.cppreference.com/w/cpp/keyword/xor)
-- [xor_eq](https://zh.cppreference.com/w/cpp/keyword/xor_eq)
-- [final](https://zh.cppreference.com/w/cpp/language/final)
-- [override](https://zh.cppreference.com/w/cpp/language/override)
-- [transaction_safe](https://zh.cppreference.com/w/cpp/language/transactional_memory)
-- [transaction_safe_dynamic](https://zh.cppreference.com/w/cpp/language/transactional_memory)
-<!--rehype:className=style-none cols-5-->
-
-### 预处理器
-
-- [if](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [elif](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [else](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [endif](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [ifdef](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [ifndef](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [define](https://zh.cppreference.com/w/cpp/preprocessor/replace)
-- [undef](https://zh.cppreference.com/w/cpp/preprocessor/replace)
-- [include](https://zh.cppreference.com/w/cpp/preprocessor/include)
-- [line](https://zh.cppreference.com/w/cpp/preprocessor/line)
-- [error](https://zh.cppreference.com/w/cpp/preprocessor/error)
-- [pragma](https://zh.cppreference.com/w/cpp/preprocessor/impl)
-- [defined](https://zh.cppreference.com/w/cpp/preprocessor/conditional)
-- [__has_include](https://zh.cppreference.com/w/cpp/feature_test)
-- [__has_cpp_attribute](https://zh.cppreference.com/w/cpp/feature_test)
-- [export](https://zh.cppreference.com/w/cpp/keyword/export)
-- [import](https://zh.cppreference.com/mwiki/index.php?title=cpp/keyword/import&amp;action=edit&amp;redlink=1)
-- [module](https://zh.cppreference.com/mwiki/index.php?title=cpp/keyword/module&amp;action=edit&amp;redlink=1)
-<!--rehype:className=style-none cols-2-->
 
 另见
 ----
