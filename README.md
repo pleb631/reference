@@ -128,7 +128,6 @@ Quick Reference
 
 [Quick Reference](./docs/quickreference.md)<!--rehype:style=background:rgb(57 59 60);-->
 [ASCII Code](./docs/ascii-code.md)<!--rehype:style=background:rgb(57 59 60);-->
-[Excel 函数](./docs/excel-fn.md)<!--rehype:style=background:rgb(33 115 70);-->
 [Symbol Code](./docs/symbol-code.md)<!--rehype:style=background:rgb(103 61 156);-->
 [Colors Named](./docs/colors-named.md)<!--rehype:style=background:rgb(207 100 154);-->
 [Google Search](./docs/google-search.md)<!--rehype:style=background:rgb(66 133 244);-->

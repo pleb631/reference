@@ -1,258 +1,213 @@
 Dockerfile 备忘清单
 ===
 
-这是 [Dockerfile](https://docs.docker.com/engine/reference/builder/) 的快速参考备忘单。包含用户可以在命令行上调用以组装镜像的所有命令。
+使用 Dockerfile 构建安全、可复现且缓存友好的容器镜像。
 
-参考
-----
+基础
+---
 
-### 继承
-
-默认 `Dockerfile` 位于上下文的根目录中。
-
-- [Docker 备忘清单](./docker.md) _(github.io)_
-
-```shell
-docker build -f /path/to/a/Dockerfile .
-```
-
-使用 `-f` 指向文件系统中任何位置的 `Dockerfile`。
-
-### 继承
+### 最小示例
 
 ```dockerfile
-FROM [--platform=<platform>] <image> [AS <name>]
-```
-<!--rehype:className=wrap-text -->
+# syntax=docker/dockerfile:1
+FROM python:3.13-slim
 
-示例
-
-```dockerfile
-FROM ruby:3.3.0
-FROM golang:1.20-alpine3.16 AS build-env
-```
-
-### 变量 ENV
-
-```dockerfile
-ENV <key>=<value> ...
-```
-
-```dockerfile
-ENV APP_HOME /myapp
-RUN mkdir $APP_HOME
-```
-
-```dockerfile
-ENV MY_NAME="John Doe" MY_DOG=Rex\ The\ Dog \
-    MY_CAT=fluffy
-```
-
-### 初始化
-<!--rehype:wrap-class=row-span-2 -->
-
-```dockerfile
-RUN bundle install
-```
-
-`WORKDIR` 指令为任何 `RUN`、`CMD`、`ENTRYPOINT`、`COPY` 和 `ADD` 指令设置工作目录。
-
-```dockerfile
-WORKDIR /myapp
-```
-
-`VOLUME` 指令创建一个具有指定名称的挂载点，并将其标记为保存来自本机主机或其他容器的外部挂载卷。
-
-```dockerfile
-VOLUME ["/data"]
-# 安装点规范
-```
-
-```dockerfile
-ADD file.xyz /file.xyz
-# 复制
-COPY --chown=user:group host_file.xyz /path/container_file.xyz
-```
-<!--rehype:className=wrap-text -->
-
-### Onbuild
-
-```dockerfile
-ONBUILD RUN bundle install
-# 与另一个文件一起使用时
-
-ONBUILD ADD . /app/src
-ONBUILD RUN /usr/local/bin/python-build --dir /app/src
-```
-<!--rehype:className=wrap-text -->
-
-指令将触发指令添加到镜像中，以便稍后执行，此时镜像用作另一个构建的基础。
-
-### 在严格的 shell 中运行命令
-
-```dockerfile
-ENV my_var
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
-# 使用严格模式：
-RUN false         # ails 像使用 && 一样构建
-RUN echo "$myvar" # 由于拼写错误会抛出错误
-RUN true | false  # 将脱离管道
-```
-<!--rehype:className=wrap-text -->
-
-使用 `shell` 将为 shell 命令打开严格模式。
-
-### 命令 CMD
-<!--rehype:wrap-class=col-span-2-->
-
-:- | -
-:- | -
-`CMD ["executable","param1","param2"]` | (exec 形式，这是首选形式)
-`CMD ["param1","param2"]` | (作为 ENTRYPOINT 的默认参数)
-`CMD command param1 param2` | (shell形式)
-<!--rehype:class=auto-wrap-->
-
-```dockerfile
-EXPOSE 5900
-CMD ["bundle", "exec", "rails", "server"]
-```
-
-### 入口点 ENTRYPOINT
-
-```dockerfile
-ENTRYPOINT ["executable", "param1", "param2"]
-ENTRYPOINT command param1 param2
-```
-<!--rehype:className=wrap-text -->
-
-配置将作为可执行文件运行的容器。
-
-```dockerfile
-ENTRYPOINT exec top -b
-```
-
-这将使用 shell 处理来替换 shell 变量，并将忽略任何 `CMD` 或 `docker run` 命令行参数。
-
-### 元数据 LABEL
-
-```dockerfile
-LABEL version="1.0"
-```
-
-```dockerfile
-LABEL "com.example.vendor"="ACME Incorporated"
-LABEL com.example.label-with-value="foo"
-LABEL version="1.0"
-```
-<!--rehype:className=wrap-text -->
-
-```dockerfile
-LABEL description="本文说明\
-标签值可以跨越多行。"
-LABEL multi.label1="value1" \
-      multi.label2="value2" \
-      other="value3"
-```
-
-### ARG
-
-```dockerfile
-ARG <name>[=<default value>]
-```
-
-指令定义了一个变量，在构建时通过 `docker build` 命令使用 --build-arg `<varname>=<value>` 标志将其传递给构建器。
-
-```dockerfile
-FROM busybox
-# user1 默认值为 someuser
-ARG user1=someuser
-ARG buildno=1
-```
-
-### .dockerignore 文件
-
-```ignore
-# 注释说明
-*/temp*
-*/*/temp*
-temp?
-```
-
-----
-
-:- | -
-:- | -
-`# comment` | 忽略
-`*/temp*` | 在根的任何直接子目录中<br />排除名称以 `temp` 开头的文件和目录
-`*/*/temp*` | 从根以下两级的任何子目录中<br />排除以 `temp` 开头的文件和目录
-`temp?` | 排除根目录中名称为<br /> `temp` 的单字符扩展名的文件和目录
-<!--rehype:class=auto-wrap-->
-
-如果此文件存在，排除与其中的模式匹配的文件和目录，有利于避免 `ADD` 或 `COPY` 将敏感文件添加到镜像中。匹配是使用 Go 的 [filepath.Match](https://golang.org/pkg/path/filepath#Match) 规则完成的。
-
-### 主要命令
-<!--rehype:wrap-class=col-span-2 -->
-
-命令 | 说明
-:- | -
-`FROM image` | 构建的基础镜像
-~~`MAINTAINER email`~~ | (已弃用)维护者的名字
-`COPY [--chown=<user>:<group>] <src>... <dest>` | 将上下文中的路径复制到位置 `dest` 的容器中
-`ADD [--chown=<user>:<group>] <src>... <dest>` | 与 `COPY` 相同，但解压缩存档并接受 http url。
-`RUN <command>` | 在容器内运行任意命令。
-`USER <user>[:<group>]` | 设置默认用户名。
-`WORKDIR /path/to/workdir` | 设置默认工作目录。
-`CMD command param1 param2` | 设置默认命令
-`ENV <key>=<value> ...` | 设置环境变量
-`EXPOSE <port> [<port>/<protocol>...]` | 运行时侦听指定的网络端口
-<!--rehype:class=auto-wrap-->
-
-Dockerfile 示例
-----
-<!--rehype:body-class=cols-2-->
-
-### 服务静态网站的最小 Docker 镜像
-
-```dockerfile
-FROM wcjiang/docker-static-website:latest
-# 使用 .dockerignore 文件来控制镜像中的内容！
-# 复制当前目录内容，到容器中
-COPY ./ .
-```
-
-这会产生一个 **`154KB +`** 的单层镜像。 如果您需要以不同的方式配置 `httpd`，您可以覆盖 CMD 行：
-
-```dockerfile
-FROM wcjiang/docker-static-website:latest
+WORKDIR /app
 COPY . .
 
-CMD ["/busybox","httpd","-f","-v","-p","3000","-c","httpd.conf"]
+CMD ["python", "-m", "app"]
 ```
 
-缩小镜像过程[查看原文](https://lipanski.com/posts/smallest-docker-image-static-website)，镜像 [Dockerfile 源码](https://github.com/forksss/docker-static-website)。
+```shell
+$ docker build -t example/app:1.0 .
+$ docker run --rm example/app:1.0
+```
 
-### Docker 镜像多阶段构建
+构建命令最后的 `.` 是 build context。`COPY` 只能读取 context 内的文件；用 `.dockerignore` 排除无关文件和密钥。
+
+### 常用指令
+
+指令 | 作用
+:- | :-
+`FROM <IMAGE>` | 设置基础镜像并开始新阶段
+`WORKDIR <PATH>` | 设置后续指令的工作目录
+`COPY <SRC> <DEST>` | 从 context 或其他阶段复制文件
+`RUN <COMMAND>` | 构建阶段执行命令并创建镜像层
+`ENV KEY=VALUE` | 设置构建后仍存在的环境变量
+`ARG NAME=VALUE` | 声明只用于构建的参数
+`USER <USER>` | 设置后续构建与运行的用户
+`EXPOSE <PORT>` | 记录容器预期监听端口，不会自动发布
+`ENTRYPOINT [...]` | 设置固定可执行程序
+`CMD [...]` | 设置默认命令或默认参数
+`HEALTHCHECK` | 定义容器健康检查
+<!--rehype:className=show-header-->
+
+### COPY 与 ADD
 
 ```dockerfile
-FROM golang:alpine as builder
-RUN apk --no-cache add git
-WORKDIR /go/src/github.com/go/helloworld/
-RUN go get -d -v github.com/go-sql-driver/mysql
-COPY app.go .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
-
-FROM alpine:latest as prod
-RUN apk --no-cache add ca-certificates
-WORKDIR /root/
-COPY --from=builder /go/src/github.com/go/helloworld/app .
-CMD ["./app"]
+COPY --chown=app:app pyproject.toml uv.lock /app/
+COPY --from=build /src/dist/app /usr/local/bin/app
 ```
-<!--rehype:className=wrap-text -->
 
-使用多阶段构建能将构建依赖留在 builder 镜像中，只将编译完成后的二进制文件拷贝到运行环境中，大大减少镜像体积。
+普通文件复制优先使用 `COPY`。只有确实需要自动解压本地 tar、远程 URL 或 Git 源等额外行为时才使用 `ADD`。
 
-## 也可以看看
+### CMD 与 ENTRYPOINT
 
-- [Dockerfile reference](https://docs.docker.com/engine/reference/builder/) _(docker.com)_
-- [Docker 备忘清单](./docker.md) _(github.io)_
-- [Docker入门学习笔记](https://jaywcjlove.github.io/docker-tutorial) _(github.io)_
+```dockerfile
+ENTRYPOINT ["python", "-m", "app"]
+CMD ["--host", "0.0.0.0", "--port", "8000"]
+```
+
+Exec 形式不会经过 shell，能正确传递信号，通常优于 `CMD command ...`。运行时参数会替换 `CMD`，`docker run --entrypoint` 才会替换 `ENTRYPOINT`。
+
+### ARG 与 ENV
+
+```dockerfile
+ARG APP_VERSION=dev
+ENV APP_VERSION=$APP_VERSION \
+    PYTHONUNBUFFERED=1
+```
+
+`ARG` 在构建时通过 `--build-arg` 传入；`ENV` 会保留在最终镜像与容器中。两者都不适合传递密码、令牌或私钥。
+
+构建实践
+---
+
+### 缓存友好的顺序
+
+```dockerfile
+# syntax=docker/dockerfile:1
+FROM python:3.13-slim
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install --requirement requirements.txt
+
+COPY . .
+```
+
+先复制较少变化的依赖清单，再复制源码，可最大化缓存复用。BuildKit cache mount 会跨构建保存下载缓存，但不会写入最终镜像层。
+
+### 系统包
+
+```dockerfile
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+```
+
+`apt-get update` 与安装必须位于同一 `RUN`，并清理索引。只安装运行时必需包；编译器等构建依赖放到单独构建阶段。
+
+### 多阶段构建
+
+```dockerfile
+# syntax=docker/dockerfile:1
+FROM golang:1.26 AS build
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -o /out/server ./cmd/server
+
+FROM scratch
+COPY --from=build /out/server /server
+USER 65532:65532
+ENTRYPOINT ["/server"]
+```
+
+多阶段构建把编译工具留在构建阶段，只复制运行产物。可用 `docker build --target build .` 停在指定阶段调试。
+
+### 构建密钥
+
+```shell
+$ docker build --secret id=token,src=./token.txt .
+```
+
+```dockerfile
+RUN --mount=type=secret,id=token \
+    TOKEN="$(cat /run/secrets/token)" ./download-private-artifact
+```
+
+密钥 mount 只在该条 `RUN` 执行时可见。不要用 `ARG`、`ENV` 或 `COPY` 传递秘密，它们可能出现在镜像配置、层或构建历史中。
+
+### 非 root 用户
+
+```dockerfile
+RUN groupadd --system --gid 10001 app \
+    && useradd --system --uid 10001 --gid app --create-home app
+
+COPY --chown=app:app . /app
+USER app
+```
+
+服务无需 root 权限时显式切换用户。固定 UID/GID 可改善 bind mount 与编排环境中的权限一致性。
+
+### 健康检查
+
+```dockerfile
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD ["curl", "--fail", "http://localhost:8000/health"]
+```
+
+健康检查命令必须存在于最终镜像中。检查应快速、稳定，并能反映服务是否可以处理请求。
+
+忽略与构建
+---
+
+### .dockerignore
+
+```ignore
+.git
+.env
+.venv
+__pycache__/
+dist/
+node_modules/
+*.log
+```
+
+`.dockerignore` 减少发送给 builder 的 context，避免无关文件破坏缓存或进入镜像。它不是秘密管理机制；敏感文件仍不应放入 context。
+
+### 构建命令
+
+```shell
+$ docker build -t example/app:1.0 .
+$ docker build -f docker/Dockerfile -t example/app:1.0 .
+$ docker build --target build -t example/app:build .
+$ docker build --pull --no-cache -t example/app:1.0 .
+$ docker buildx build --platform linux/amd64,linux/arm64 -t example/app:1.0 --push .
+```
+
+`--pull` 更新基础镜像，`--no-cache` 禁用已有构建缓存；两者作用不同。多平台构建与推送使用 `buildx`。
+
+检查清单
+---
+
+### 推荐
+
+- 使用维护中的官方基础镜像并固定明确版本范围。
+- 使用多阶段构建缩小运行镜像。
+- 让单个容器只负责一个清晰的服务职责。
+- 先复制依赖清单，再复制经常变化的源码。
+- 使用 exec 形式的 `ENTRYPOINT` / `CMD`。
+- 使用非 root 用户运行服务。
+- 将持久数据放入 volume，不写入容器可写层。
+
+### 避免
+
+- 不要把凭据写入 `ARG`、`ENV`、构建 context 或镜像层。
+- 不要依赖 `docker commit` 代替 Dockerfile。
+- 不要为省事长期使用 `latest`、`--privileged` 或 root 用户。
+- 不要在镜像内启动 SSH 服务；使用 `docker exec` 调试容器。
+- 不要用 `ONBUILD` 隐藏子镜像构建步骤，除非维护专用基础镜像。
+
+另见
+---
+
+- [Dockerfile reference](https://docs.docker.com/reference/dockerfile/) _(docs.docker.com)_
+- [Docker 构建最佳实践](https://docs.docker.com/build/building/best-practices/) _(docs.docker.com)_
+- [Docker](./docker.md)
+- [Docker Compose](./docker-compose.md)

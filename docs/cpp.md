@@ -3,8 +3,126 @@ C++ 备忘清单
 
 整理现代 [C++](https://zh.cppreference.com/) 常用写法、资源管理、智能指针与并发工具的快速参考备忘单。
 
+核心类型与容器
+------------
+
+### 值、引用与指针
+<!--rehype:wrap-class=col-span-2-->
+
+```cpp
+int value{42};
+int copy{value};       // 独立副本
+int& reference{value}; // 引用同一对象，不可为空
+int* pointer{&value};  // 保存地址，可以为空
+
+reference = 10;
+if (pointer != nullptr) {
+    *pointer = 20;
+}
+```
+
+形式 | 含义 | 常见用途
+:- | :- | :-
+`T value` | 拥有一个值 | 小型对象、需要副本
+`T& value` | 可修改引用 | 修改调用方对象
+`const T& value` | 只读引用 | 避免复制大型对象
+`T* value` | 可空指针 | 可选对象、数组或底层接口
+<!--rehype:className=show-header-->
+
+对象所有权优先交给值类型、容器和智能指针；裸指针通常只表示非拥有访问。
+
+### 常用容器
+
+```cpp
+#include <array>
+#include <map>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+std::array<int, 3> fixed{1, 2, 3};
+std::vector<int> values{1, 2, 3};
+std::map<std::string, int> ordered{{"a", 1}};
+std::unordered_map<std::string, int> lookup{{"a", 1}};
+```
+
+容器 | 特点
+:- | :-
+`std::array<T, N>` | 固定长度、连续内存
+`std::vector<T>` | 动态长度、连续内存，默认序列容器
+`std::map<K, V>` | 键有序，查找通常为 O(log n)
+`std::unordered_map<K, V>` | 哈希表，平均常数时间查找
+<!--rehype:className=show-header-->
+
+### 遍历与算法
+
+```cpp
+#include <algorithm>
+#include <ranges>
+#include <vector>
+
+std::vector<int> values{4, 1, 3, 2};
+
+for (const int value : values) {
+    use(value);
+}
+
+std::ranges::sort(values);
+auto found = std::ranges::find(values, 3);
+bool has_even = std::ranges::any_of(values, [](int value) {
+    return value % 2 == 0;
+});
+```
+
+优先使用基于范围的 `for` 和标准算法。只读大型元素时使用 `const auto&`，需要修改元素时使用 `auto&`。
+
+### struct 与 class
+
+```cpp
+struct Point {
+    double x{};
+    double y{};
+};
+
+class Counter {
+public:
+    explicit Counter(int initial) : value_{initial} {}
+
+    void increment() { ++value_; }
+    [[nodiscard]] int value() const { return value_; }
+
+private:
+    int value_{};
+};
+```
+
+`struct` 默认成员为 `public`，适合简单数据对象；`class` 默认成员为 `private`，适合维护不变量和封装行为。多态基类的析构函数应声明为 `virtual`。
+
 C++ 函数
 ------------
+
+### 参数与返回值
+
+```cpp
+void consume(std::string value);             // 按值接收并取得副本
+void update(Settings& settings);             // 修改调用方对象
+void inspect(const Settings& settings);      // 只读且避免复制
+Widget* find_widget(int id);                  // 可以返回 nullptr
+std::optional<Widget> load_widget(int id);   // 显式表达“可能没有值”
+```
+
+小型标量通常按值传递；大型只读对象使用 `const T&`；确实需要修改调用方时使用 `T&`。返回对象时优先按值返回，让编译器执行返回值优化或移动。
+
+### 默认参数与重载
+
+```cpp
+void log(std::string_view message, LogLevel level = LogLevel::info);
+
+void print(int value);
+void print(std::string_view value);
+```
+
+默认参数应从参数列表末尾开始，并通常只写在声明中。重载函数应保持相同语义，避免仅靠容易混淆的隐式转换区分。
 
 ### Lambda 表达式
 <!--rehype:wrap-class=col-span-2-->
