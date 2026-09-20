@@ -1,0 +1,30 @@
+name: Win CI
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: github.repository == 'pleb631/reference'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+      - run: npm run build
+      - run: |
+          cd ${{ github.workspace }}
+          ls
+          cd dist
+          ls
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ${{ github.workspace }}\dist\**\*

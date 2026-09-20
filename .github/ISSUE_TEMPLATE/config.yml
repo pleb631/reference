@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 😍 投稿指南
+    url: https://github.com/pleb631/reference/blob/main/CONTRIBUTING.md
+    about: 请在做出任何贡献之前通读!
+  - name: 🚀 GitHub Pages 部署
+    url: https://github.com/pleb631/reference/blob/main/CONTRIBUTING.md
+    about: GitHub Pages 部署说明在贡献指南中。
+  - name: 🪩 清单排版布局说明
+    url: https://pleb631.github.io/reference/docs/quickreference.html
+    about: 页面布局说明。
+  - name: 🪩 Markdown 语法说明
+    url: https://pleb631.github.io/reference/docs/markdown.html
+    about: Markdown 语法说明。

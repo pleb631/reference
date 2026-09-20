@@ -1,0 +1,27 @@
+{
+  "description": "{{description}}，为开发人员分享快速参考备忘单。",
+  "keywords": "reference,Quick,Reference,cheatsheet,cheat,sheet",
+  "data-info": "👆待完善需要您的参与",
+  "search": {
+    "label": "搜索",
+    "placeholder": "搜索备忘清单",
+    "cancel": "取消"
+  },
+  "editor": {
+    "label": "编辑"
+  },
+  "github": {
+    "url": "https://github.com/pleb631/reference"
+  },
+  "favicon": "{{RELATIVE_PATH}}icons/favicon.svg",
+  "meta": [
+    { "name": "author", "content": "pleb631" },
+    { "name": "license", "content": "MIT" },
+    { "rel": "apple-touch-icon", "href": "{{RELATIVE_PATH}}icons/touch-icon-iphone.png" },
+    { "rel": "apple-touch-icon", "sizes": "152x152", "href": "{{RELATIVE_PATH}}icons/touch-icon-ipad.png" },
+    { "rel": "apple-touch-icon", "sizes": "180x180", "href": "{{RELATIVE_PATH}}icons/touch-icon-iphone.png" },
+    { "rel": "apple-touch-icon", "sizes": "167x167", "href": "{{RELATIVE_PATH}}icons/touch-icon-ipad-retina.png" },
+    { "rel": "apple-touch-icon", "sizes": "120x120", "href": "{{RELATIVE_PATH}}icons/touch-icon-iphone-retina.png" }
+  ],
+  "analyticsId": "G-9MWEWXSDQK"
+}
