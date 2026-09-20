@@ -173,7 +173,15 @@
     scaleOutput.value = `${Math.round(scale * 100)}%`;
     scaleOutput.textContent = scaleOutput.value;
   };
-  const resetImage = () => { scale = 1; x = 0; y = 0; renderImage(); };
+  const resetImage = () => {
+    const imageWidth = fullImage.naturalWidth;
+    const imageHeight = fullImage.naturalHeight;
+    if (!imageWidth || !imageHeight) return;
+    scale = .3;
+    x = (stage.clientWidth - imageWidth * scale) / 2;
+    y = (stage.clientHeight - imageHeight * scale) / 2;
+    renderImage();
+  };
   const zoomImage = (factor, originX = stage.clientWidth / 2, originY = stage.clientHeight / 2) => {
     const next = Math.min(8, Math.max(.2, scale * factor));
     const ratio = next / scale;
@@ -190,12 +198,13 @@
   };
   const openViewer = img => {
     const thumbnail = img.currentSrc || img.src;
-    fullImage.src = thumbnail;
     fullImage.alt = img.alt || '大图预览';
-    resetImage();
     viewer.classList.add('is-open');
     viewer.setAttribute('aria-hidden', 'false');
     document.body.classList.add('viewer-open');
+    fullImage.onload = resetImage;
+    fullImage.src = thumbnail;
+    if (fullImage.complete) resetImage();
     viewer.querySelector('[data-viewer="close"]').focus();
   };
 
@@ -238,6 +247,9 @@
     stage.classList.remove('is-dragging');
   });
   stage.addEventListener('dblclick', resetImage);
+  window.addEventListener('resize', () => {
+    if (viewer.classList.contains('is-open')) resetImage();
+  });
   document.addEventListener('keydown', event => {
     if (!viewer.classList.contains('is-open')) return;
     if (event.key === 'Escape') closeViewer();
