@@ -10,6 +10,7 @@ Quick Reference
 [Golang](./docs/golang.md)<!--rehype:style=background:rgb(39 160 193);-->
 [C](./docs/c.md)<!--rehype:style=background:rgb(92 107 192);-->
 [C++](./docs/cpp.md)<!--rehype:style=background:rgb(6 147 13);-->
+[C++ 图表速查](https://pleb631.github.io/reference/cpp-cheatsheets/)<!--rehype:style=background:rgb(0 112 192);&class=tag&data-lang=图表&target=_blank-->
 [LaTeX](./docs/latex.md)<!--rehype:style=background:rgb(0 128 128);-->
 [Markdown](./docs/markdown.md)<!--rehype:style=background:rgb(103 61 156);-->
 <!--rehype:class=home-card-->

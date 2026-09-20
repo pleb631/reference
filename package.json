@@ -9,6 +9,7 @@
   "scripts": {
     "prepare": "husky",
     "build": "refs-cli",
+    "postbuild": "node -e \"require('fs').cpSync('static', 'dist', { recursive: true })\"",
     "start": "refs-cli --watch",
     "prettier": "prettier --write '**/*.{mjs,css,json,prettierrc,lintstagedrc}'",
     "markdownlint": "npx markdownlint-cli --fix ./docs/*.md"
