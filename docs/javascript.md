@@ -1,7 +1,7 @@
 JavaScript 备忘清单
 ===
 
-包含最重要概念、函数、方法等的 JavaScript 备忘单。 初学者的完整快速参考。
+包含 JavaScript 基础语法、常用 API，以及 ES2015+ 现代语法的快速参考。
 
 入门
 ----
@@ -1938,3 +1938,147 @@ const getSuggestions = async () => {
   }
 }
 ```
+
+现代 JavaScript
+---
+
+### 数值字面量与指数运算
+
+```javascript
+const binary = 0b1010; // 10
+const octal = 0o755;   // 493
+const result = 2 ** 8; // 256
+```
+
+### 解构赋值
+
+```javascript
+const [first, second] = ['a', 'b'];
+const { name, role = 'user' } = {
+  name: 'Alice',
+};
+```
+
+交换变量时也可以使用数组解构：
+
+```javascript
+let left = 1;
+let right = 2;
+[left, right] = [right, left];
+```
+
+### Rest 与展开语法
+
+```javascript
+function sum(...numbers) {
+  return numbers.reduce((total, number) => total + number, 0);
+}
+
+const source = [1, 2];
+const values = [...source, 3];
+const defaults = { theme: 'light', compact: false };
+const options = { ...defaults, compact: true };
+```
+
+Rest 参数收集剩余参数；展开语法将可迭代对象或对象属性展开到新位置。
+
+### 默认参数
+
+```javascript
+function greet(name = 'World') {
+  return `Hello ${name}`;
+}
+
+greet();        // => Hello World
+greet('Alice'); // => Hello Alice
+```
+
+### 对象增强语法
+
+```javascript
+const name = 'Alice';
+const field = 'role';
+
+const user = {
+  name,
+  [field]: 'admin',
+  describe() {
+    return `${this.name}: ${this.role}`;
+  },
+};
+```
+
+### 私有字段
+
+```javascript
+class Counter {
+  #value = 0;
+
+  increment() {
+    this.#value += 1;
+    return this.#value;
+  }
+}
+```
+
+私有字段名以 `#` 开头，只能在声明它的类内部访问。
+
+### 动态导入
+
+```javascript
+async function loadFormatter() {
+  const module = await import('./formatter.js');
+  return module.format;
+}
+```
+
+`import()` 返回 Promise，适合按需加载模块。
+
+### import.meta
+
+```javascript
+console.log(import.meta.url);
+
+const workerUrl = new URL('./worker.js', import.meta.url);
+```
+
+`import.meta` 提供当前 ES 模块的上下文信息。
+
+### Generator
+
+```javascript
+function* sequence() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+for (const value of sequence()) {
+  console.log(value);
+}
+```
+
+调用 Generator 函数会返回迭代器；每次调用 `next()` 时执行到下一个 `yield`。
+
+### 自定义迭代器
+
+```javascript
+const range = {
+  from: 1,
+  to: 3,
+  *[Symbol.iterator]() {
+    for (let value = this.from; value <= this.to; value += 1) {
+      yield value;
+    }
+  },
+};
+
+[...range]; // => [1, 2, 3]
+```
+
+另见
+---
+
+- [JavaScript 指南](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide) _(developer.mozilla.org)_
+- [ECMAScript 语言规范](https://tc39.es/ecma262/) _(tc39.es)_
+- [ECMAScript 6 入门教程](https://es6.ruanyifeng.com/) _(es6.ruanyifeng.com)_
