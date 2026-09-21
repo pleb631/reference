@@ -26,7 +26,7 @@ function fn () {
 const a = 1
 ```
 
-`let` 是新的 `var`。 常量(`const`) 就像 `let` 一样工作，但不能重新分配。
+默认使用 `const`；只有需要重新赋值时使用 `let`。`const` 不能重新赋值，但对象或数组的内容仍可修改。
 请参阅：[Let 和 const](https://babeljs.io/learn-es2015/#let--const)
 
 ### 反引号字符串

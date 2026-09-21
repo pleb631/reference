@@ -107,43 +107,45 @@ $ openssl ecparam -list_­curves
 创建 4096 位 RSA 公私密钥对
 
 ```bash
-$ openssl genrsa -out pub_pr­iv.key 4096
+$ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out pub_priv.key
 ```
 
 显示详细的私钥信息
 
 ```bash
-$ openssl rsa -text -in pub_priv.key -noout
+$ openssl pkey -text -in pub_priv.key -noout
 ```
 
 使用 AES-256 算法加密公私钥对
 
 ```bash
-$ openssl rsa -in pub_priv.key -out encrypted.key -aes256
+$ openssl pkey -in pub_priv.key -out encrypted.key -aes256
 ```
 
 删除密钥文件加密并将它们保存到另一个文件
 
 ```bash
-$ openssl rsa -in encrypted.key -out cleartext.key
+$ openssl pkey -in encrypted.key -out cleartext.key
 ```
 
 将公私钥对文件的公钥复制到另一个文件中
 
 ```bash
-$ openssl rsa -in pub_priv.key -pubout -out pubkey.key
+$ openssl pkey -in pub_priv.key -pubout -out pubkey.key
 ```
 
 使用 RSA 公钥加密文件
 
 ```bash
-$ openssl rsautl -encrypt -inkey pubkey.key -pubin -in cleartext.file -out ciphertext.file
+$ openssl pkeyutl -encrypt -pubin -inkey pubkey.key -in cleartext.file -out ciphertext.file \
+  -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256
 ```
 
 使用 RSA 私钥解密文件
 
 ```bash
-$ openssl rsautl -decrypt -inkey pub_priv.key -in ciphertext.file -out decrypted.file
+$ openssl pkeyutl -decrypt -inkey pub_priv.key -in ciphertext.file -out decrypted.file \
+  -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256
 ```
 
 使用 P-224 椭圆曲线创建私钥
@@ -152,10 +154,10 @@ $ openssl rsautl -decrypt -inkey pub_priv.key -in ciphertext.file -out decrypted
 $ openssl ecparam -name secp224k1 -genkey -out ecpriv.key
 ```
 
-使用 3DES 算法加密私钥
+使用 AES-256 算法加密私钥
 
 ```bash
-$ openssl ec -in ecP384priv.key -des3 -out ecP384priv_enc.key
+$ openssl ec -in ecP384priv.key -aes256 -out ecP384priv_enc.key
 ```
 
 ### 对称加密
@@ -204,29 +206,11 @@ $ openssl enc -camellia-192-ctr -in cleartext.file -out ciphertext.file -K 6c7a1
 ### 数字签名
 <!--rehype:wrap-class=col-span-2-->
 
-为私钥生成 DSA 参数。 2048 位长度
+生成 Ed25519 私钥并导出公钥
 
 ```bash
-$ openssl dsaparam -out dsaparam.pem 2048
-```
-
-生成用于签署文档的 DSA 公私密钥并使用 AES128 算法对其进行保护
-
-```bash
-$ openssl gendsa -out dsaprivatekey.pem -aes-128-cbc dsaparam.pem
-```
-<!--rehype:className=wrap-text-->
-
-将DSA公私钥文件的公钥复制到另一个文件中
-
-```bash
-$ openssl dsa -in dsaprivatekey.pem -pubout -out dsapublickey.pem
-```
-
-打印出 DSA 密钥对文件的内容
-
-```bash
-$ openssl dsa -in dsaprivatekey.pem -text -noout
+$ openssl genpkey -algorithm ED25519 -out ed25519-private.pem
+$ openssl pkey -in ed25519-private.pem -pubout -out ed25519-public.pem
 ```
 
 使用 RSA 私钥对文件的 sha-256 哈希进行签名
@@ -242,17 +226,17 @@ $ openssl dgst -sha256 -sign rsakey.key -out signature.data document.pdf
 $ openssl dgst -sha256 -verify publickey.pem -signature signature.data original.file
 ```
 
-使用 DSA 私钥对文件的 sha3-512 哈希进行签名
+使用 Ed25519 私钥签名文件
 
 ```bash
-$ openssl pkeyutl -sign -pkeyopt digest:sha3-512 -in document.docx -inkey dsaprivatekey.pem -out signature.data
+$ openssl pkeyutl -sign -rawin -in document.pdf -inkey ed25519-private.pem -out signature.data
 ```
 <!--rehype:className=wrap-text-->
 
-验证 DSA 签名
+验证 Ed25519 签名
 
 ```bash
-$ openssl pkeyutl -verify -sigfile dsasignature.data -inkey dsakey.pem -in document.docx
+$ openssl pkeyutl -verify -rawin -in document.pdf -sigfile signature.data -pubin -inkey ed25519-public.pem
 ```
 
 使用 P-384 椭圆曲线创建私钥
@@ -261,10 +245,10 @@ $ openssl pkeyutl -verify -sigfile dsasignature.data -inkey dsakey.pem -in docum
 $ openssl ecparam -name secp384r1 -genkey -out ecP384priv.key
 ```
 
-使用3DES算法加密私钥
+使用 AES-256 算法加密私钥
 
 ```bash
-$ openssl ec -in ecP384priv.key -des3 -out ecP384priv_enc.key
+$ openssl ec -in ecP384priv.key -aes256 -out ecP384priv_enc.key
 ```
 
 使用带有生成密钥的椭圆曲线对 PDF 文件进行签名
@@ -657,17 +641,13 @@ $ openssl pkcs12 -export -in certificate.cer -inkey privateKey.key -out certific
 在命令行上使用 OpenSSL 您首先需要生成公钥和私钥。 您应该使用 `-passout` 参数对这个文件进行密码保护，这个参数可以采用许多不同的形式，因此请查阅 OpenSSL 文档
 
 ```bash
-$ openssl genrsa -out private.pem 4096
+$ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -out private.pem
 ```
 
 这将创建一个名为 private.pem 的密钥文件，它使用 4096 位。 这个文件实际上有私钥和公钥，所以你应该从这个文件中提取公钥：
 
 ```bash
-$ openssl rsa -in private.pem -out public.pem -outform PEM -pubout
-# or
-$ openssl rsa -in private.pem -pubout > public.pem
-# or
-$ openssl rsa -in private.pem -pubout -out public.pem
+$ openssl pkey -in private.pem -pubout -out public.pem
 ```
 <!--rehype:className=wrap-text-->
 
@@ -682,14 +662,16 @@ $ echo 'too many secrets' > file.txt
 您现在在 file.txt 中有一些数据，让我们使用 OpenSSL 和公钥对其进行加密：
 
 ```bash
-$ openssl rsautl -encrypt -inkey public.pem -pubin -in file.txt -out file.ssl
+$ openssl pkeyutl -encrypt -pubin -inkey public.pem -in file.txt -out file.ssl \
+  -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256
 ```
 <!--rehype:className=wrap-text-->
 
 这会创建一个 file.txt 的加密版本，称为 file.ssl，如果你看这个文件，它只是二进制垃圾，对任何人都没有什么用处。 现在您可以使用私钥对其进行解密：
 
 ```bash
-$ openssl rsautl -decrypt -inkey private.pem -in file.ssl -out decrypted.txt
+$ openssl pkeyutl -decrypt -inkey private.pem -in file.ssl -out decrypted.txt \
+  -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256
 ```
 <!--rehype:className=wrap-text-->
 
@@ -712,7 +694,7 @@ $ rsa - RSA key processing tool
 SYNOPSIS 概要
 
 ```bash
-$ openssl rsa [-help] [-inform PEM|NET|DER] [-outform PEM|NET|DER] [-in filename] [-passin arg] [-out filename] [-passout arg] [-aes128] [-aes192] [-aes256] [-camellia128] [-camellia192] [-camellia256] [-des] [-des3] [-idea] [-text] [-noout] [-modulus] [-check] [-pubin] [-pubout] [-RSAPublicKey_in] [-RSAPublicKey_out] [-engine id]
+$ openssl rsa [-help] [-inform PEM|NET|DER] [-outform PEM|NET|DER] [-in filename] [-passin arg] [-out filename] [-passout arg] [-aes128] [-aes192] [-aes256] [-camellia128] [-camellia192] [-camellia256] [-text] [-noout] [-modulus] [-check] [-pubin] [-pubout] [-RSAPublicKey_in] [-RSAPublicKey_out] [-engine id]
 ```
 <!--rehype:className=wrap-text-->
 
@@ -748,7 +730,7 @@ COMMAND OPTIONS 命令选项
 -passout password
 #> 输出文件密码源。有关 arg 格式的更多信息，请参阅 openssl 中的 PASS PHRASE ARGUMENTS 部分。
 
--aes128|-aes192|-aes256|-camellia128|-camellia192|-camellia256|-des|-des3|-idea
+-aes128|-aes192|-aes256|-camellia128|-camellia192|-camellia256
 #> 这些选项在输出之前使用指定的密码加密私钥。提示输入密码。如果未指定这些选项，则密钥将以纯文本形式写入。这意味着使用 rsa 实用程序读取没有加密选项的加密密钥可用于从密钥中删除密码短语，或者通过设置可用于添加或更改密码短语的加密选项。这些选项只能用于 PEM 格式的输出文件。
 
 -text
@@ -782,8 +764,6 @@ COMMAND OPTIONS 命令选项
 - `-aes128`
 - `-aes192`
 - `-aes256`
-- `-des3`
-- `-des`
 <!--rehype:className=cols-3-->
 
 ### 示例
@@ -794,10 +774,10 @@ COMMAND OPTIONS 命令选项
 $ openssl rsa -in key.pem -out keyout.pem
 ```
 
-要使用三重 DES 加密私钥：
+要使用 AES-256 加密私钥：
 
 ```bash
-$ openssl rsa -in key.pem -des3 -out keyout.pem
+$ openssl rsa -in key.pem -aes256 -out keyout.pem
 ```
 <!--rehype:className=wrap-text-->
 
@@ -878,7 +858,6 @@ $ fold -w 64
 - PKCS#8 PrivateKeyInfo (PEM header: BEGIN PRIVATE KEY)
 - X.509 SubjectPublicKeyInfo (PEM header: BEGIN PUBLIC KEY)
 - CSR PEM header : (PEM header:—-BEGIN NEW CERTIFICATE REQUEST—–)
-- DSA PrivateKeyInfo (PEM header: (—–BEGIN DSA PRIVATE KEY—-)
 
 ### CRL
 
@@ -927,13 +906,6 @@ $ fold -w 64
 ```
 -----BEGIN PRIVATE KEY-----
 -----END PRIVATE KEY-----
-```
-
-### DSA密钥
-
-```
------BEGIN DSA PRIVATE KEY-----
------END DSA PRIVATE KEY-----
 ```
 
 ### 椭圆曲线
@@ -1059,40 +1031,17 @@ function check_certs () {
 ```
 <!--rehype:className=wrap-text-->
 
-输出示例：
-
-```bash
-$ check_certs stackoverflow.com
-151.101.1.69: Aug 14 12:00:00 2019 GMT    603 days
-151.101.65.69: Aug 14 12:00:00 2019 GMT    603 days
-151.101.129.69: Aug 14 12:00:00 2019 GMT    603 days
-151.101.193.69: Aug 14 12:00:00 2019 GMT    603 days
-```
-
 ### 验证 curl
 
 ```bash
-curl --insecure -v https://www.google.com 2>&1 | awk 'BEGIN { cert=0 } /^\* Server certificate:/ { cert=1 } /^\*/ { if (cert) print }'
-
-* Server certificate:
-*  subject: C=US; ST=California; L=Mountain View; O=Google LLC; CN=www.google.com
-*  start date: Mar  1 09:46:35 2019 GMT
-*  expire date: May 24 09:25:00 2019 GMT
-*  issuer: C=US; O=Google Trust Services; CN=Google Internet Authority G3
-*  SSL certificate verify ok.
-* Using HTTP2, server supports multi-use
-* Connection state changed (HTTP/2 confirmed)
-* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
-* Using Stream ID: 1 (easy handle 0x7ff5dc803600)
-* Connection state changed (MAX_CONCURRENT_STREAMS updated)!
-* Connection #0 to host www.google.com left intact
+curl -v https://www.google.com 2>&1 | awk 'BEGIN { cert=0 } /^\* Server certificate:/ { cert=1 } /^\*/ { if (cert) print }'
 ```
 <!--rehype:className=wrap-text-->
 
-您需要为 [curl](./curl.md) 提供整个证书链，因为 [curl](./curl.md) 不再附带任何 CA 证书。 由于 cacert 选项只能使用一个文件，因此您需要将完整的链信息连接到 1 个文件中。 从 <https://curl.haxx.se/ca/cacert.pem> 获取根 CA 证书包。
+`curl` 默认会使用系统或构建时配置的 CA 存储验证服务端证书。需要指定自定义 CA 文件时，使用 `--cacert`；该文件可以包含多个 PEM 格式的 CA 证书。Mozilla CA 包可从 [CA Extract](https://curl.se/docs/caextract.html) 获取。
 
 ```bash
-$ curl --cacert certRepo -u user:passwd -X GET -H 'Content-Type: application/json' "https//somesecureserver.com/rest/field"
+$ curl --cacert <ca-bundle.pem> -u <user>:<password> https://secure.example.com/rest/field
 ```
 <!--rehype:className=wrap-text-->
 
@@ -1155,21 +1104,21 @@ $ openssl s_client -connect host:port -prexit
 
 注意：这比将证书上传到生产环境以检查它们更好😉
 
-假设我们已经生成了一个名为 example.com.key 的私钥和一个名为 example.com.crt 的证书，我们可以使用 openssl 检查 MD5 哈希值是否相同：
+假设我们已经生成了一个名为 example.com.key 的私钥和一个名为 example.com.crt 的证书，可以比较它们的 SHA-256 摘要：
 
 ```shell
-$ openssl x509 -noout -modulus -in example.com.crt | openssl md5
-$ openssl rsa -noout -modulus -in example.com.key | openssl md5
+$ openssl x509 -noout -modulus -in example.com.crt | openssl dgst -sha256
+$ openssl rsa -noout -modulus -in example.com.key | openssl dgst -sha256
 ```
 
 为了让事情变得更好，你可以写一个脚本：
 
 ```bash
 #!/bin/bash
-CERT_MD5=$(openssl x509 -noout -modulus -in example.com.crt | openssl md5)
- KEY_MD5=$(openssl rsa  -noout -modulus -in example.com.key | openssl md5)
+CERT_SHA256=$(openssl x509 -noout -modulus -in example.com.crt | openssl dgst -sha256)
+KEY_SHA256=$(openssl rsa -noout -modulus -in example.com.key | openssl dgst -sha256)
 
-if [ "$CERT_MD5" == "$KEY_MD5" ]; then
+if [ "$CERT_SHA256" == "$KEY_SHA256" ]; then
   echo "Private key matches certificate"
 else
   echo "Private key does not match certificate"

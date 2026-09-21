@@ -147,18 +147,6 @@ h1 {
 
 查看: [混合(Mixins)](#sass-混合mixins)
 
-### @import
-
-```scss
-@import './other_sass_file';
-@import '/code', 'lists';
-// 纯 CSS @imports
-@import "theme.css";
-@import url(theme);
-```
-
-`.sass` 或 `.sass` 扩展名是可选的。
-
 Sass 混合(Mixins)
 ------
 
@@ -221,31 +209,41 @@ rgba($color, .5)
 ### Mixing
 
 ```scss
-mix($a, $b, 10%)   // 10% a, 90% b
+@use "sass:color";
+
+color.mix($a, $b, 10%)   // 10% a, 90% b
 ```
 
 ### 修改 HSLA
 
 ```scss
-darken($color, 5%)
-lighten($color, 5%)
+@use "sass:color";
+
+color.adjust($color, $lightness: -5%)
+color.adjust($color, $lightness: 5%)
 ```
 
 ```scss
-saturate($color, 5%)
-desaturate($color, 5%)
-grayscale($color)
+@use "sass:color";
+
+color.adjust($color, $saturation: 5%)
+color.adjust($color, $saturation: -5%)
+color.grayscale($color)
 ```
 
 ```scss
-adjust-hue($color, 15deg)
-complement($color)    // like adjust-hue(_, 180deg)
-invert($color)
+@use "sass:color";
+
+color.adjust($color, $hue: 15deg)
+color.complement($color)
+color.invert($color)
 ```
 
 ```scss
-fade-in($color, .5)   // aka opacify()
-fade-out($color, .5)  // aka transparentize()
+@use "sass:color";
+
+color.adjust($color, $alpha: .5)
+color.adjust($color, $alpha: -.5)
 rgba($color, .5)      // sets alpha to .5
 ```
 
@@ -255,32 +253,36 @@ rgba($color, .5)      // sets alpha to .5
 #### HSLA
 
 ```scss
-hue($color)         // 0deg..360deg
-saturation($color)  // 0%..100%
-lightness($color)   // 0%..100%
-alpha($color)       // 0..1 (aka opacity())
+@use "sass:color";
+
+color.channel($color, "hue", $space: hsl)        // 0deg..360deg
+color.channel($color, "saturation", $space: hsl) // 0%..100%
+color.channel($color, "lightness", $space: hsl)  // 0%..100%
+color.channel($color, "alpha")                    // 0..1
 ```
 
 #### RGB
 
 ```scss
-red($color)         // 0..255
-green($color)
-blue($color)
+@use "sass:color";
+
+color.channel($color, "red", $space: rgb)   // 0..255
+color.channel($color, "green", $space: rgb)
+color.channel($color, "blue", $space: rgb)
 ```
 
 ----
 
 :- | :-
 :- | :-
-`color.red()` | 用于获取颜色的红色通道
-`color.green()` | 用于获得颜色的绿色通道
-`color.blue()` | 用于获取颜色的蓝色通道
-`color.hue()` | 以获得颜色的色调
-`color.saturation()` | 用于获得颜色的饱和度
-`color.lightness()` | 以获得颜色的亮度
+`color.channel($color, "red", $space: rgb)` | 获取颜色的红色通道
+`color.channel($color, "green", $space: rgb)` | 获取颜色的绿色通道
+`color.channel($color, "blue", $space: rgb)` | 获取颜色的蓝色通道
+`color.channel($color, "hue", $space: hsl)` | 获取颜色的色调
+`color.channel($color, "saturation", $space: hsl)` | 获取颜色的饱和度
+`color.channel($color, "lightness", $space: hsl)` | 获取颜色的亮度
 
-另见: [hue()](http://sass-lang.com/documentation/Sass/Script/Functions.html#hue-instance_method), [red()](http://sass-lang.com/documentation/Sass/Script/Functions.html#red-instance_method)
+另见：[Sass color 模块](https://sass-lang.com/documentation/modules/color/)
 
 ### Sass 内置了对颜色值的支持
 
@@ -294,16 +296,18 @@ blue($color)
 ### 调整
 
 ```scss
+@use "sass:color";
+
 // 固定金额变动
-adjust-color($color, $blue: 5)
-adjust-color($color, $lightness: -30%) // darken(_, 30%)
-adjust-color($color, $alpha: -0.4)     // fade-out(_, .4)
-adjust-color($color, $hue: 30deg)      // adjust-hue(_, 15deg)
+color.adjust($color, $blue: 5)
+color.adjust($color, $lightness: -30%)
+color.adjust($color, $alpha: -0.4)
+color.adjust($color, $hue: 30deg)
 // 通过百分比变化
-scale-color($color, $lightness: 50%)
+color.scale($color, $lightness: 50%)
 // 完全改变一个属性
-change-color($color, $hue: 180deg)
-change-color($color, $blue: 250)
+color.change($color, $hue: 180deg)
+color.change($color, $blue: 250)
 ```
 
 支持的: `$red`, `$green`, `$blue`, `$hue`, `$saturation`, `$lightness`, `$alpha`
@@ -443,11 +447,13 @@ Sass 循环
 ### For 循环
 
 ```scss
+@use "sass:color";
+
 $base-color: #036;
 
 @for $i from 1 through 3 {
   ul:nth-child(3n + #{$i}) {
-    background-color: lighten($base-color, $i * 5%);
+    background-color: color.adjust($base-color, $lightness: $i * 5%);
   }
 }
 ```
@@ -604,9 +610,11 @@ url("#{$background}.jpg")
 ### 列表
 
 ```scss
+@use "sass:list";
+
 $list: (a b c);
-nth($list, 1)  // starts with 1
-length($list)
+list.nth($list, 1)  // starts with 1
+list.length($list)
 @each $item in $list { ... }
 ```
 
@@ -614,8 +622,10 @@ length($list)
 <!--rehype:wrap-class=col-span-2-->
 
 ```scss
+@use "sass:map";
+
 $map: (key1: value1, key2: value2, key3: value3);
-map-get($map, key1)
+map.get($map, key1)
 ```
 
 另见

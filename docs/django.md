@@ -11,13 +11,11 @@ Django 是 Python 的一款 Web 框架，本备忘单旨在快速理解 [Django]
 
 ```bash
 $ python --version
-# Python 3.9.2
-$ pip --version
-# pip 20.2.3 from c:\python39\lib\site-packages\pip (python 3.9)
+$ python -m pip --version
 ```
 <!--rehype:className=wrap-text -->
 
-如果你没有安装 PIP，你可以从这个页面下载并安装它：<https://pypi.org/project/pip/>
+安装前确认所用 Python 版本受目标 Django 版本支持；使用 `python -m pip` 可确保 `pip` 属于当前解释器。
 
 ### 入门
 <!--rehype:wrap-class=row-span-4-->
@@ -1023,7 +1021,7 @@ body {
 }
 ```
 
-修改模板 (`members/templates/template.html`) 引入 css 文件
+修改模板 (`members/templates/myfirst.html`) 引入 CSS 文件
 
 ```django {1,4}
 {% load static %}
@@ -1054,7 +1052,7 @@ function myFunction() {
 }
 ```
 
-修改模板 (`members/templates/template.html`) 引入 `JS` 文件
+修改模板 (`members/templates/myfirst.html`) 引入 JS 文件
 
 ```django {1,4,6}
 {% load static %}
@@ -1078,15 +1076,9 @@ myworld
         ╰┈ pineapple.jpg
 ```
 
-打开 `JS` 文件 (`members/static/pineapple.jpg`) 并插入以下内容：
+将图片文件放入 `members/static/pineapple.jpg`。
 
-```js
-function myFunction() {
-  alert("Hello from a static file!");
-}
-```
-
-修改模板 (`members/templates/template.html`) 引入 `jpg` 文件
+修改模板 (`members/templates/myfirst.html`) 引入图片文件
 
 ```django {1,5}
 {% load static %}

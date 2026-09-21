@@ -63,7 +63,7 @@ bash 注释
 `$_`        | 上一个命令的最后一个参数
 <!--rehype:className=left-align-->
 
-见：[特殊参数](http://wiki.bash-hackers.org/syntax/shellvars#special_parameters_and_shell_variables)
+见：[GNU Bash 特殊参数](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html)
 
 ### 函数
 
@@ -102,7 +102,7 @@ echo {A,B}.js
 `{A,B}.js` | 与 `A.js B.js` 相同
 `{1..5}`   | 与 `1 2 3 4 5` 相同
 
-见：[大括号扩展](http://wiki.bash-hackers.org/syntax/expansion/brace)
+见：[GNU Bash 大括号扩展](https://www.gnu.org/software/bash/manual/html_node/Brace-Expansion.html)
 
 ### Shell 执行
 
@@ -113,7 +113,7 @@ echo "I'm in $(PWD)"
 echo "I'm in `pwd`"
 ```
 
-见：[命令替换](http://wiki.bash-hackers.org/syntax/expansion/cmdsubst)
+见：[GNU Bash 命令替换](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html)
 
 Bash 参数扩展
 -----
@@ -189,7 +189,7 @@ length=2
 echo ${name:0:length}  # => Jo
 ```
 
-见：[参数扩展](http://wiki.bash-hackers.org/syntax/pe)
+见：[GNU Bash 参数扩展](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
 
 ### 基本路径和目录路径
 
@@ -953,7 +953,7 @@ EOF
 `$$`       | shell PID
 `$0`       | shell 脚本的文件名
 
-见[特殊参数](http://wiki.bash-hackers.org/syntax/shellvars#special_parameters_and_shell_variables)。
+见 [GNU Bash 特殊参数](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html)。
 
 ### 反斜杠转义
 <!--rehype:wrap-class=row-span-2-->
@@ -1029,7 +1029,7 @@ set -euo pipefail
 IFS=$'\n\t'
 ```
 
-参见：[非官方 bash 严格模式](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
+参见：[非官方 bash 严格模式](https://redsymbol.net/articles/unofficial-bash-strict-mode/)
 
 ### 可选参数
 
@@ -1202,10 +1202,9 @@ m           # 设置图形模式
 
 - [Shell 教程](https://jaywcjlove.github.io/shell-tutorial) _(jaywcjlove.github.io)_
 - [Devhints](https://devhints.io/bash) _(devhints.io)_
-- [Bash-hackers wiki](http://wiki.bash-hackers.org/) _(bash-hackers.org)_
-- [Shell vars](http://wiki.bash-hackers.org/syntax/shellvars) _(bash-hackers.org)_
+- [GNU Bash 手册](https://www.gnu.org/software/bash/manual/) _(gnu.org)_
 - [Learn bash in y minutes](https://learnxinyminutes.com/docs/bash/) _(learnxinyminutes.com)_
-- [Bash Guide](http://mywiki.wooledge.org/BashGuide) _(mywiki.wooledge.org)_
+- [Bash Guide](https://mywiki.wooledge.org/BashGuide) _(mywiki.wooledge.org)_
 - [ShellCheck](https://www.shellcheck.net/) _(shellcheck.net)_
 - [shell - Standard Shell](https://devmanual.gentoo.org/tools-reference/bash/index.html) _(devmanual.gentoo.org)_
 - [ANSI 转义序列](https://zh.wikipedia.org/wiki/ANSI转义序列) _(zh.wikipedia.org)_

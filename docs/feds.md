@@ -22,22 +22,16 @@ FED 前端导航
 构建工具
 ---
 
-[Webpack](http://webpack.github.io/)<!--rehype:target=_blank&style=background: rgb(107 148 216/var(\-\-bg\-opacity));-->
+[Webpack](https://webpack.js.org/)<!--rehype:target=_blank&style=background: rgb(107 148 216/var(\-\-bg\-opacity));-->
 [NPM](https://www.npmjs.com/)<!--rehype:target=_blank&style=background: rgb(203 8 1/var(\-\-bg\-opacity));-->
 [Yarn](https://yarnpkg.com/zh-Hans/)<!--rehype:target=_blank&style=background: rgb(33 136 182/var(\-\-bg\-opacity));-->
 [pnpm](https://pnpm.io/)<!--rehype:target=_blank&style=background: rgb(246 146 32/var(\-\-bg\-opacity));-->
 [Lerna](https://lerna.js.org/)<!--rehype:target=_blank&style=background: rgb(147 51 234/var(\-\-bg\-opacity));-->
 [Vitejs](https://cn.vitejs.dev/)<!--rehype:target=_blank&style=background: rgb(188 52 254/var(\-\-bg\-opacity));-->
-[Gulp](https://gulpjs.com/)<!--rehype:target=_blank&style=background: rgb(207 70 71/var(\-\-bg\-opacity));-->
-[Parcel](https://en.parceljs.org/)<!--rehype:target=_blank&style=background: rgb(192 145 99/var(\-\-bg\-opacity));-->
-[Rollup](https://rollupjs.org/guide/en/)<!--rehype:target=_blank&style=background: rgb(239 51 53/var(\-\-bg\-opacity));-->
+[Parcel](https://parceljs.org/)<!--rehype:target=_blank&style=background: rgb(192 145 99/var(\-\-bg\-opacity));-->
+[Rollup](https://rollupjs.org/)<!--rehype:target=_blank&style=background: rgb(239 51 53/var(\-\-bg\-opacity));-->
 [Turbopack](https://turbo.build/)<!--rehype:target=_blank&style=background: rgb(248 30 87/var(\-\-bg\-opacity));-->
-[Create React App](https://create-react-app.dev/)<!--rehype:target=_blank&style=background: rgb(60 106 146/var(\-\-bg\-opacity));-->
-[Browserify](http://browserify.org/)<!--rehype:target=_blank&style=background: rgb(60 106 146/var(\-\-bg\-opacity));-->
-[Yeoman](http://yeoman.io/)<!--rehype:target=_blank&style=background: rgb(106 106 106/var(\-\-bg\-opacity));-->
-[Grunt](https://gruntjs.com/)<!--rehype:target=_blank&style=background: rgb(106 106 106/var(\-\-bg\-opacity));-->
 [Babel](https://babeljs.io/)<!--rehype:target=_blank&style=background: rgb(245 218 85/var(\-\-bg\-opacity));-->
-[FIS3](https://fex-team.github.io/fis3/)<!--rehype:target=_blank&style=background: rgb(106 106 106/var(\-\-bg\-opacity));-->
 <!--rehype:class=home-card-->
 
 教程文档
@@ -106,7 +100,7 @@ CSS 工具
 
 [React](https://zh-hans.react.dev)<!--rehype:target=_blank&style=background: rgb(97 218 251/var(\-\-bg\-opacity));-->
 [Vue 中文](https://cn.vuejs.org/)<!--rehype:target=_blank&style=background: rgb(66 184 131/var(\-\-bg\-opacity));-->
-[Angular](https://angular.io/)<!--rehype:target=_blank&style=background: rgb(195 8 47/var(\-\-bg\-opacity));-->
+[Angular](https://angular.dev/)<!--rehype:target=_blank&style=background: rgb(195 8 47/var(\-\-bg\-opacity));-->
 [jQuery](http://www.jquery123.com/)<!--rehype:target=_blank&style=background: rgb(106 106 106/var(\-\-bg\-opacity));-->
 [Bootstrap](https://getbootstrap.com/)<!--rehype:target=_blank&style=background: rgb(113 44 249/var(\-\-bg\-opacity));-->
 [React Native 中文](https://reactnative.cn/)<!--rehype:target=_blank&style=background: rgb(36 120 194/var(\-\-bg\-opacity));-->

@@ -85,7 +85,7 @@ pnpm update --latest
 # 从依赖中删除包
 pnpm remove <package>
 # 删除全局依赖包
-pnpm remove -g create-react-app
+pnpm remove -g <package>
 # 删除特定版本的依赖包
 pnpm remove lodash@4.17.21
 ```
@@ -124,7 +124,7 @@ pnpm remove <package>
 # 删除多个依赖包
 pnpm remove lodash express
 # 删除全局依赖包
-pnpm remove -g create-react-app
+pnpm remove -g <package>
 # 删除特定版本的依赖包
 pnpm remove lodash@4.17.21
 ```

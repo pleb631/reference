@@ -1,7 +1,7 @@
 HTML Canvas 备忘清单
 ===
 
-这份 HTML Canvas 快速参考备忘单列出了常见的 HTML5 Canvas 设计标签，以易读的格式呈现。
+本页汇总 Canvas 2D API 的常用绘制与操作示例。
 
 入门
 ---

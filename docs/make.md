@@ -28,7 +28,7 @@ a.txt: b.txt c.txt
 
 ### 文件命令
 
-make命令会以 `GNUmakefile`（不推荐使用）、`makefile`、`Makefile`（推荐使用）的顺序查找当前目录下的文件。
+`make` 会依次查找 `GNUmakefile`、`makefile`、`Makefile`。`GNUmakefile` 仅适用于 GNU Make；需要兼容其他 `make` 实现时，优先使用 `Makefile`。
 
 #### 自定义文件路径
 

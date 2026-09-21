@@ -86,7 +86,7 @@ Curl 是一种在服务器之间传输数据的工具，支持协议，包括 HT
 ```bash
 -E, --cert <cert>     # --cert: 客户端证书文件
     --cert-type       # der/pem/eng
--k, --insecure        # 对于自签名证书
+-k, --insecure        # 跳过证书验证；仅用于临时诊断，勿用于生产
 ```
 
 #### 安装
@@ -108,9 +108,9 @@ apk add --update curl  # alpine linux 中安装
 `curl -v -I https://www.baidu.com` | 带有详细信息的 `curl` 发请求
 `curl -X GET https://www.baidu.com` | 使用显式 http 方法进行 `curl`
 `curl --noproxy 127.0.0.1 http://www.stackoverflow.com` | 没有 http 代理的 `curl`
-`curl --connect-timeout 10 -I -k https://www.baidu.com` | `curl` 默认没有超时
+`curl --connect-timeout 10 --max-time 30 -I https://www.baidu.com` | 设置连接与总超时
 `curl --verbose --header "Host: www.mytest.com:8182" www.baidu.com` | `curl` 得到额外的标题
-`curl -k -v https://www.google.com` | `curl` 获取带有标题的响应
+`curl -v https://www.google.com` | `curl` 获取带有标题的响应
 <!--rehype:class=auto-wrap-->
 
 ### 多文件上传
@@ -139,25 +139,15 @@ $ curl -XGET http://${elasticsearch_ip}:9200/_cluster/nodes | python -m json.too
 `curl <URL> -H "content-type: application/json" -d "{ \"woof\": \"bark\"}"` | `curl` 发送 json
 <!--rehype:class=auto-wrap-->
 
-### CURL 脚本安装 rvm
-<!--rehype:wrap-class=col-span-2-->
-
-```shell
-curl -sSL https://get.rvm.io | bash
-```
-
 ### CURL 高级
 <!--rehype:wrap-class=col-span-6-->
 
 命令 | 说明
 :- | :-
-`curl -L -s http://ipecho.net/plain, curl -L -s http://whatismijnip.nl` | 获取我的公共 `IP`
-`curl -u $username:$password http://repo.dennyzhang.com/README.txt` | 带凭证的 `curl`
+`curl -u <user>:<password> https://example.com/README.txt` | 带凭证请求
 `curl -v -F key1=value1 -F upload=@localfilename <URL>` | `curl` 上传
-`curl -k -v --http2 https://www.google.com/` | 使用 http2 curl
-`curl -T cryptopp552.zip -u test:test ftp://10.32.99.187/` | curl `ftp` 上传
-`curl -u test:test ftp://10.32.99.187/cryptopp552.zip -o cryptopp552.zip` | curl `ftp` 下载
-`curl -v -u admin:admin123 --upload-file package1.zip http://mysever:8081/dir/package1.zip` | 使用凭证 `curl` 上传
+`curl -v --http2 https://www.google.com/` | 使用 HTTP/2 请求
+`curl -v -u <user>:<password> --upload-file package1.zip https://example.com/dir/package1.zip` | 使用凭证上传文件
 <!--rehype:class=auto-wrap-->
 
 ### 检查网站响应时间

@@ -1421,8 +1421,8 @@ Go 命令
 `go fix`            | 更新包使用新的api
 `go fmt`            | 格式规范化代码
 `go generate`       | 通过处理资源生成go文件
-`go get`            | 下载并安装包及其依赖
-`go install`        | 编译和安装包及其依赖
+`go get`            | 添加、升级或降级模块依赖
+`go install`        | 编译并安装命令；安装外部命令时使用 `<module>@<version>`
 `go list`           | 列出所有包
 `go run`            | 编译和运行go程序
 `go test`           | 测试
@@ -1436,7 +1436,6 @@ Go 命令
 :- | --
 `GOOS`         | 编译系统
 `GOARCH`       | 编译arch
-`GO111MODULE`  | gomod开关
 `GOPROXY`      | go代理 <https://goproxy.io>  <https://goproxy.cn>  <https://mirrors.aliyun.com/goproxy/>
 `GOSSAFUNC`    | 生成 `SSA.html` 文件，展示代码优化的每一步 `GOSSAFUNC=func_name go build`
 <!--rehype:className=style-list-arrow-->
@@ -1459,7 +1458,7 @@ Go 命令
 - [Devhints](https://devhints.io/go) *(devhints.io)*
 - [A tour of Go](https://tour.golang.org/welcome/1) *(tour.golang.org)*
 - [Golang wiki](https://github.com/golang/go/wiki/) *(github.com)*
-- [Effective Go](https://golang.org/doc/effective_go.html) *(golang.org)*
+- [Effective Go](https://go.dev/doc/effective_go) *(go.dev)*
 - [Go by Example](https://gobyexample.com/) *(gobyexample.com)*
 - [Awesome Go](https://awesome-go.com/) *(awesome-go.com)*
 - [JustForFunc Youtube](https://www.youtube.com/channel/UC_BzFbxG2za3bp5NRRRXJSw) *(youtube.com)*

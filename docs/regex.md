@@ -23,8 +23,6 @@ RegEX 备忘清单
 - [Vim 中的 Regex](./vim#vim-搜索和替换)  
     _(速查手册)_
 - [在线 Regex 测试器](https://regex101.com/) _(regex101.com)_
-- [轻松学习 Regex](https://github.com/ziishaned/learn-regex/blob/master/translations/README-cn.md) _(github.com)_
-- [正则表达式实例搜集](https://jaywcjlove.github.io/regexp-example) _(jaywcjlove.github.io)_
 <!--rehype:className=cols-2-->
 
 ### 字符类

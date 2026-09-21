@@ -139,21 +139,21 @@ SELECT current_database();
 SELECT current_database();
 ```
 
-[创建数据库](http://www.postgresql.org/docs/current/static/sql-createdatabase.html)
+[创建数据库](https://www.postgresql.org/docs/current/sql-createdatabase.html)
 
 ```sql
 CREATE DATABASE <database_name> WITH OWNER <username>;
 ```
 <!--rehype:className=wrap-text-->
 
-[删除数据库](http://www.postgresql.org/docs/current/static/sql-dropdatabase.html)
+[删除数据库](https://www.postgresql.org/docs/current/sql-dropdatabase.html)
 
 ```sql
 DROP DATABASE IF EXISTS <database_name>;
 ```
 <!--rehype:className=wrap-text-->
 
-[重命名数据库](http://www.postgresql.org/docs/current/static/sql-alterdatabase.html)
+[重命名数据库](https://www.postgresql.org/docs/current/sql-alterdatabase.html)
 
 ```sql
 ALTER DATABASE <old_name> RENAME TO <new_name>;
@@ -188,7 +188,7 @@ WHERE table_name = '<table_name>';
 ```
 <!--rehype:className=wrap-text-->
 
-[创建表](http://www.postgresql.org/docs/current/static/sql-createtable.html)
+[创建表](https://www.postgresql.org/docs/current/sql-createtable.html)
 
 ```sql
 CREATE TABLE <table_name>(
@@ -205,7 +205,7 @@ CREATE TABLE <table_name> (
 );
 ```
 
-[删除表](http://www.postgresql.org/docs/current/static/sql-droptable.html)
+[删除表](https://www.postgresql.org/docs/current/sql-droptable.html)
 
 ```sql
 DROP TABLE IF EXISTS <table_name> CASCADE;
@@ -220,7 +220,7 @@ sudo su - postgres
 psql
 ```
 
-[授予](http://www.postgresql.org/docs/current/static/sql-grant.html) 对数据库的所有权限
+[授予](https://www.postgresql.org/docs/current/sql-grant.html) 对数据库的所有权限
 
 ```sql
 GRANT ALL PRIVILEGES ON DATABASE <db_name> TO <user_name>;
@@ -270,7 +270,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA public TO <user_name>;
 
 ### Columns 列
 
-[添加栏目](http://www.postgresql.org/docs/current/static/sql-altertable.html)
+[添加栏目](https://www.postgresql.org/docs/current/sql-altertable.html)
 
 ```sql
 ALTER TABLE <table_name> IF EXISTS
@@ -313,7 +313,7 @@ VALUES ( <value1>,<value2> );
 
 ### Data 数据
 
-[选择](http://www.postgresql.org/docs/current/static/sql-select.html) 所有数据
+[选择](https://www.postgresql.org/docs/current/sql-select.html) 所有数据
 
 ```sql
 SELECT * FROM <table_name>;
@@ -332,14 +332,14 @@ SELECT * FROM <table_name> WHERE <column_name> = <value>;
 ```
 <!--rehype:className=wrap-text-->
 
-[插入](http://www.postgresql.org/docs/current/static/sql-insert.html) 数据
+[插入](https://www.postgresql.org/docs/current/sql-insert.html) 数据
 
 ```sql
 INSERT INTO <table_name> VALUES( <value_1>, <value_2> );
 ```
 <!--rehype:className=wrap-text-->
 
-[更新](http://www.postgresql.org/docs/current/static/sql-update.html) 数据
+[更新](https://www.postgresql.org/docs/current/sql-update.html) 数据
 
 ```sql
 UPDATE <table_name>
@@ -348,7 +348,7 @@ WHERE <column_1> = <value>;
 ```
 <!--rehype:className=wrap-text-->
 
-[删除](http://www.postgresql.org/docs/current/static/sql-delete.html) 所有数据
+[删除](https://www.postgresql.org/docs/current/sql-delete.html) 所有数据
 
 ```sql
 DELETE FROM <table_name>;
@@ -370,19 +370,19 @@ WHERE <column_name> = <value>;
 SELECT rolname FROM pg_roles;
 ```
 
-[创建用户](http://www.postgresql.org/docs/current/static/sql-createuser.html)
+[创建用户](https://www.postgresql.org/docs/current/sql-createuser.html)
 
 ```sql
 CREATE USER <user_name> WITH PASSWORD '<password>';
 ```
 
-[删除用户](http://www.postgresql.org/docs/current/static/sql-dropuser.html)
+[删除用户](https://www.postgresql.org/docs/current/sql-dropuser.html)
 
 ```sql
 DROP USER IF EXISTS <user_name>;
 ```
 
-[更改](http://www.postgresql.org/docs/current/static/sql-alterrole.html) 用户密码
+[更改](https://www.postgresql.org/docs/current/sql-alterrole.html) 用户密码
 
 ```sql
 ALTER ROLE <user_name> WITH PASSWORD '<password>';
@@ -398,13 +398,13 @@ SELECT schema_name FROM information_schema.schemata;
 SELECT nspname FROM pg_catalog.pg_namespace;
 ```
 
-[创建架构](http://www.postgresql.org/docs/current/static/sql-createschema.html)
+[创建架构](https://www.postgresql.org/docs/current/sql-createschema.html)
 
 ```sql
 CREATE SCHEMA IF NOT EXISTS <schema_name>;
 ```
 
-[删除模式](http://www.postgresql.org/docs/current/static/sql-dropschema.html)
+[删除模式](https://www.postgresql.org/docs/current/sql-dropschema.html)
 
 ```sql
 DROP SCHEMA IF EXISTS <schema_name> CASCADE;
@@ -589,14 +589,17 @@ $ psql -U postgres -c 'SHOW config_file'
 
 ```shell
 listen_addresses = '*'
+password_encryption = 'scram-sha-256'
 ```
 
 附加到 pg_hba.conf(与 postgresql.conf 相同的位置)
 
 ```shell
-host  all  all  0.0.0.0/0  md5
-host  all  all  ::/0       md5
+host  all  all  0.0.0.0/0  scram-sha-256
+host  all  all  ::/0       scram-sha-256
 ```
+
+现有安装切换前，先确认客户端支持 SCRAM-SHA-256，并让各角色重设密码以生成新的密码哈希。
 
 重启 PostgreSQL 服务器
 

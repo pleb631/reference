@@ -1,14 +1,14 @@
 YUM 备忘清单
 ===
 
-这个 YUM 快速参考备忘单显示了它的常用命令使用清单。
+YUM 兼容命令快速参考。RHEL 8+ 的 `yum` 基于 DNF；RHEL 9+ 新脚本优先使用 `dnf`，现有 `yum` 命令通常仍可兼容执行。
 
 YUM 清单查询
 ---
 
 ### 介绍
 
-yum（`Y`ellow dog `U`pdater, `M`odified）是一个在 `Fedora` 和 `RedHat` 以及 SUSE 中的 `Shell` 前端软件包管理器
+YUM（`Y`ellow dog `U`pdater, `M`odified）是 RPM 系发行版的软件包管理前端。本页命令主要适用于 RHEL 及其兼容发行版。
 
 ```bash
 $ yum [options] [command] [package ...]
@@ -16,10 +16,7 @@ $ yum [options] [command] [package ...]
 
 ----
 
-- [YUM 官方网站](http://yum.baseurl.org/) _(yum.baseurl.org)_
-- [Fedora 中的 Yum 文档](https://docs.fedoraproject.org/en-US/Fedora/15/html/Deployment_Guide/ch-yum.html) _(fedoraproject.org)_
-- [CentOS 中的 Yum 文档](http://wiki.centos.org/PackageManagement/Yum/) _(wiki.centos.org)_
-- [Scientific Linux 中的 Yum 文档](https://www.scientificlinux.org/documentation/faq/yum.apt.repo) _(scientificlinux.org)_
+- [RHEL 中使用 DNF 管理软件](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_software_with_the_dnf_tool/index) _(docs.redhat.com)_
 
 ### YUM 查询
 
@@ -261,14 +258,12 @@ $ yum -y upgrade
 #### localinstall
 
 ```bash
-# 从本地文件、http 或 ftp 安装包
+# 从本地文件或 HTTP URL 安装包
 $ yum localinstall abc-1-1.i686.rpm
 # 从本地目录安装 abc 包
 $ yum localinstall http://myrepo/abc-1-1.i686.rpm
 ```
 <!--rehype:className=wrap-text-->
-
-从 FTP 站点安装 abc
 
 #### downgrade
 
@@ -415,9 +410,4 @@ yum install --downloadonly vsftpd
 另见
 ---
 
-- [YUM 官方网站](http://yum.baseurl.org/) _(yum.baseurl.org)_
-- [YUM 备忘清单(适用于红帽 RedHat 企业 Linux)](https://access.redhat.com/sites/default/files/attachments/rh_yum_cheatsheet_1214_jcs_print-1.pdf) _(access.redhat.com)_
-- [用 yum 管理软件包](http://prefetch.net/articles/yum.html) _(prefetch.net)_
-- [Fedora 中的 Yum 文档](https://docs.fedoraproject.org/en-US/Fedora/15/html/Deployment_Guide/ch-yum.html) _(fedoraproject.org)_
-- [CentOS 中的 Yum 文档](http://wiki.centos.org/PackageManagement/Yum/) _(wiki.centos.org)_
-- [Scientific Linux 中的 Yum 文档](https://www.scientificlinux.org/documentation/faq/yum.apt.repo) _(scientificlinux.org)_
+- [RHEL 中使用 DNF 管理软件](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_software_with_the_dnf_tool/index) _(docs.redhat.com)_

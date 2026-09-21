@@ -153,16 +153,16 @@ $ nc -n 192.168.1.9 8000 | tar -xvf -
 服务器 Server (192.168.1.9)
 
 ```shell
-$ nc -l 8000 | openssl enc -d -des3 -pass pass:password > file.txt
+$ nc -l 8000 | openssl enc -d -aes-256-cbc -salt -pbkdf2 > file.txt
 ```
 
 客户端 Client
 
 ```shell
-$ openssl enc -des3 -pass pass:password | nc 192.168.1.9 8000
+$ openssl enc -aes-256-cbc -salt -pbkdf2 | nc 192.168.1.9 8000
 ```
 
-在通过网络传输之前加密数据
+在通过网络传输之前加密数据。两端会提示输入相同密码；不要把密码写入命令行。
 
 ### 克隆
 
@@ -210,7 +210,7 @@ $ nc -lv 8000 -e /bin/bash
 $ nc 192.168.1.9 8000
 ```
 
-我们已经使用 `telnet` 和 `ssh` 使用远程 `Shell`，但是如果它们没有安装并且我们没有安装它们的权限，那么我们也可以使用 `netcat` 创建远程 `shell`
+如果没有 `ssh` 且无法安装其他工具，也可以使用 `netcat` 创建远程 `shell`。
 
 ### 逆转 shell
 

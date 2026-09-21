@@ -113,7 +113,8 @@ $ docker run --name some-nginx -v /some/content:/usr/share/nginx/html:ro -d ngin
 server {
   listen 80;      # 标准 HTTP 协议
   listen 443 ssl; # 标准 HTTPS 协议
-  listen 443 ssl http2; # 对于 http2
+  listen 443 ssl; # 标准 HTTPS 协议
+  http2 on;       # 启用 HTTP/2（Nginx 1.25.1+）
   listen [::]:80; # 使用 IPv6 在 80 上收听
   # 仅收听使用 IPv6
   listen [::]:80 ipv6only=on;
@@ -329,7 +330,8 @@ server {
 
 ```nginx
 server {
-  listen 443 ssl http2;
+  listen 443 ssl;
+  http2 on;
   server_name example.com;
 
   ssl_certificate /path/to/cert.pem;
@@ -353,7 +355,7 @@ server {
 }
 ```
 
-您可以使用 Let's Encrypt 轻松保护您的网站/应用程序。去 [lets-encrypt](https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx.html) 获取更多信息
+您可以使用 Let's Encrypt 轻松保护您的网站/应用程序。去 [Certbot 指引](https://certbot.eff.org/instructions) 获取更多信息。
 
 虚拟主机与重定向
 ---

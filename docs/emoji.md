@@ -984,13 +984,5 @@ Github emoji 图标标记
 另见
 --------
 
-- [Emoji searcher](https://emoji.muan.co/) _(muan.co)_
-- [Share Emojis-With Your 🥺Fiends With An Great Way And Unique✅ |copy & download|](https://emoji-share.com/) _(emoji-share.com)_
-- [Get Emoji — All Emojis to ✂️ Copy and 📋 Paste](https://getemoji.com/) _(getemoji.com)_
-- [Emoji Guide – 🔥 The Ultimate Emoji Guide: 🌈 Meanings, 🍎 Platforms, 🆘 Codes and 😍 More](https://emojiguide.com/) _(emojiguide.com)_
-- [Full Emoji List, v15.0](https://unicode.org/emoji/charts/full-emoji-list.html) _(unicode.org)_
-- [Emoji Cheat Sheet](https://www.webfx.com/tools/emoji-cheat-sheet/) _(webfx.com)_
-- [EmojiCopy | Simple emoji copy and paste keyboard by JoyPixels®](https://www.emojicopy.com/) _(emojicopy.com)_
-- [Emojis 🌱☀️ - Copy & Paste Online 🕵️‍♀️ | Quicktools by Picsart](https://tools.picsart.com/text/emojis/) _(tools.picsart.com)_
-- [Emojihub 😀 - All Emojis To Copy And Paste](https://emojihub.org/) _(emojihub.org)_
-- [All Emojis – Emoji List for Copy and Paste](https://www.freecodecamp.org/news/all-emojis-emoji-list-for-copy-and-paste/) _(freecodecamp.org)_
+- [Unicode Emoji 图表](https://unicode.org/emoji/charts/full-emoji-list.html) _(unicode.org)_
+

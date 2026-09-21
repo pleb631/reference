@@ -1,7 +1,7 @@
 Zip 备忘清单
 ====
 
-Zip 命令用于在 Linux 系统上创建、压缩和解压缩 zip 文件
+`zip` 用于创建和更新 ZIP 归档，`unzip` 用于查看和解压归档。
 
 入门
 ----
@@ -91,7 +91,7 @@ $ zip -r basic.zip example/basic/ -x "example/basic/node_modules/*" -x "example/
 ```
 <!--rehype:className=wrap-text-->
 
-压缩 `example/basic/` 目录内容到 `basic.zip` 压缩包中 `-x` 指定排除目录，注意**没有双引**号将不起作用
+将 `example/basic/` 压缩到 `basic.zip`，并用 `-x` 排除目录。为避免通配符被当前 shell 展开，请保留双引号。
 
 ### 将大文件分割成多个zip文件
 
@@ -99,7 +99,9 @@ $ zip -r basic.zip example/basic/ -x "example/basic/node_modules/*" -x "example/
 $ zip -s 10M -r filename.zip largefile
 ```
 
-### 将zip文件加密
+### 创建受密码保护的 ZIP 文件
+
+> `zip -e` 使用传统 ZIP 加密，仅适合兼容性场景；不要用它保护敏感数据。
 
 ```shell
 $ zip -e secure.zip file4
@@ -120,10 +122,10 @@ $ zip -O utf-8 -r utf8zip.zip utf8file
 Zip 解压示例
 --------
 
-### 将zip文件解密
+### 解压受密码保护的 ZIP 文件
 
 ```shell
-$ unzip secure.zip（然后输入密码解密）
+$ unzip secure.zip
 ```
 
 ### 解压缩zip文件

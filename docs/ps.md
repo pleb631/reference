@@ -1,8 +1,7 @@
 ps 备忘清单
 ===
 
-Linux 为我们提供了一个名为 `ps` 的实用程序，用于查看与系统上的进程相关的信息，它是 `Process Status` 的缩写
-这份 `ps` 命令备忘清单的快速参考列表，包含常用选项和示例。
+`ps`（Process Status）用于查看系统进程状态。本页汇总常用选项和可复制示例。
 
 入门
 ---
@@ -30,7 +29,7 @@ $ ps
 :-- | --
 `PID` | 唯一的进程 ID
 `TTY` | 用户登录的终端类型
-`TIME` | 进程运行的 CPU 数量，以分钟和秒为单位
+`TIME` | 进程累计消耗的 CPU 时间
 `CMD` | 启动进程的命令的名称
 
 注意：有时当我们执行 `ps` 命令时，它显示 `TIME` 为 `00:00:00`
@@ -48,16 +47,16 @@ ps 命令支持 3 种使用语法风格
 
 Option | Function
 :-- | --
-`ps -ef / -aux` | 以完整格式列出当前正在运行的进程
-`ps -ax` | 列出当前正在运行的进程
+`ps -ef` / `ps aux` | 分别以 Unix / BSD 风格列出所有进程
+`ps ax` | 以 BSD 风格列出所有进程，包括无控制终端的进程
 `ps -u <username>` | 列出特定用户的进程
 `ps -C <command>` | 列出给定命令的进程
 `ps -p <PID>` | 列出具有给定 PID 的进程
-`ps -ppid <PPID>` | 列出具有给定 ppid 的进程
+`ps --ppid <PPID>` | 列出指定父进程的子进程
 `pstree` | 在层次结构中显示过程
-`ps -L` | 列出特定进程的所有线程
-`ps --sort pmem` | 查找内存泄漏
-`ps -eo` | 显示安全信息
+`ps -L -p <PID>` | 列出指定进程的线程
+`ps --sort=-%mem` | 按内存占用降序排列；只反映当前快照
+`ps -eo <fields>` | 自定义输出字段，例如 `ps -eo pid,ppid,cmd`
 `ps T` | 允许您仅选择与此终端关联的所有进程
 `ps -U root -u root u` | 显示由 root 运行的进程
 <!--rehype:className=code-nowrap-->

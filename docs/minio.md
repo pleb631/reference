@@ -100,11 +100,13 @@ mc mb myminio/mybucket
 mc rb myminio/mybucket
 ```
 
-设置桶策略
+设置匿名访问策略
 
 ```sh
-mc policy set download myminio/mybucket
+mc anonymous set download myminio/mybucket
 ```
+
+`download` 会允许未认证用户读取桶内容；仅对需要公开下载的桶使用。
 
 设置桶生命周期
 

@@ -1,7 +1,7 @@
 SQLite 备忘清单
 ===
 
-本备忘单旨在快速理解 [SQLite](https://sqlite.com/) 所涉及的主要概念，提供了最常用的SQL语句，供您参考。
+本页汇总 [SQLite](https://sqlite.org/) 的常用命令和 SQL 语句，便于快速查阅。
 
 入门
 ---
@@ -13,21 +13,30 @@ SQLite 是一个轻量级的嵌入式关系数据库管理系统，遵循 ACID �
 ### 安装
 <!--rehype:wrap-class=col-span-2 row-span-2-->
 
-#### windows
+#### Windows
 
-- 从 [SQLite](https://www.sqlite.org/download.html) 下载两个压缩文件：`sqlite-tools-win32-*.zip`、`sqlite-dll-win32-*.zip`
-- 创建文件夹 `C:\sqlite`，将这两个压缩文件解压到该文件夹下。
-- 解压后，您将看到 3 个文件： `sqlite3.def`、 `sqlite3.dll`、 `sqlite3.exe`
-- 将 C:\sqlite 添加到 PATH 环境变量中，以便在命令行中使用 SQLite。
+- 从 [SQLite 下载页](https://www.sqlite.org/download.html) 下载与系统架构匹配的 `sqlite-tools-win-*.zip`。
+- 解压到例如 `C:\sqlite` 的目录；其中包含 `sqlite3.exe`。
+- 将该目录添加到 `PATH`，然后在终端运行 `sqlite3 --version` 验证安装。
 <!--rehype:className=style-timeline-->
 
-#### linux
+#### Linux
 
-linux 自带 `sqlite3`，或者通过 `apt-get/yum/brew` 等安装。
+使用发行版的包管理器安装：
+
+```bash
+# Debian / Ubuntu
+sudo apt install sqlite3
+
+# Fedora / RHEL
+sudo dnf install sqlite
+```
 
 #### macOS
 
-`brew install sqlite` 安装
+```bash
+brew install sqlite
+```
 
 ### 连接 SQLite 数据库
 
@@ -282,7 +291,5 @@ commit;
 
 另见
 --------
-
-- [百科](https://zh.wikipedia.org/wiki/SQLite)
-- [SQLite](https://www.sqlite.org/)
 - [菜鸟教程](https://www.runoob.com/sqlite/sqlite-tutorial.html)
+- [SQLite 官方文档](https://www.sqlite.org/docs.html) _(sqlite.org)_

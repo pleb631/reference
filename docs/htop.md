@@ -1,19 +1,19 @@
 htop 备忘清单
 ===
 
-htop 是一个交互式流程查看器，此 htop 备忘清单包含 htop 命令
+htop 是交互式进程查看器，本页汇总常用选项与快捷键。
 
 入门
 ----
 
 ### htop 用法
 
-htop 是一个互动的进程查看器，动态观察系统进程状况
+htop 可动态查看和管理系统进程。
 
-- [命令 htop 的官网](https://htop.sourceforge.net/)
+- [htop 官方网站](https://htop.dev/)
 
 ```bash
-$ htop [-dChustv]
+$ htop [options]
 ```
 
 #### 安装
@@ -23,7 +23,6 @@ $ apt install htop        # Debian
 $ dnf install htop        # Fedora
 $ emerge sys-process/htop # Gentoo
 $ pacman -S htop          # Arch Linux
-$ Compile htop            # GoboLinux
 ```
 
 htop 的软件包在大多数发行版中都[可用下载](https://htop.dev/downloads.html)

@@ -402,7 +402,7 @@ count(//*)          # 计算所有元素
 查找直接包含 `h1#section-name` 的 `<section>`
 
 ```bash
-//section[//h1[@id='section-name']]
+//section[.//h1[@id='section-name']]
 ```
 
 查找包含 `h1#section-name` 的 `<section>`。
@@ -411,7 +411,7 @@ count(//*)          # 计算所有元素
 ### 最近的
 
 ```bash
-./ancestor-or-self::[@class="box"]
+ancestor-or-self::*[@class="box"]
 ```
 
 像 `jQuery` 的 `$().closest('.box')` 一样工作。
@@ -428,4 +428,4 @@ count(//*)          # 计算所有元素
 --------
 
 - [Devhints](https://devhints.io/xpath) _(devhints.io)_
-- [Xpath test bed](http://www.whitebeam.org/library/guide/TechNotes/xpathtestbed.rhtm) _(whitebeam.org)_
+- [XPath 3.1](https://www.w3.org/TR/xpath-31/) _(w3.org)_

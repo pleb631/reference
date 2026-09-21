@@ -186,49 +186,26 @@ pinia.use(piniaPlugin)
 ### 持久化状态
 <!--rehype:wrap-class=row-span-4 col-span-2-->
 
-#### 1. 安装  `pinia-plugin-persist`
+#### 1. 安装 `pinia-plugin-persistedstate`
 <!--rehype:style=color:#228e6c;font-weight: bold;text-align: left;-->
 
 ```bash
-npm  pinia-plugin-persist
+npm install pinia-plugin-persistedstate
 ```
 
-#### 2. 配置 Pinia 和 `pinia-plugin-persist`
+#### 2. 配置 Pinia 和 `pinia-plugin-persistedstate`
 <!--rehype:style=color:#228e6c;font-weight: bold;text-align: left;-->
 
-在你的入口文件中配置 Pinia 和 `pinia-plugin-persist`。
-
-**⚠️ Vue 2 项目**
-
-```javascript
-import Vue from 'vue'
-import vueCompositionApi from '@vue/composition-api'
-import { createPinia, PiniaVuePlugin } from 'pinia'
-import piniaPersist from 'pinia-plugin-persist'
-import App from './App.vue'
-
-Vue.use(vueCompositionApi)
-Vue.use(PiniaVuePlugin)
-
-const pinia = createPinia()
-pinia.use(piniaPersist)
-
-new Vue({
-  pinia,
-  render: h => h(App)
-}).$mount('#app')
-```
-
-**Vue 3 项目：**
+在 Vue 3 入口文件中注册插件：
 
 ```javascript
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import piniaPersist from 'pinia-plugin-persist'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 
 const pinia = createPinia()
-pinia.use(piniaPersist)
+pinia.use(piniaPluginPersistedstate)
 
 createApp(App)
   .use(pinia)
@@ -248,24 +225,18 @@ export const useUserStore = defineStore('userStore', {
   state: () => ({
     firstName: 'S',
     lastName: 'L',
-    accessToken: 'xxxxxxxxxxxxx'
+    theme: 'system'
   }),
   actions: {
-    setToken(value) {
-      this.accessToken = value
+    setTheme(value) {
+      this.theme = value
     }
   },
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        storage: localStorage,
-        paths: ['accessToken']
-      }
-    ]
-  }
+  persist: { pick: ['theme'] }
 })
 ```
+
+浏览器存储可被页面脚本读取；不要持久化访问令牌、密码或其他敏感数据。
 
 #### 4. 使用 Store
 <!--rehype:style=color:#228e6c;font-weight: bold;text-align: left;-->
@@ -277,7 +248,7 @@ export const useUserStore = defineStore('userStore', {
 <template>
   <div>
     <p>{{ userStore.firstName }} {{ userStore.lastName }}</p>
-    <p>{{ userStore.accessToken }}</p>
+    <p>主题：{{ userStore.theme }}</p>
   </div>
 </template>
 
@@ -373,4 +344,4 @@ describe('Counter Store', () => {
 - [Pinia 官方文档](https://pinia.vuejs.org/)
 - [Pinia GitHub 仓库](https://github.com/vuejs/pinia)
 - [Pinia 快速上手](https://pinia.vuejs.org/getting-started.html)
-- [pinia-plugin-persist 官方文档](https://seb-l.github.io/pinia-plugin-persist/basic-usage.html)
+- [pinia-plugin-persistedstate 文档](https://prazdevs.github.io/pinia-plugin-persistedstate/) _(prazdevs.github.io)_

@@ -179,6 +179,42 @@ $ docker network disconnect app-net <CONTAINER>
 
 同一自定义网络中的容器可用容器名互相解析。不要使用已废弃的 `--link`；多容器应用优先使用 [Docker Compose](./docker-compose.md)。
 
+运行时配置
+---
+
+### 资源限制
+
+```shell
+$ docker run -d --name api \
+  --cpus 2 \
+  --memory 1g \
+  --memory-swap 1g \
+  --pids-limit 256 \
+  example/api:1.0
+```
+
+`--memory-swap` 与 `--memory` 相同时表示不使用 swap。先根据应用的实际峰值设置限制，再通过 `docker stats` 观察，避免把正常峰值误判为异常。
+
+### 更新容器配置
+
+```shell
+$ docker update --restart unless-stopped <CONTAINER>
+$ docker update --cpus 2 --memory 1g <CONTAINER>
+$ docker rename <OLD_NAME> <NEW_NAME>
+```
+
+`docker update` 只能修改部分运行时选项。端口、挂载、环境变量或镜像变更需要重新创建容器，建议用 Compose 或脚本保留可复现配置。
+
+### 登录镜像仓库
+
+```shell
+$ printf '%s' "$REGISTRY_TOKEN" | \
+  docker login registry.example.com --username <USER> --password-stdin
+$ docker logout registry.example.com
+```
+
+使用 `--password-stdin` 避免密码出现在 shell 历史和进程参数中。凭据会保存到 Docker 配置或已配置的 credential store。
+
 排错与清理
 ---
 

@@ -13,7 +13,7 @@ npm 备忘清单
 :- |:-
 `npm init -y`                      | 创建 `package.json` 文件
 `npm install` 或 `npm i`           | 安装 `package.json` 中的所有内容
-`npm install --production`         | 安装 `package.json` 中的所有内容 <br /> _(除了 `devDependecies`)_
+`npm install --omit=dev`           | 安装依赖，跳过 `devDependencies`
 `npm install lodash`               | 安装一个包
 `npm install --save-dev lodash`    | 安装为 `devDependency`
 `npm install --save-exact lodash`  | 准确安装
@@ -35,7 +35,7 @@ npm 备忘清单
 `npm i sax@">=1 <2.0"`               | 指定版本范围
 `npm i @org/sax`                     | 范围内的 `NPM` 包
 `npm i user/repo`                    | GitHub
-`npm i user/repo#master`             | GitHub
+`npm i user/repo#<branch>`           | GitHub 指定分支
 `npm i github:user/repo`             | GitHub
 `npm i gitlab:user/repo`             | GitLab
 `npm i /path/to/repo`                | 绝对路径
@@ -68,14 +68,10 @@ npm 备忘清单
 ### 缓存 cache
 
 ```bash
-$ npm cache add <package-spec>    # 将指定的包添加到本地缓存
-$ npm cache clean [<key>]         # 删除缓存文件夹中的所有数据
-$ npm cache ls [<name>@<version>]
-$ npm cache verify # 验证缓存文件夹的内容，垃圾收集任何不需要的数据，
-                 # 并验证缓存索引和所有缓存数据的完整性
+$ npm cache verify
 ```
 
-用于添加、列出或清理 [npm](https://www.npmjs.com/) 缓存文件夹
+通常无需手动清理缓存；遇到缓存问题时先执行 `npm cache verify`。强制清理缓存会影响离线安装和后续安装速度。
 
 ### 更新
 
@@ -296,12 +292,12 @@ $ npx react-native init AwesomeTSProject --template react-native-template-typesc
 ### 创建一个 React 应用
 
 ```bash
-$ npx create-react-app my-app
-$ npx create-react-app my-app --template typescript
+$ npm create vite@latest my-app -- --template react
+$ npm create vite@latest my-app -- --template react-ts
 ```
 <!--rehype:className=wrap-text-->
 
-使用 `npx` 跳过安装 [CRA](https://reactnative.dev/docs/environment-setup#creating-a-new-application)，直接创建一个 [React](./react.md) 应用
+Create React App 已停止用于新项目。需要自定义构建工具时，可使用 Vite 创建 [React](./react.md) 应用；生产项目优先考虑 React 推荐的框架方案。
 
 配置
 ---
@@ -416,7 +412,7 @@ ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-
 
 - 将 `"type": "module"` 添加到您的 [package.json](./package.json.md)
 - 将 [package.json](./package.json.md) 中的 `"main": "index.js"` 替换为 `"exports": "./index.js"`。
-- 将 [package.json](./package.json.md) 中的 `"engines"` 字段更新为 Node.js 14: `"node": ">=14.16"`。(不包括 <red>~~Node.js 12~~</red>，因为它不再受支持)
+- 将 [package.json](./package.json.md) 中的 `"engines"` 字段设为仍受支持的 Node.js 版本，例如 `"node": ">=24"`。
 - 删除 `"use strict"`；来自所有 JavaScript 文件
 - 将所有 `require()` / `module.export` 替换为 `import` / `export`
 - 仅使用完整的相对文件路径进行导入：`import x from '.';` → `import x from './index.js';`
@@ -426,11 +422,11 @@ ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-
 ### TypeScript 项目输出 ESM
 <!--rehype:wrap-class=col-span-3-->
 
-- 确保您使用的是 TypeScript 4.7 或更高版本
+- 确保使用 TypeScript 5.2 或更高版本
 - 将 `"type": "module"` 添加到您的 [package.json](./package.json.md)
 - 将 [package.json](./package.json.md) 中的 `"main": "index.js"` 替换为 `"exports": "./index.js"`
-- 将 [package.json](./package.json.md) 中的 `"engines"` 字段更新为 Node.js 14: `"node": ">=14.16"`。 （不包括 <red>~~Node.js 12~~</red>，因为它不再受支持）
-- 将 `"module": "node16"`, `"moduleResolution": "node16"` 添加到您的 [tsconfig.json](./typescript.md) ([列子](https://github.com/sindresorhus/tsconfig/blob/main/tsconfig.json))
+- 将 [package.json](./package.json.md) 中的 `"engines"` 字段设为仍受支持的 Node.js 版本，例如 `"node": ">=24"`。
+- 将 `"module": "nodenext"` 添加到 [tsconfig.json](./typescript.md)；它会同时启用 Node.js ESM 所需的模块解析模式。
 - 仅使用完整的相对文件路径进行导入：`import x from '.';` → `import x from './index.js';`
 - 删除 `namespace` 使用并改用 `export`
 - 可选但推荐使用 `node:` 导入[协议](https://nodejs.org/api/esm.html#esm_node_imports)

@@ -100,6 +100,6 @@ MIME 类型列表
 另见
 ---
 
-- [iana mime.types](http://www.iana.org/assignments/media-types/media-types.xhtml) _(iana.org)_
-- [apache mime.types](http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types) _(svn.apache.org)_
+- [IANA Media Types](https://www.iana.org/assignments/media-types) _(iana.org)_
+- [Apache HTTP Server mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types) _(svn.apache.org)_
 - [nginx mime.types](http://hg.nginx.org/nginx/raw-file/default/conf/mime.types) _(hg.nginx.org)_

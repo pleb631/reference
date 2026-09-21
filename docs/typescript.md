@@ -685,18 +685,15 @@ class MyClass {
 
 类可以声明索引签名，与其他对象类型的索引签名相同。
 
-### 在 forwardRef 上面声明泛型
+### 声明支持 ref 的泛型组件
 
 ```ts
-export const Wrapper = forwardRef(
-  <T extends object>
-(
-  props: RootNodeProps<T>,
-  ref: React.LegacyRef<HTMLDivElement>
-) => {
-  return (
-    <div ref={ref}></div>
-  );
+type WrapperProps<T extends object> = RootNodeProps<T> & {
+  ref?: React.Ref<HTMLDivElement>;
+};
+
+export function Wrapper<T extends object>({ ref }: WrapperProps<T>) {
+  return <div ref={ref} />;
 }
 ```
 
@@ -1209,10 +1206,8 @@ function Dog(prop:CeProps): JSX.Element {
 <!--rehype:wrap-class=col-span-2-->
 
 ```tsx
-interface MenuProps extends React.LiHTMLAttributes<HTMLUListElement> { ... };
-const InternalMenu = React.forwardRef<HTMLUListElement, MenuProps>((props, ref) => (
-  <ul {...props} ref={ref} />
-));
+interface MenuProps extends React.ComponentPropsWithRef<"ul"> { ... }
+const InternalMenu = (props: MenuProps) => <ul {...props} />;
 
 type MenuComponent = typeof InternalMenu & {
   Item: typeof MenuItem;    // MenuItem 函数组件
@@ -1299,18 +1294,15 @@ const Form = () => <Select<string> items={['a', 'b']} />;
 <!--rehype:wrap-class=col-span-3-->
 
 ```tsx
-import { FC, ForwardedRef, forwardRef, PropsWithRef } from "react";
+export interface ProgressProps extends React.ComponentPropsWithRef<"div"> {}
 
-function InternalProgress(props: ProgressProps, ref?: ForwardedRef<HTMLDivElement>) {
+export function Progress(props: ProgressProps) {
   return (
-    <div {...props} ref={ref}>
+    <div {...props}>
       {props.children}
     </div>
-  )
+  );
 }
-
-export interface ProgressProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
-export const Progress: FC<PropsWithRef<ProgressProps>> = forwardRef<HTMLDivElement>(InternalProgress)
 ```
 
 ### 组件 'as' 属性

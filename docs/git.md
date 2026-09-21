@@ -73,15 +73,15 @@ $ git branch
 # 列出所有分支，本地和远程
 $ git branch -av
 # 切换到 `my_branch`，并更新工作目录
-$ git checkout my_branch
-# 创建并切换到新分支`new_branch`
-$ git checkout -b new_branch
+$ git switch my_branch
+# 创建并切换到新分支 `new_branch`
+$ git switch -c new_branch
 # 删除名为 `my_branch` 的分支
 $ git branch -d my_branch
 # 删除本地存在远程不存在的分支
 $ git remote prune origin
 # 将分支 `A` 合并到分支 `B`
-$ git checkout branchB
+$ git switch branchB
 $ git merge branchA
 # 标记当前提交
 $ git tag my_tag
@@ -90,7 +90,7 @@ $ git tag my_tag
 从远程分支中创建并切换到本地分支
 
 ```shell
-$ git checkout -b <branch-name> origin/<branch-name>
+$ git switch --track origin/<branch-name>
 ```
 <!--rehype:className=wrap-text-->
 
@@ -365,8 +365,8 @@ $ git commit --amend
 $ git rebase --continue
 # 如果修改多条记录反复执行上面两条命令直到完成所有修改
 
-# 最后，确保没有人提交进行推送，最好不要加 -f 强制推送
-$ git push -f origin master
+# 重写历史后推送；先确认远程分支没有他人新增提交
+$ git push --force-with-lease origin <branch>
 ```
 <!--rehype:className=wrap-text-->
 
@@ -383,8 +383,8 @@ $ git commit -v --amend
 ```shell
 # 撤销一条记录
 $ git reset --hard HEAD~1
-# 强制同步到远程仓库
-$ git push -f origin HEAD:master
+# 强制同步到远程分支
+$ git push --force-with-lease origin HEAD:<branch>
 ```
 
 ### 放弃本地修改内容
@@ -393,7 +393,7 @@ $ git push -f origin HEAD:master
 # 如果有的修改以及加入暂存区的话
 $ git reset --hard
 # 还原所有修改，不会删除新增的文件
-$ git checkout .
+$ git restore .
 # 下面命令会删除新增的文件
 $ git clean -xdf
 ```
@@ -402,7 +402,7 @@ $ git clean -xdf
 
 ```shell
 # 切换到 B 分支
-$ git checkout <B>
+$ git switch <B>
 # 将 A 分支 <hash-id> 的内容 pick 到 B 分支
 $ git cherry-pick <hash-id>
 ```
@@ -418,7 +418,7 @@ $ git update-ref -d HEAD
 ### 回到远程仓库的状态
 
 ```bash
-$ git fetch --all && git reset --hard origin/master
+$ git fetch --all && git reset --hard origin/<default-branch>
 ```
 <!--rehype:className=wrap-text-->
 
@@ -470,7 +470,7 @@ $ git submodule update --remote
 
 ```bash
 $ cd <path_to_submodule>
-$ git checkout <commit_hash>
+$ git switch --detach <commit_hash>
 ```
 
 ### 查看当前仓库中的子模块
@@ -489,7 +489,7 @@ $ git submodule init
 
 ```bash
 $ cd ..
-$ git checkout <commit_hash>
+$ git switch --detach <commit_hash>
 $ git submodule update --remote
 ```
 
@@ -499,7 +499,7 @@ $ git submodule update --remote
 ```bash
 $ cd <path_to_submodule>
 $ git fetch --tags
-$ git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
+$ git switch --detach "$(git describe --tags "$(git rev-list --tags --max-count=1)")"
 ```
 
 ### 子模块递归
@@ -508,19 +508,19 @@ $ git checkout $(git describe --tags $(git rev-list --tags --max-count=1))
 ```bash
 # 添加所有已存在的子模块
 $ git submodule foreach --recursive git submodule add <repository_url>
-# 更新所有子模块到最新提交
-$ git submodule foreach --recursive git pull origin master
+# 更新所有子模块到指定分支的最新提交
+$ git submodule foreach --recursive git pull origin <branch_name>
 # 检出特定的子模块路径
-$ git submodule foreach --recursive git checkout <branch_name>
+$ git submodule foreach --recursive git switch <branch_name>
 # 获取仓库中的所有子模块变化
 $ git submodule foreach --recursive git fetch
 # 获取并合并子模块的远程分支
 $ git submodule foreach --recursive git pull origin <branch_name>
 # 将子模块还原到父仓库中的初始提交
-$ git submodule foreach --recursive git checkout .
+$ git submodule foreach --recursive git restore .
 # 获取子模块的更新并忽略本地修改
 $ git submodule foreach --recursive git fetch --all
-$ git submodule foreach --recursive git reset --hard origin/master
+$ git submodule foreach --recursive git reset --hard origin/<default-branch>
 ```
 
 ### 获取子模块的最新提交
@@ -541,7 +541,7 @@ $ git rm <path_to_submodule>
 
 ```bash
 $ cd <path_to_submodule>
-$ git checkout <branch_name>
+$ git switch <branch_name>
 ```
 
 ### 初始化并更新所有子模块
@@ -555,7 +555,7 @@ $ git submodule update
 
 ```bash
 $ cd <path_to_submodule>
-$ git checkout tags/<tag_name>
+$ git switch --detach tags/<tag_name>
 ```
 
 Config 设置
@@ -719,7 +719,7 @@ $ git branch -vv
 快速切换到上一个分支
 
 ```shell
-$ git checkout -
+$ git switch -
 ```
 
 只获取所有远程分支
@@ -731,7 +731,7 @@ $ git branch -r
 从另一个分支签出单个文件
 
 ```shell
-$ git checkout <branch> -- <file>
+$ git restore --source <branch> -- <file>
 ```
 
 删除本地存在远程不存在的分支
@@ -748,10 +748,10 @@ $ git rev-parse HEAD # e10721cb8859b2c
 $ git rev-parse --short HEAD # e10721c
 ```
 
-### 删除已经合并到 master 的分支
+### 删除已合并到默认分支的本地分支
 
 ```shell
-$ git branch --merged master | grep -v '^\*\|  master' | xargs -n 1 git branch -d
+$ git branch --merged <default-branch> | grep -v '^\*\|  <default-branch>' | xargs -n 1 git branch -d
 ```
 <!--rehype:className=wrap-text-->
 
@@ -789,13 +789,6 @@ $ git diff HEAD
 ```
 
 输出工作区、暂存区 和本地最近的版本(commit)的different(不同)。
-
-### 删除已经合并到 master 的分支
-
-```bash
-$ git branch --merged master | grep -v '^\*\|  master' | xargs -n 1 git branch -d
-```
-<!--rehype:className=wrap-text-->
 
 ### 关联远程分支
 <!--rehype:wrap-class=row-span-2-->
@@ -847,7 +840,7 @@ $ git remote -v
 ### 从 stash 中拿出某个文件的修改
 
 ```bash
-$ git checkout <stash@{n}> -- <file-path>
+$ git restore --source <stash@{n}> -- <file-path>
 ```
 <!--rehype:className=wrap-text-->
 
@@ -920,10 +913,10 @@ $ git status --ignored
 ### 新建并切换到新分支上，同时这个分支没有任何 commit
 
 ```bash
-$ git checkout --orphan <branch-name>
+$ git switch --orphan <branch-name>
 ```
 
-相当于保存修改，但是重写 commit 历史
+创建没有父提交的新分支；当前跟踪文件会保留在工作区，首次提交后形成独立历史。
 
 ### 展示任意分支某一文件的内容
 
@@ -995,11 +988,11 @@ Host github.com
 
   ```shell
   $ git fetch upstream # 获取上游仓库更新
-  $ git stach # 暂存本地修改(如果有)
-  $ git branch -a # 列出所有远程仓库地址(非必须)
+  $ git stash # 暂存本地修改（如果有）
+  $ git branch -a # 列出本地与远程分支（非必须）
   $ git rebase remotes/upstream/main # 使用远程仓库的提交记录来重写本地提交记录
-  $ git push -f # 强制推送到远程(github)仓库
-  $ git stach pop # 恢复暂存的本地修改(如果有)
+  $ git push --force-with-lease # 安全地强制推送到远程仓库
+  $ git stash pop # 恢复暂存的本地修改（如果有）
   ```
 
 <!--rehype:className=style-timeline-->

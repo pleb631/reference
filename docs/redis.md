@@ -25,10 +25,10 @@ $ redis-server &
 $ redis-cli
 ```
 
-使用 Telnet 的登陆 redis
+使用 `redis-cli` 连接 Redis
 
 ```shell
-$ telnet 127.0.0.1 6379
+$ redis-cli -h 127.0.0.1 -p 6379
 ```
 
 ### 小试
@@ -932,25 +932,6 @@ redis> GETRANGE mykey 10 100
 
 获取存储在键中的字符串的子字符串
 
-### GETSET
-
-```shell
-GETSET key value
-```
-
-#### 例子
-
-```shell
-redis> INCR mycounter
-(integer) 1
-redis> GETSET mycounter "0"
-"1"
-redis> GET mycounter
-"0"
-```
-
-设置键的字符串值并返回其旧值
-
 ### INCR
 
 ```shell
@@ -1071,25 +1052,6 @@ redis> INCRBY mykey 5
 
 将键的整数值增加给定的数量
 
-### PSETEX
-
-```shell
-PSETEX key milliseconds value
-```
-
-#### 例子
-
-```shell
-redis> PSETEX mykey 1000 "Hello"
-"OK"
-redis> PTTL mykey
-(integer) 1000
-redis> GET mykey
-"Hello"
-```
-
-设置键的值和过期时间(以毫秒为单位)
-
 ### SET
 
 ```shell
@@ -1106,9 +1068,11 @@ redis> GET mykey
 "Hello"
 redis> SET anotherkey "will expire in a minute" EX 60
 "OK"
+redis> SET mykey "World" GET
+"Hello"
 ```
 
-设置键的字符串值,可以理解为创建、设置、重设的作用
+设置键的字符串值。使用 `EX` 或 `PX` 设置过期时间，使用 `GET` 返回旧值。
 
 ### SETBIT
 
@@ -1128,25 +1092,6 @@ redis> GET mykey
 ```
 
 设置或清除存储在键中的字符串值中偏移量处的位
-
-### SETEX
-
-```shell
-SETEX key seconds value
-```
-
-#### 例子
-
-```shell
-redis> SETEX mykey 10 "Hello"
-"OK"
-redis> TTL mykey
-(integer) 10
-redis> GET mykey
-"Hello"
-```
-
-设置密钥的值和过期时间
 
 ### SETNX
 
@@ -1631,7 +1576,6 @@ Redis 列表类型设置
 
 :- | --
 :- | --
-[BRPOPLPUSH](https://redis.io/commands/brpoplpush) | 从列表中弹出一个元素，将其推入另一个列表并返回；或阻塞直到有一个可用
 [BLMOVE](https://redis.io/commands/blmove)         | 从列表中弹出一个元素，将其推入另一个列表并返回；或阻塞直到有一个可用
 
 ### BLPOP
@@ -1960,32 +1904,6 @@ redis> LRANGE mylist 0 -1
 
 删除并获取列表中的最后一个元素
 
-### RPOPLPUSH
-
-```
-RPOPLPUSH source destination
-```
-
-#### 例子
-
-```shell
-redis> RPUSH mylist "one"
-(integer) 1
-redis> RPUSH mylist "two"
-(integer) 2
-redis> RPUSH mylist "three"
-(integer) 3
-redis> RPOPLPUSH mylist myotherlist
-"three"
-redis> LRANGE mylist 0 -1
-1) "one"
-2) "two"
-redis> LRANGE myotherlist 0 -1
-1) "three"
-```
-
-删除列表中的最后一个元素，将其添加到另一个列表中并返回
-
 ### LMOVE
 
 ```
@@ -2244,25 +2162,6 @@ redis> HMGET myhash field1 field2 nofield
 
 获取所有给定哈希字段的值
 
-### HMSET
-
-```
-HMSET key field value [field value ...]
-```
-
-#### 例子
-
-```shell
-redis> HMSET myhash field1 "Hello" field2 "World"
-"OK"
-redis> HGET myhash field1
-"Hello"
-redis> HGET myhash field2
-"World"
-```
-
-将多个哈希字段设置为多个值
-
 ### HSET
 
 ```
@@ -2272,8 +2171,8 @@ HSET key field value [field value ...]
 #### 例子
 
 ```shell
-redis> HSET myhash field1 "Hello"
-(integer) 1
+redis> HSET myhash field1 "Hello" field2 "World"
+(integer) 2
 redis> HGET myhash field1
 "Hello"
 ```
@@ -2308,8 +2207,8 @@ HSTRLEN key field
 #### 例子
 
 ```shell
-redis> HMSET myhash f1 HelloWorld f2 99 f3 -256
-"OK"
+redis> HSET myhash f1 HelloWorld f2 99 f3 -256
+(integer) 3
 redis> HSTRLEN myhash f1
 (integer) 10
 redis> HSTRLEN myhash f2
@@ -2685,7 +2584,7 @@ redis> ZPOPMIN myzset
 ### ZRANGE
 
 ```
-ZRANGE key start stop [WITHSCORES]
+ZRANGE key start stop [BYSCORE|BYLEX] [REV] [LIMIT offset count] [WITHSCORES]
 ```
 
 #### 例子
@@ -2706,95 +2605,16 @@ redis> ZRANGE myzset 2 3
 redis> ZRANGE myzset -2 -1
 1) "two"
 2) "three"
-```
-
-按索引返回排序集中的一系列成员
-
-### ZRANGEBYLEX
-
-```
-ZRANGEBYLEX key min max [LIMIT offset count]
-```
-
-#### 例子
-
-```shell
-redis> ZADD myzset 0 a 0 b 0 c 0 d 0 e 0 f 0 g
-(integer) 7
-redis> ZRANGEBYLEX myzset - [c
-1) "a"
-2) "b"
-3) "c"
-redis> ZRANGEBYLEX myzset - (c
-1) "a"
-2) "b"
-redis> ZRANGEBYLEX myzset [aaa (g
-1) "b"
-2) "c"
-3) "d"
-4) "e"
-5) "f"
-```
-
-按词典顺序返回排序集中的一系列成员
-
-### ZREVRANGEBYLEX
-
-```
-ZREVRANGEBYLEX key max min [LIMIT offset count]
-```
-
-#### 例子
-
-```shell
-redis> ZADD myzset 0 a 0 b 0 c 0 d 0 e 0 f 0 g
-(integer) 7
-redis> ZREVRANGEBYLEX myzset [c -
-1) "c"
-2) "b"
-3) "a"
-redis> ZREVRANGEBYLEX myzset (c -
-1) "b"
-2) "a"
-redis> ZREVRANGEBYLEX myzset (g [aaa
-1) "f"
-2) "e"
-3) "d"
-4) "c"
-5) "b"
-```
-
-返回排序集中的一系列成员，按字典范围，从高到低的字符串排序。
-
-### ZRANGEBYSCORE
-
-```
-ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]
-```
-
-#### 例子
-
-```shell
-redis> ZADD myzset 1 "one"
-(integer) 1
-redis> ZADD myzset 2 "two"
-(integer) 1
-redis> ZADD myzset 3 "three"
-(integer) 1
-redis> ZRANGEBYSCORE myzset -inf +inf
-1) "one"
+redis> ZRANGE myzset 0 -1 REV
+1) "three"
 2) "two"
-3) "three"
-redis> ZRANGEBYSCORE myzset 1 2
-1) "one"
-2) "two"
-redis> ZRANGEBYSCORE myzset (1 2
+3) "one"
+redis> ZRANGE myzset 2 1 BYSCORE REV
 1) "two"
-redis> ZRANGEBYSCORE myzset (1 (2
-(empty list or set)
+2) "one"
 ```
 
-按分数返回排序集中的一系列成员
+按索引、分数或字典序返回排序集成员；`REV` 用于倒序。
 
 ### ZRANK
 
@@ -2929,64 +2749,6 @@ redis> ZRANGE myzset 0 -1 WITHSCORES
 ```
 
 删除给定分数内排序集中的所有成员
-
-### ZREVRANGE
-
-```
-ZREVRANGE key start stop [WITHSCORES]
-```
-
-#### 例子
-
-```shell
-redis> ZADD myzset 1 "one"
-(integer) 1
-redis> ZADD myzset 2 "two"
-(integer) 1
-redis> ZADD myzset 3 "three"
-(integer) 1
-redis> ZREVRANGE myzset 0 -1
-1) "three"
-2) "two"
-3) "one"
-redis> ZREVRANGE myzset 2 3
-1) "one"
-redis> ZREVRANGE myzset -2 -1
-1) "two"
-2) "one"
-```
-
-按索引返回排序集中的一系列成员，分数从高到低排序
-
-### ZREVRANGEBYSCORE
-
-```
-ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]
-```
-
-#### 例子
-
-```shell
-redis> ZADD myzset 1 "one"
-(integer) 1
-redis> ZADD myzset 2 "two"
-(integer) 1
-redis> ZADD myzset 3 "three"
-(integer) 1
-redis> ZREVRANGEBYSCORE myzset +inf -inf
-1) "three"
-2) "two"
-3) "one"
-redis> ZREVRANGEBYSCORE myzset 2 1
-1) "two"
-2) "one"
-redis> ZREVRANGEBYSCORE myzset 2 (1
-1) "two"
-redis> ZREVRANGEBYSCORE myzset (2 (1
-(empty list or set)
-```
-
-按分数返回排序集中的一系列成员，分数从高到低排序
 
 ### ZREVRANK
 

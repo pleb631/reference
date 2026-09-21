@@ -281,24 +281,6 @@ $ adb connect 192.168.1.20:42115
 $ adb devices
 ```
 
-### Android 10 及以下 TCP 调试
-
-旧设备通常需要先通过 USB 连接，然后把 `adbd` 切换到 TCP 端口：
-
-```bash
-$ adb devices
-$ adb tcpip 5555
-$ adb shell ip addr show wlan0
-$ adb connect 192.168.1.20:5555
-```
-
-完成后可断开 USB。调试结束建议执行：
-
-```bash
-$ adb disconnect 192.168.1.20:5555
-$ adb usb
-```
-
 常用流程
 ----
 

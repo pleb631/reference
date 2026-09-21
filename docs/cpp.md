@@ -825,6 +825,67 @@ std::shared_future<T> result;
 
 对于不可拷贝对象，可以在`std::shared_future`中存储对象的指针，而非指针本身。
 
+基础语法速查
+------------
+
+### 分支与循环
+
+```cpp
+if (score >= 90) {
+  grade = 'A';
+} else if (score >= 60) {
+  grade = 'P';
+} else {
+  grade = 'F';
+}
+
+for (const auto& item : items) {
+  if (!item.valid()) continue;
+  process(item);
+}
+
+for (std::size_t i = 0; i < items.size(); ++i) {
+  use(i, items[i]);
+}
+```
+
+只读遍历使用 `const auto&` 避免拷贝；需要修改元素时使用 `auto&`，小型标量值则可直接按值遍历。
+
+### switch
+
+```cpp
+switch (status) {
+  case Status::ready:
+    start();
+    break;
+  case Status::stopped:
+    cleanup();
+    break;
+  default:
+    report_unknown();
+    break;
+}
+```
+
+`case` 默认会继续执行下一个分支。需要刻意贯穿时标注 `[[fallthrough]]`（C++17），否则使用 `break` 或 `return`。
+
+### 预处理与编译条件
+
+```cpp
+#pragma once
+
+#include <string>
+#include "project/config.hpp"
+
+#if defined(_WIN32)
+constexpr char path_separator = '\\\\';
+#else
+constexpr char path_separator = '/';
+#endif
+```
+
+优先使用 `constexpr`、函数、模板和强类型枚举替代宏。宏没有类型与作用域，仅在条件编译或必须的预处理场景使用。
+
 另见
 ----
 

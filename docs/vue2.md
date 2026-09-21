@@ -1,7 +1,10 @@
 Vue 2 备忘清单
 ===
 
-渐进式 JavaScript 框架 [Vue 2](https://v2.cn.vuejs.org/) 备忘清单的快速参考列表，包含常用 API 和示例。
+面向存量项目的 [Vue 2](https://v2.cn.vuejs.org/) 常用 API 与示例速查。
+
+> [!WARNING]
+> Vue 2 已于 2023 年 12 月 31 日结束维护。新项目请使用 [Vue 3](./vue.md)；现有项目应安排迁移并评估未维护依赖的风险。
 
 入门
 ---
@@ -2079,4 +2082,5 @@ Vue 2 API 参考
 
 - [Vue Essentials Cheat-Sheet.pdf](https://www.vuemastery.com/pdf/Vue-Essentials-Cheat-Sheet.pdf) _(vuemastery.com)_
 - [Vue 2 官方文档](https://v2.cn.vuejs.org/) _(vuejs.org)_
+- [Vue 3 迁移指南](https://v3-migration.vuejs.org/) _(vuejs.org)_
 - [Vue 2 实例方法事件](https://marozed.com/vue-cheatsheet#Instance-Methods-Events) _(marozed.com)_

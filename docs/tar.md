@@ -8,16 +8,16 @@ tar 备忘清单
 
 ### 介绍
 
-在Linux平台上，`tar` 命令是主要的归档实用程序。了解各种 `tar` 命令选项将帮助您掌握归档文件操作。`tar` 代表磁带存档。
+`tar` 是 Linux 常用的归档工具，名称来自 tape archive。它负责打包文件；`gzip`、`bzip2` 等工具负责压缩。
 
 #### 语法
 
 ```shell
-tar [-ABcdgGhiklmMoOpPrRsStuUvwWxzZ][-C <目的目录>][-f <备份文件>][--delete][--totals][文件或目录...]
+tar <operation> [options] -f <archive> [files...]
 ```
 <!--rehype:className=wrap-text -->
 
-以前 unix 系统管理员使用 `tar` 执行磁带机备份。`tar` 命令用于获取文件和目录的集合，并生成高度压缩的归档文件，在Linux中通常称为 `tarball` 或 `tar`、`gzip` 和 `bzip`。
+`tar` 将文件和目录打包为归档；压缩后的归档通常称为 tarball，例如 `.tar.gz` 或 `.tar.bz2`。
 
 ### 选项
 
@@ -134,13 +134,6 @@ tar -xvf Archive.tar.gz
 /home/cyberpunk/testdir/file3.txt
 ```
 
-本例中使用的选项有:
-:- | -
-:- | -
-`-x` | 解压缩归档文件
-`-v` | 显示指令执行过程
-`-f` | 指定归档文件的文件名
-
 ### 解压缩 tar.bz2 文件
 
 小知识：使用 `tar` 命令创建的所有归档文件，都可以以相同的方式提取。
@@ -153,13 +146,6 @@ tar -xvf Archive.tar.bz2
 /home/cyberpunk/testdir/file2.txt
 /home/cyberpunk/testdir/file3.txt
 ```
-
-本例中使用的选项有:
-:- | -
-:- | -
-`-x` | 解压缩归档文件
-`-v` | 显示指令执行过程
-`-f` | 指定归档文件的文件名
 
 ### 列出归档内容
 <!--rehype:wrap-class=col-span-1 row-span-2-->

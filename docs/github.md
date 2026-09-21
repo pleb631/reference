@@ -1,7 +1,7 @@
-Github 备忘清单
+GitHub 备忘清单
 ===
 
-Github.com 上 80 个键盘快捷键和一些搜索技巧的备忘清单
+GitHub.com 常用键盘快捷键和搜索技巧的快速参考。
 
 键盘快捷键
 --------
@@ -65,35 +65,6 @@ Github.com 上 80 个键盘快捷键和一些搜索技巧的备忘清单
 `Ctrl` `.`  | 打开已保存的回复菜单，然后使用已保存的回复自动填充评论字段
 `Ctrl` `G`  | 插入一个建议
 `R`  | 在回复中引用所选文字
-<!--rehype:className=shortcuts-->
-
-### 项目板
-<!--rehype:wrap-class=row-span-4-->
-
-快捷键 | 说明
-:- | -
-`Enter/Space`  | 开始移动焦点列
-`Esc`  | 取消正在进行的移动
-`Enter`  | 完成正在进行的移动
-`Left/H`  | 向左移动列
-`Ctrl` `Left/H`  | 将列移动到最左边的位置
-`Right/L`  | 向右移动列
-`Ctrl` `Right/L`  | 将列移动到最右边的位置
-`Enter/Space`  | 开始移动聚焦卡
-`Esc`  | 取消正在进行的移动
-`Enter`  | 完成正在进行的移动
-`Down/J`  | 向下移动卡片
-`Ctrl` `Down/J`  | 将卡片移动到列的底部
-`Up/K`  | 向上移动卡片
-`Ctrl` `Up/K`  | 将卡片移动到列的顶部
-`Left/H`  | 将卡片移动到左侧列的底部
-`Shift` `Left/H`  | 将卡片移动到左侧列的顶部
-`Ctrl` `Left/H`  | 将卡片移动到最左边一列的底部
-`Ctrl` `Shift` `Left/H`  | 将卡片移至最左侧列的顶部
-`Right`  | 将卡片移动到右侧列的底部
-`Shift` `Right/L`  | 将卡片移动到右侧列的顶部
-`Ctrl` `Right/L`  | 将卡片移动到最右侧列的底部
-`Ctrl` `Shift` `Right/L`  | 将卡片移至最右侧列的顶部
 <!--rehype:className=shortcuts-->
 
 ### 问题和拉取请求列表

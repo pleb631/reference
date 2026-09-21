@@ -13,24 +13,21 @@ Tmux CLI
 
 ```bash
 $ tmux
-$ tmux new
-$ tmux new-session
 
 :new
 ```
 
-开始一个名为 myname 的新会话
+开始一个命名会话
 
 ```bash
-$ tmux new -s myname
+$ tmux new-session -s <session>
 
-:new -s myname
+:new-session -s <session>
 ```
 
 显示所有会话，或者 <kbd>Ctrl</kbd> + <kbd>b</kbd> + <kbd>s</kbd> 快捷键
 
 ```bash
-$ tmux ls
 $ tmux list-sessions
 ```
 
@@ -40,25 +37,13 @@ $ tmux list-sessions
 附加到上一个会话
 
 ```bash
-$ tmux a
-$ tmux at
-$ tmux attach
 $ tmux attach-session
 ```
 
-附加到命名
+附加到命名会话
 
 ```bash
-$ tmux a -t myname
-```
-
-附加到名为 myname 的会话
-
-```bash
-$ tmux a -t myname
-$ tmux at -t myname
-$ tmux attach -t myname
-$ tmux attach-session -t myname
+$ tmux attach-session -t <session>
 ```
 
 ### 终止会话
@@ -66,20 +51,19 @@ $ tmux attach-session -t myname
 按名称终止会话
 
 ```bash
-$ tmux kill-ses -t myname # 杀死/删除会话
-$ tmux kill-session -t myname
+$ tmux kill-session -t <session>
 ```
 
 杀死/删除除当前会话之外的所有会话
 
 ```bash
-$ tmux kill-ses -a
+$ tmux kill-session -a
 ```
 
-杀死/删除除 myname 之外的所有会话
+杀死/删除除指定会话之外的所有会话
 
 ```bash
-$ tmux kill-ses -a -t myname
+$ tmux kill-session -a -t <session>
 ```
 
 ### Tmux 帮助

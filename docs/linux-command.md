@@ -23,7 +23,6 @@ Linux 命令速查表
 **`cal`** | 显示当前日历的月份和日期
 **`w`** | 显示系统中当前登录的用户
 **`whoami`** | 显示您的登录身份
-**`finger username`** | 显示有关用户的信息
 **`sed -ri 's/.*swap.*/#&/' /etc/fstab && swapoff -a`** | 关闭swap
 <!--rehype:className=style-list-->
 
@@ -67,7 +66,6 @@ Linux 命令速查表
 **`ssh user@host`** | 使用指定用户安全连接到主机
 **`ssh -p port_number user@host`** | 使用指定端口安全地连接到主机
 **`ssh host`** | 通过SSH默认端口22安全连接到系统
-**`telnet host`** | 通过telnet默认端口23连接到主机
 <!--rehype:className=style-list-->
 
 ### 文件
@@ -104,7 +102,7 @@ Linux 命令速查表
 :--- | :---
 :--- | :---
 **`ps`** | 显示当前活动的进程
-**`ps aux \| grep 'telnet'`** | 搜索进程'telnet'的id
+**`ps aux \| grep 'sshd'`** | 搜索 `sshd` 进程的 ID
 **`pmap`** | 显示进程的内存映射
 **`top`** | 显示所有正在运行的进程
 **`kill pid`** | 使用给定的pid终止进程
@@ -130,7 +128,6 @@ Linux 命令速查表
 :--- | :---
 :--- | :---
 **`chmod octal filename`** | 将文件权限更改为八进制
-**`chmod 777 /data/test.c`** | 将rwx权限设置为owner、group和everyone(其他可以访问服务器的人)
 **`chmod 755 /data/test.c`** | 将rwx设置为所有者，将r_x设置为组和所有人
 **`chmod 766 /data/test.c`** | 为所有者设置rwx，为组和每个人设置rw
 **`chown owner user-file`** | 更改文件的所有权
@@ -178,7 +175,6 @@ Linux 命令速查表
 :--- | :---
 **`ip addr show`** | 显示IP地址和所有网络接口
 **`ip address add 192.168.0.1/24 dev eth0`** | 将IP地址192.168.0.1分配给接口eth0
-**`ifconfig`** | 显示所有网络接口的IP地址
 **`ping host`** | ping命令发送ICMP回送请求以建立到服务器/PC的连接
 **`whois domain`** | 检索有关域名的更多信息
 **`dig domain`** | 检索关于域的DNS信息
@@ -186,7 +182,7 @@ Linux 命令速查表
 **`host google.com`** | 执行域名的IP查找
 **`hostname -i`** | 显示本地IP地址
 **`wget file_name`** | 从在线资源下载文件
-**`netstat -pnltu`** | 显示所有活动监听端口
+**`ss -lntup`** | 显示所有 TCP/UDP 监听端口与进程
 <!--rehype:className=style-list-->
 
 ### 文件传输

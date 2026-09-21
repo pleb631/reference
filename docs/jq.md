@@ -1,17 +1,17 @@
 jq 备忘清单
 ===
 
-这个快速参考备忘单提供了使用 [jq](https://stedolan.github.io/jq/) 命令的各种方法。
+本页汇总 [jq](https://jqlang.org/) 的常用命令、选项和过滤器示例。
 
 入门
 ----
 
 ### 介绍
 
-jq 就像用于 JSON 数据的 [sed](./sed.md) - 您可以使用它来切片、过滤、映射和转换结构化数据
+jq 是面向 JSON 的命令行处理器，可用于切片、过滤、映射和转换结构化数据。
 
-- [jq 官网](https://stedolan.github.io/jq/) _(stedolan.github.io)_
-- [jq 命令使用](https://jaywcjlove.github.io/linux-command/c/jq.html) _(jaywcjlove.github.io)_
+- [jq 官方网站](https://jqlang.org/) _(jqlang.org)_
+- [jq 官方手册](https://jqlang.org/manual/) _(jqlang.org)_
 
 安装
 

@@ -239,8 +239,8 @@ mysql -h remote_host -u user -p db_name < db_backup.sql
 | `SHOW STATUS LIKE 'Last_error%';` | 查看上次语句执行的错误信息 |
 | `SHOW VARIABLES LIKE 'log_%';` | 查看错误日志相关配置 |
 | `SHOW BINARY LOGS;` | 查看二进制日志，排查事务或复制异常 |
-| `SHOW SLAVE STATUS\G` | 查看主从复制错误（用于主从复制场景） |
-| `SHOW MASTER STATUS;` | 查看主库状态，辅助分析复制问题 |
+| `SHOW REPLICA STATUS\G` | 查看副本复制状态与错误 |
+| `SHOW BINARY LOG STATUS;` | 查看源服务器二进制日志状态，辅助分析复制问题 |
 <!--rehype:className=left-align-->
 
 MySQL 示例

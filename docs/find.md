@@ -294,31 +294,13 @@ $ find / -amin -60
 --------
 <!--rehype:body-class=cols-2-->
 
-### 查找和删除
-<!--rehype:wrap-class=row-span-3-->
+### 查找后删除
 
-查找并删除多个文件
-
-```shell
-$ find . -type f -name "*.mp3" -exec rm -f {} \;
-```
-
-查找和删除单个文件
+先移除 `-delete` 或替换为 `-print` 核对匹配结果，再执行删除；不要针对根目录运行批量删除。
 
 ```shell
-$ find . -type f -name "tecmint.txt" -exec rm -f {} \;
-```
-
-查找和删除 100mb 文件
-
-```shell
-$ find / -type f -size +100m -exec rm -f {} \;
-```
-
-查找特定文件并删除
-
-```shell
-$ find / -type f -name *.mp3 -size +10m -exec rm {} \;
+$ find . -type f -name '*.log' -print
+$ find . -type f -name '*.log' -delete
 ```
 
 ### 查找和替换
@@ -365,21 +347,6 @@ $ find download -type f -name '*.gz' -exec cat {} \; > output
 ```shell
 $ find . -printf "%T+\t%p\n" | sort
 $ find . -printf "%T+\t%p\n" | sort -r
-```
-
-### 查找和 chmod
-<!--rehype:wrap-class=row-span-2-->
-
-查找文件并将权限设置为 644。
-
-```shell
-$ find / -type f -perm 0777 -print -exec chmod 644 {} \;
-```
-
-查找目录并将权限设置为 755。
-
-```shell
-$ find / -type d -perm 777 -print -exec chmod 755 {} \;
 ```
 
 ### 查找并 tar

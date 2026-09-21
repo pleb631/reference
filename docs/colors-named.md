@@ -1,7 +1,7 @@
-Colors Named 备忘清单
+CSS 命名颜色备忘清单
 ===
 
-CSS 定义了一大组[命名颜色](https://www.w3.org/TR/css-color-4/#named-colors)，以便可以更轻松地编写和阅读[常用颜色](https://www.w3.org/TR/css-color-4/#named-colors)，这里列出了它的颜色名称/Hex rgb/十进制 rgb 数据
+本页列出 [CSS 命名颜色](https://www.w3.org/TR/css-color-4/#named-colors) 的名称、十六进制 RGB 与十进制 RGB 值。
 
 Named Colors
 ---

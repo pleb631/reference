@@ -26,7 +26,7 @@ Vue 是一套用于构建用户界面的渐进式框架
 ### 创建应用
 <!--rehype:wrap-class=row-span-3-->
 
-已安装 `16.0` 或更高版本的 Node.js
+已安装 `20.0` 或更高版本的 Node.js
 
 ```bash
 $ npm init vue@latest
@@ -797,20 +797,19 @@ this.$store.commit(
 ### 2. 路由的使用
 
 ```javascript
-import VueRouter from 'vue-router'
-// 引入Luyou 组件
+import { createRouter, createWebHistory } from 'vue-router'
+// 引入路由组件
 import About from '../components/About'
 import Home from '../components/Home'
-// 创建router实例对象，去管理一组一组的路由规则
-const router = new VueRouter({
+// 创建 Router 实例，管理路由规则
+const router = createRouter({
+  history: createWebHistory(),
   routes: [
-    path: '/about',
-    component: About
-    path: '/home',
-    component: Home
+    { path: '/about', component: About },
+    { path: '/home', component: Home }
   ]
 })
-// 暴露 router
+// 导出 router
 export default router
 ```
 

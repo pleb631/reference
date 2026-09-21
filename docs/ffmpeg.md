@@ -63,8 +63,6 @@ $ ffmpeg -i movie.webm movie.mp4
 `-i input.mp4`        | 指定输入文件
 `-c:v libx264`        | 指定视频编码
 `-c:a aac`            | 指定音频编码
-`-vcodec libx264`     | 旧写法
-`-acodec aac`         | 旧写法
 `-fs SIZE`            | 指定文件大小
 
 ### 视频参数
@@ -109,11 +107,7 @@ $ ffmpeg -i movie.webm movie.mp4
 
 :- | -
 :- | -
-`-ab bRate` | 设置音频比特率(单位 kbit/s)
-`-aframes N` | 设置要录制的音频帧数 [-frames:a 的别名]
-`-aq q` | 设置音频质量(特定于编解码器，VBR) [-q:a 的别名]
 `-an` | 禁用录音
-`-acodec codec` | 设置音频编解码器。[-codec:a 的别名] 使用 'copy' 复制流。
 `-vol` | 以 256 的倍数更改音频音量，其中 256 = 100%(正常)音量。例如 512 = 200%
 `-newaudio` | 将新的音频流添加到当前输出流
 `-alang code` | 设置当前音频流的 ISO 639 语言代码(3 个字母)
@@ -128,10 +122,10 @@ $ ffmpeg -i movie.webm movie.mp4
 
 ```bash
 # 从1分45秒开始剪切2分35秒
-$ ffmpeg -i <input> -ss 00:01:45 -t 00:02:35 -vcodec copy -acodec copy <output>
+$ ffmpeg -i <input> -ss 00:01:45 -t 00:02:35 -c:v copy -c:a copy <output>
 # 从1分45秒开始剪切到第4分20秒，与上一行等效
 $ ffmpeg -i <input> -ss 00:01:45 -to 00:04:20 -codec copy <output>
-$ ffmpeg -ss 00:00:30 -i orginalfile.mpg -t 00:00:05 -vcodec copy -acodec copy newfile.mpg
+$ ffmpeg -ss 00:00:30 -i orginalfile.mpg -t 00:00:05 -c:v copy -c:a copy newfile.mpg
 # 从 4.5 秒开始的 5 秒长的视频
 $ ffmpeg -i in.mp4 -ss 4.5 -t 5 out.mp4
 ```
@@ -223,7 +217,7 @@ $ ffmpeg -i file.mp3 -f ffmetadata metadata.txt
 设置
 
 ```bash
-$ ffmpeg -i file.mp3 -acodec copy -metadata title="<title>" -metadata artist="<artist>" -metadata album="<album>" out.mp3
+$ ffmpeg -i file.mp3 -c:a copy -metadata title="<title>" -metadata artist="<artist>" -metadata album="<album>" out.mp3
 ```
 <!--rehype:className=wrap-text -->
 
@@ -232,14 +226,14 @@ $ ffmpeg -i file.mp3 -acodec copy -metadata title="<title>" -metadata artist="<a
 ### 重新采样/转换音频
 
 ```bash
-$ ffmpeg -i file.aac -acodec mp3 -ar 44100 -ab 128000 output.mp3
+$ ffmpeg -i file.aac -c:a mp3 -ar 44100 -b:a 128000 output.mp3
 ```
 <!--rehype:className=wrap-text -->
 
 ### 将输入文件转码为 DVD PAL 格式
 
 ```bash
-$ ffmpeg -y -threads 8 -i inFile -target pal-dvd -ac 2 -aspect 16:9 -acodec mp2 -ab 224000 -vf pad=0:­0:0:0 outFile
+$ ffmpeg -y -threads 8 -i inFile -target pal-dvd -ac 2 -aspect 16:9 -c:a mp2 -b:a 224000 -vf pad=0:­0:0:0 outFile
 ```
 <!--rehype:className=wrap-text -->
 
@@ -285,7 +279,7 @@ $ ffmpeg -i i1.mp4 -i i2.mp4 -map 0:v -map 0:a -c copy out.mp4
 将容器从 `MKV` 更改为 `MP4`
 
 ```bash
-$ ffmpeg -i file.mkv -acodec copy -vcodec copy file.mp4
+$ ffmpeg -i file.mkv -c:a copy -c:v copy file.mp4
 ```
 <!--rehype:className=wrap-text -->
 
@@ -365,7 +359,7 @@ file '3.mp3'
 
 # OBS: 46500 = 25:50 minutes * 60 * 30fps
 # echo "00:25:50" | awk -F: '{ print (($1 * 3600) + ($2 * 60) + $3) * 30 }'
-$ ffmpeg -y -loop 1 -i cover.jpg -f concat -i mylist.txt -c:v libx264 -r 30 -pix_fmt yuv420p -vframes 46500 -c:a aac -b:a 192k -strict experimental -shortest output.mp4
+$ ffmpeg -y -loop 1 -i cover.jpg -f concat -i mylist.txt -c:v libx264 -r 30 -pix_fmt yuv420p -frames:v 46500 -c:a aac -b:a 192k -shortest output.mp4
 ```
 <!--rehype:className=wrap-text -->
 
@@ -426,7 +420,7 @@ $ ffmpeg -i input.mov -filter:v "subtitles=subtitles.srt:force_style='FontName=M
 ### 制造 1 分钟的音频噪音
 
 ```bash
-$ ffmpeg -ar 48000 -t 60 -f s16le -acodec pcm_s16le -i /dev/u­random -ab 64K -f mp2 -acodec mp2 -y noise.mp2
+$ ffmpeg -ar 48000 -t 60 -f s16le -c:a pcm_s16le -i /dev/u­random -b:a 64K -f mp2 -c:a mp2 -y noise.mp2
 ```
 <!--rehype:className=wrap-text -->
 
@@ -470,21 +464,21 @@ $ ffmpeg -f image2 -i foo-%0­3d.jpeg -r 12 -s WxH foo.avi
 ### 将 WAV 文件转换为 MP3
 
 ```bash
-$ ffmpeg -i source­_so­ng.wav -vn -ar 44100 -ac 2 -ab 192 -f mp3 final_­son­g.mp3
+$ ffmpeg -i source­_so­ng.wav -vn -ar 44100 -ac 2 -b:a 192 -f mp3 final_­son­g.mp3
 ```
 <!--rehype:className=wrap-text -->
 
 ### 从视频中提取音频，将其转码为 MP3
 
 ```bash
-$ ffmpeg -i source.avi -vn -ar 44100 -ac 2 -ab 192 -f mp3 sound.mp3
+$ ffmpeg -i source.avi -vn -ar 44100 -ac 2 -b:a 192 -f mp3 sound.mp3
 ```
 <!--rehype:className=wrap-text -->
 
 ### 将 .avi 转换为 .flv
 
 ```bash
-$ ffmpeg -i source.avi -ab 56 -ar 44100 -b 200 -r 15 -s 320x240 -f flv output.flv
+$ ffmpeg -i source.avi -b:a 56 -ar 44100 -b:v 200 -r 15 -s 320x240 -f flv output.flv
 ```
 <!--rehype:className=wrap-text -->
 
@@ -512,14 +506,14 @@ $ ffmpeg -i inFile -id3v2­_ve­rsion 3 -write­_id3v1 1 outFil­e.mp3
 ### 连接输入文件
 
 ```bash
-$ cat inFile1 inFile2 | ffmpeg -f mpeg -i - -vcodec copy -acodec copy outFil­e.mpg
+$ cat inFile1 inFile2 | ffmpeg -f mpeg -i - -c:v copy -c:a copy outFil­e.mpg
 ```
 <!--rehype:className=wrap-text -->
 
 ### 使用比特率和 mp3 音频的编解码器对剪辑进行编码
 
 ```bash
-$ ffmpeg -i clip.avi -vcodec libxvid -b 800000 -acodec libmp3lame -ab 128 new-cl­ip.avi
+$ ffmpeg -i clip.avi -c:v libxvid -b:v 800000 -c:a libmp3lame -b:a 128 new-cl­ip.avi
 ```
 <!--rehype:className=wrap-text -->
 
@@ -638,7 +632,7 @@ ffmpeg -i 1.mp4 -b:v 548k -vf delogo=x=10:y=10:w=120:h=45:show=1 output.mp4
 在 10 秒时创建一个缩略图
 
 ```bash
-$ ffmpeg -ss 10 -i <input file> -vframes 1 -vcodec png -an thumb.png
+$ ffmpeg -ss 10 -i <input file> -frames:v 1 -c:v png -an thumb.png
 ```
 <!--rehype:className=wrap-text -->
 
@@ -655,7 +649,7 @@ $ ffmpeg -i <input file> -vf fps=1/60 thumbnails/thumb%03d.png
 
 ```bash
 # -b:v 548k 可选参数，设置视频比特率，默认 200k 最好设置与原视频一致
-ffmpeg -i 1.mp4 -acodec copy -b:v 548k -vf "movie=logo.png[watermark];[in][watermark]overlay=20:20" output.mp4
+ffmpeg -i 1.mp4 -c:a copy -b:v 548k -vf "movie=logo.png[watermark];[in][watermark]overlay=20:20" output.mp4
 ```
 <!--rehype:className=wrap-text -->
 

@@ -74,7 +74,10 @@ $ lsof +D /var/log # 在目录内
 ### Kill
 
 ```shell
-$ kill -9 `lsof -t -u apache`
+# 先发送 SIGTERM，让进程自行清理资源
+$ kill $(lsof -t -u apache)
+$ kill $(lsof -t -i :8080)
+# 进程无法退出时，才使用 SIGKILL
 $ kill -9 $(lsof -t -i :8080)
 ```
 

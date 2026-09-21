@@ -43,7 +43,7 @@ $ grep 'mellon' myfile.txt
 | `-r`   | grep -r 'github.io' /var/log/nginx/   | 递归搜索 _(在子目录内)_
 | `-v`   | grep -v 'warning' /var/log/syslog     | 返回所有与模式不匹配的行
 | `-e`   | grep -e '^al' filename                | 使用正则表达式 _(以'al'开头的行)_
-| `-E`   | grep -E 'ja(s\|cks)on' filename       | 扩展正则表达式 _(包含 jason 或 jackson 的行)_
+| `-E`   | grep -E 'ja(s|cks)on' filename        | 扩展正则表达式 _(包含 jason 或 jackson 的行)_
 | `-c`   | grep -c 'error' /var/log/syslog       | 计算匹配数
 | `-l`   | grep -l 'robot' /var/log/*            | 打印匹配文件的名称
 | `-o`   | grep -o search_string filename        | 只显示字符串的匹配部分
@@ -51,6 +51,8 @@ $ grep 'mellon' myfile.txt
 
 Grep 正则表达式
 -------
+
+下列 `?`、`+`、`{}` 等扩展正则语法需使用 `grep -E`；默认模式使用基本正则表达式。
 
 ### 参考
 
@@ -74,7 +76,7 @@ Grep 正则表达式
 :- | :-
 `{n}`    | 前一项恰好出现 n 次
 `{n,}`   | 上一个项目出现 n 次或更多
-`{,m}`   | 上一个项目最多出现 n 次
+`{,m}`   | 上一个项目最多出现 m 次
 `{n,m}`  | 上一项出现在 n 到 m 次之间
 
 ### POSIX
@@ -90,9 +92,9 @@ Grep 正则表达式
 
 :- | :-
 :- | :-
-`[A-Z­a-z]`    | 任何大小写字母
+`[A-Za-z]`     | 任何大小写字母
 `[0-9]`       | 任何数字
-`[0-9­A-Z­a-z]` | 任何大小写字母或数字
+`[0-9A-Za-z]`  | 任何大小写字母或数字
 
 ### 位置
 
@@ -149,8 +151,6 @@ grep "main()" . -r --exclude-from filelist
 
 ```bash
 grep "text" -n file_name
-# 或
-cat file_name | grep "text" -n
 
 #多个文件
 grep "text" -n file_1 file_2
@@ -173,3 +173,4 @@ grep -c "text" file_name
 ----
 
 - [grep 中文文档](https://wangchujiang.com/linux-command/c/grep.html) _(jaywcjlove.github.io)_
+- [GNU grep 手册](https://www.gnu.org/software/grep/manual/grep.html) _(gnu.org)_

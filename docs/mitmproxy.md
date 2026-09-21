@@ -12,7 +12,7 @@ Mitmproxy 备忘清单
 选项 | 范例 | 描述
 :--|--|--
 `-p`   | mitmproxy -p 8001                                  | 在端口 `8001` 上启动代理
-`-m`   | mitmproxy -p 8001 -m reverse:<http://127.0.0.1:4000> | `8001` 端口反向代理到4000端口
+`--mode` | `mitmproxy --mode reverse:http://127.0.0.1:4000@8001` | 在 `8001` 端口反向代理到 `4000` 端口
 `-w`   | mitmproxy -p 8001 -w traffic.mitm                  | 流到达时流向文件
 `-r`   | mitmproxy -r traffic.mitm                          | 从文件中读取流
 `-C`   | mitmproxy -C traffic.mitm                          | 从保存的文件重放客户端请求
@@ -57,12 +57,12 @@ $ brew install mitmproxy # macOS
 ### 代理模式
 <!--rehype:wrap-class=col-span-2-->
 
-Argument | Effect
+模式 | 说明
 :-- | --
-`-R REVERSE_PROXY`, `--reverse REVERSE_PROXY` | 将所有请求转发到上游 HTTP 服务器：`http[s]://host[:port]`。客户端始终可以通过 `HTTPS` 和 `HTTP` 进行连接，与服务器的连接由指定的方案决定
-`--socks` | 设置 `SOCKS5` 代理模式
-`-T`, `--transparent` | 设置透明代理模式
-`-U UPSTREAM_PROXY`, `--upstream UPSTREAM_PROXY` | 将所有请求转发到上游代理服务器：`http://host[:port]`
+`--mode reverse:<scheme>://<host>[:<port>]` | 反向代理到指定服务器；可在模式后添加 `@<port>` 指定监听端口
+`--mode socks5` | 启动 SOCKS5 代理
+`--mode transparent` | 透明代理模式；需要额外网络路由配置，通常优先考虑 Local Capture 或 WireGuard
+`--mode upstream:http[s]://<host>[:<port>]` | 将所有请求转发到上游 HTTP(S) 代理
 <!--rehype:className=style-list-->
 
 ### 复制到剪贴板

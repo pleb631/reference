@@ -173,7 +173,7 @@ SSH keygen
 <!--rehype:wrap-class=col-span-2-->
 
 ```shell
-$ ssh-keygen -t rsa -b 4096 -C "your@mail.com" 
+$ ssh-keygen -t ed25519 -C "your@mail.com"
 ```
 
 ----
@@ -223,7 +223,6 @@ $ ssh-keygen -p -f ~/.ssh/id_rsa
 
 - rsa
 - ed25519
-- dsa
 - ecdsa
 
 ### known_hosts

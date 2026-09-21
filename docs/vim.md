@@ -1,7 +1,7 @@
 Vim 备忘清单
 ===
 
-[Vim](http://www.vim.org/) 8.2 快速参考备忘单的有用集合，可帮助您更快地学习 vim 编辑器。
+[Vim](https://www.vim.org/) 常用命令与编辑技巧的快速参考。
 
 入门
 ---------------
@@ -851,7 +851,7 @@ dfx # 删除文本直到字符“x”(包括字符“x”): delete forward x
 ---
 
 - [搞得像IDE一样的 Vim](https://jaywcjlove.github.io/vim-web) _(github.io)_
-- [Vim 官方网站](http://www.vim.org/) _(vim.org)_
+- [Vim 官方网站](https://www.vim.org/) _(vim.org)_
 - [Devhints](https://devhints.io/vim) _(devhints.io)_
 - [Vim cheatsheet](https://vim.rtorr.com/lang/zh_cn/) _(vim.rotrr.com)_
 - [Vim documentation](http://vimdoc.sourceforge.net/htmldoc/) _(vimdoc.sourceforge.net)_

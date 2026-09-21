@@ -620,13 +620,10 @@ import sub from "mod/sub"
 ```json
 {
   "peerDependenciesMeta": {
-    "node-sass": {
-      "optional": true
-    },
     "sass": {
       "optional": true
     },
-    "fibers": {
+    "some-optional-peer": {
       "optional": true
     }
   }
@@ -648,10 +645,8 @@ import sub from "mod/sub"
 ```json
 {
   "engines": {
-    "node": "^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0",
-    "node": ">=4.4.7 <7.0.0",
-    "zlib": "^1.2.8",
-    "yarn": "^0.14.0"
+    "node": ">=24",
+    "npm": ">=10"
   }
 }
 ```
@@ -713,20 +708,6 @@ import sub from "mod/sub"
 Yarn
 ----
 
-### `flat`
-
-<!-- markdownlint-disable MD042 -->
-
-如果你的包只允许给定依赖的一个版本，你想强制和命令行上 [yarn install --flat](#) 相同的行为，把这个值设为 `true`。
-
-```json
-{
-  "flat": true
-}
-```
-
-请注意，如果你的 `package.json` 包含 `"flat": true` 并且其它包依赖你的包 (比如你在构建一个库，而不是应用)， 其它那些包也需要在它们的 `package.json` 加上 `"flat": true`，或者在命令行上用 `yarn install --flat` 安装。
-
 ### `resolutions`
 <!--rehype:wrap-class=col-span-2-->
 
@@ -741,8 +722,6 @@ Yarn
 ```
 
 允许您覆盖特定嵌套依赖项的版本。 有关完整规范，请参见[选择性版本解析 RFC](https://github.com/yarnpkg/rfcs/blob/master/implemented/0000-selective-versions-resolutions.md)。
-
-注意，`yarn install --flat` 命令将会自动在 `package.json` 文件里加入 `resolutions` 字段。
 
 另见
 ----

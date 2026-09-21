@@ -1,4 +1,4 @@
-Semver 备忘清单
+SemVer 备忘清单
 ===
 
 这个 semver 语义化版本快速参考备忘清单。
@@ -8,10 +8,10 @@ Semver 备忘清单
 
 ### 介绍
 
-[Semver](http://semver.org/) 是一种语义版本控制规范。
+[SemVer](https://semver.org/lang/zh-CN/spec/v2.0.0.html) 是一种语义化版本控制规范。
 
-- [语义版本控制规范文档](http://semver.org/) _(semver.org)_
-- [npm 的语义版本器](https://docs.npmjs.com/cli/v6/using-npm/semver) _(npmjs.com)_
+- [语义化版本 2.0.0 规范](https://semver.org/lang/zh-CN/spec/v2.0.0.html) _(semver.org)_
+- [npm semver 文档](https://docs.npmjs.com/cli/v11/using-npm/semver) _(npmjs.com)_
 
 ### Semver
 
@@ -36,7 +36,7 @@ Semver 备忘清单
 ### 范围
 <!--rehype:wrap-class=row-span-3-->
 
-| 范围    | 描述         | Notes             |
+| 范围    | 描述 | 说明 |
 | ---      | ---                 | ---               |
 | `~1.2.3` | 是 `>=1.2.3 <1.3.0` |                    |
 | `^1.2.3` | 是 `>=1.2.3 <2.0.0` |                    |
@@ -45,12 +45,12 @@ Semver 备忘清单
 | `^1.2`   | 是 `>=1.2.0 <2.0.0` | (像 ^1.2.0)        |
 | `~1.2`   | 是 `>=1.2.0 <1.3.0` | (像 ~1.2.0)        |
 | `^1`     | 是 `>=1.0.0 <2.0.0` |                    |
-| `~1`     | 相同的               |                    |
-| `1.x`    | 相同的               |                    |
-| `1.*`    | 相同的               |                    |
-| `1`      | 相同的               |                    |
-| `*`      | 任何版本             |                    |
-| `x`      | 相同的               |                    |
+| `~1`     | 是 `>=1.0.0 <2.0.0` | 相当于 `1.x` |
+| `1.x`    | 是 `>=1.0.0 <2.0.0` | |
+| `1.*`    | 是 `>=1.0.0 <2.0.0` | 相当于 `1.x` |
+| `1`      | 是 `>=1.0.0 <2.0.0` | 相当于 `1.x` |
+| `*`      | 任何版本 | |
+| `x`      | 任何版本 | 相当于 `*` |
 <!--rehype:className=shortcuts-->
 
 ### 连字符范围

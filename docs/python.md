@@ -80,8 +80,110 @@ unique = {item.category for item in items}
 
 推导式适合简短映射和过滤。逻辑包含副作用、多层条件或异常处理时改用普通循环。
 
+字符串与容器
+---
+
+### 字符串常用操作
+
+```python
+text = "  Hello, Python  "
+
+text.strip()                    # "Hello, Python"
+text.lower()                    # "  hello, python  "
+text.replace("Python", "World")
+text.startswith("  Hello")
+"Python" in text
+
+parts = "a,b,c".split(",")
+joined = " / ".join(parts)
+```
+
+字符串不可变，这些方法返回新字符串。需要拆分固定次数时可使用 `split(sep, maxsplit)`；按行处理使用 `splitlines()`。
+
+### f-string 格式化
+
+```python
+name = "Ada"
+ratio = 0.256
+amount = 1234567.8
+
+f"Hello, {name}"
+f"{ratio:.1%}"       # "25.6%"
+f"{amount:,.2f}"     # "1,234,567.80"
+f"{42:08d}"          # "00000042"
+f"{name!r}"          # "'Ada'"
+```
+
+`!r` 调用 `repr()`，适合日志和调试；对齐、宽度、精度和千位分隔符写在冒号后。
+
+### 列表的增删改查
+
+```python
+items = ["a", "b"]
+items.append("c")
+items.extend(["d", "e"])
+items.insert(1, "x")
+
+last = items.pop()
+items.remove("x")
+del items[0]
+
+items.sort(key=str.lower)
+position = items.index("b")
+count = items.count("b")
+```
+
+`list.sort()` 原地修改并返回 `None`；`sorted(iterable)` 返回新列表。`remove()` 按值删除首个匹配项，`pop()` 按索引删除并返回元素。
+
 流程与函数
 ---
+
+### 分支与循环
+
+```python
+if score >= 90:
+    grade = "A"
+elif score >= 60:
+    grade = "pass"
+else:
+    grade = "fail"
+
+for value in values:
+    if value < 0:
+        continue
+    if value == target:
+        break
+
+while queue:
+    handle(queue.popleft())
+```
+
+空容器、空字符串、`0` 和 `None` 在条件中为假。循环的 `else` 仅在没有被 `break` 中断时执行。
+
+### 函数返回与 Lambda
+
+```python
+def bounds(values: list[int]) -> tuple[int, int]:
+    return min(values), max(values)
+
+low, high = bounds([3, 1, 8])
+users.sort(key=lambda user: user.name.casefold())
+```
+
+Python 通过元组返回多个值。`lambda` 适合 `key=` 等简短单表达式；逻辑较长或需要注解时定义普通函数。
+
+### 导入模块
+
+```python
+import json
+from pathlib import Path
+from package import models
+
+data = json.loads(Path("data.json").read_text(encoding="utf-8"))
+user = models.User(**data)
+```
+
+避免 `from module import *`。包内代码使用明确的绝对导入或相对导入，不要通过修改 `sys.path` 规避正确的包结构。
 
 ### 遍历
 

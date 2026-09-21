@@ -1,13 +1,13 @@
 ASCII Code 备忘清单
 ===
 
-这份速查表是 ASCII 码表的完整列表，包含了它们的数字和名称
+本页列出 ASCII（`0`–`127`）及 Windows-1252 扩展字节（`128`–`255`）的数值和名称。扩展部分不是 ASCII，不同代码页的同一字节可能表示不同字符。
 
-ASCII 代码表
+ASCII 与 Windows-1252 代码表
 ---
 <!--rehype:body-class=cols-1&style=display:none;-->
 
-### ASCII 代码表
+### ASCII 与 Windows-1252 代码表
 
 | Symbol(符号)                             | Dec  | Oct  | Hex  | Bin      |
 |------------------------------------|------|------|------|----------|

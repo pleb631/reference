@@ -1,7 +1,7 @@
 Subversion 备忘清单
 ===
 
-本备忘单总结了常用的 [SVN](https://git-scm.com/) 命令行指令，以供快速参考。
+本页汇总 [Apache Subversion](https://subversion.apache.org/)（`svn`）的常用命令。
 
 入门
 ---
@@ -28,13 +28,10 @@ Subversion 备忘清单
 ### 添加文件或文件夹
 
 ```bash
-$ svn add *
-# 添加文件夹中的所有项目，然后递归（忽略版本目录）
-$ svn add itemname
-# 如果 itemname 是文件夹，
-# 则所有子文件夹 并且文件也会被添加
-$ svn add * --force
-# 强制递归到版本化目录
+$ svn add <path>
+# 添加文件或目录；目录会递归添加未版本控制的项目
+$ svn add --force <directory>
+# 也检查已被忽略的项目，再递归添加
 ```
 
 ### 将更改提交到存储库
@@ -77,7 +74,7 @@ $ svn move "sourcepath" "targetpath"
 命令 | 说明
 :- | :-
 `$ svn resolve "/path"` | 解决冲突
-`$ svn cleanup "/path"` | 递归删除，锁并完成，操作
+`$ svn cleanup "/path"` | 清理工作副本锁并恢复被中断的操作
 `$ svn lock "/path"` | 锁定路径
 `$ svn unlock "/path"` | 解锁路径
 `$ svn cat "/path"` | 查看文件内容
@@ -184,8 +181,7 @@ $ svn merge "url1" "url2" "/path/file"
 命令 | 说明
 :- | :-
 `$ svn proplist "/path"` | 列出属性
-`$ svn propset PROP VAL` | 设置属性“PROP”
-`$ svn "/path"` | 至值“VAL”
+`$ svn propset PROP VAL "/path"` | 将属性 `PROP` 设为值 `VAL`
 `$ svn propget PROP "/path"` | 获取“PROP”的值
 `$ svn propedit PROP "/path"` | 编辑“PROP”
 `$ svn propdel PROP "/path"` | 删除“PROP”

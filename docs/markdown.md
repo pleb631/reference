@@ -343,7 +343,7 @@ GitHub 支持表情符号！ :+1: :sparkles: :camel: :tada:
 ```
 ````
 
-GitHub 的数学呈现功能使用 MathJax，请参阅 [MathJax](http://docs.mathjax.org/en/latest/input/tex/index.html#tex-and-latex-support) 文档和 [MathJax](https://mathjax.github.io/MathJax-a11y/docs/#reader-guide) 辅助功能扩展文档。
+GitHub 使用 MathJax 呈现数学公式；支持范围与转义规则请参阅 [GitHub 数学公式文档](https://docs.github.com/zh/get-started/writing-on-github/working-with-advanced-formatting/writing-mathematical-expressions)。
 
 ### 折叠块
 

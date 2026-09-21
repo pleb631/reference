@@ -1,7 +1,7 @@
 GDB 备忘清单
 ===
 
-本清单提供了对 [GDB](https://en.wikipedia.org/wiki/GNU_Debugger) 的入门简要概述，以及 `GDB` 常用示例，完整文档参阅 [Debugging with gdb](https://www.eecs.umich.edu/courses/eecs373/readings/Debugger.pdf)，该文档最后有 `GDB index`，可以快速查找命令。
+本页汇总 GNU Debugger（`gdb`）的常用调试命令和示例。
 
 入门
 ---
@@ -196,7 +196,7 @@ gdb program /tmp/core-file
 
 ### 函数调用
 
-`call` 和 `print` 调用的函数如果存在全局变量、静态变量的修改，在函数返回后会恢复到调用之前的值，这两个调用不会影响程序的状态
+`call` 和 `print` 可以在暂停的程序中调用函数；函数的副作用会保留，调用前应确认其不会改变程序状态。
 
 | 命令                | 说明       |
 |:--------------------|:-----------|
@@ -243,4 +243,4 @@ SIGILL        Yes   Yes     Yes             Illegal instruction
 另见
 ---
 
-- [应用崩溃调试分析](https://carlyleliu.github.io/2022/%E5%BA%94%E7%94%A8%E5%B4%A9%E6%BA%83%E8%B0%83%E8%AF%95%E5%88%86%E6%9E%90)
+- [GDB 文档](https://sourceware.org/gdb/documentation/) _(sourceware.org)_

@@ -222,7 +222,7 @@ $ iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 # 允许被 ping
 $ iptables -A INPUT -p icmp --icmp-type 8 -j ACCEPT
 # 已经建立的连接得让它进来
-$ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+$ iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 ```
 
 ### 保存规则到配置文件中
@@ -297,7 +297,7 @@ $ iptables -D INPUT 8
 # 允许本地回环接口(即运行本机访问本机)
 $ iptables -A INPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT
 # 允许已建立的或相关连的通行
-$ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+$ iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 # 允许所有本机向外的访问
 $ iptables -A OUTPUT -j ACCEPT
 # 允许访问22端口
@@ -631,37 +631,26 @@ $ iptables -A INPUT -i eth1 -p icmp --icmp-type echo-request -j DROP
 ### 使用 multiport 指定多个端口
 
 ```bash
-$ iptables -A INPUT -i eth0 -p tcp -m state --state NEW -m multiport --dports ssh,smtp,http,https -j ACCEPT
-```
-
-### 使用 `random*` 或 `nth*` 进行负载平衡
-
-```bash
-_ips=("172.31.250.10" "172.31.250.11" "172.31.250.12" "172.31.250.13")for ip in "${_ips[@]}" ; do  iptables -A PREROUTING -i eth0 -p tcp --dport 80 -m state --state NEW -m nth --counter 0 --every 4 --packet 0 \    -j DNAT --to-destination ${ip}:80done
-```
-
-or
-
-```bash
-_ips=("172.31.250.10" "172.31.250.11" "172.31.250.12" "172.31.250.13")for ip in "${_ips[@]}" ; do  iptables -A PREROUTING -i eth0 -p tcp --dport 80 -m state --state NEW -m random --average 25 \    -j DNAT --to-destination ${ip}:80done
+$ iptables -A INPUT -i eth0 -p tcp -m conntrack --ctstate NEW -m multiport --dports ssh,smtp,http,https -j ACCEPT
 ```
 
 ### 使用 limit 和 `iplimit*` 限制连接数
 
 ```bash
-$ iptables -A FORWARD -m state --state NEW -p tcp -m multiport --dport http,https -o eth0 -i eth1 -m limit --limit 20/hour --limit-burst 5 -j ACCEPT
+$ iptables -A FORWARD -m conntrack --ctstate NEW -p tcp -m multiport --dport http,https -o eth0 -i eth1 -m limit --limit 20/hour --limit-burst 5 -j ACCEPT
 ```
 
 or
 
 ```bash
-$ iptables -A INPUT -p tcp -m state --state NEW --dport http -m iplimit --iplimit-above 5 -j DROP
+$ iptables -A INPUT -p tcp -m conntrack --ctstate NEW --dport http -m iplimit --iplimit-above 5 -j DROP
 ```
 
 ### 维护要匹配的最近连接列表
 
 ```bash
-$ iptables -A FORWARD -m recent --name portscan --rcheck --seconds 100 -j DROPiptables -A FORWARD -p tcp -i eth0 --dport 443 -m recent --name portscan --set -j DROP
+$ iptables -A FORWARD -m recent --name portscan --rcheck --seconds 100 -j DROP
+$ iptables -A FORWARD -p tcp -i eth0 --dport 443 -m recent --name portscan --set -j DROP
 ```
 
 ### 匹配数据包数据负载中的 “string*”
@@ -715,7 +704,7 @@ $ iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 ### 阻止非 SYN 的新数据包
 
 ```bash
-$ iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+$ iptables -A INPUT -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
 ```
 
 或

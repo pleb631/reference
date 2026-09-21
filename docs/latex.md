@@ -885,13 +885,18 @@ x = \begin{cases}
 ### 字体
 <!--rehype:wrap-class=col-span-2-->
 
-:- | :- | :- | :- | :- | :-
-:- | :- | :- | :- | :- | :-
-`KaTex:\Huge AB` | <pur>`\Huge AB`</pur> | `KaTex:\normalsize AB` | <pur>`\normalsize AB`</pur> | `KaTex:\normalsize AB` | <pur>\normalsize AB</pur>
-`KaTex:\huge AB` | <pur>`\huge AB`</pur> | `KaTex:\huge AB` | <pur>`\huge AB`</pur> | `KaTex:\small AB` | <pur>\small AB</pur>
-`KaTex:\LARGE AB` | <pur>`\LARGE AB`</pur> | `KaTex:\LARGE AB` | <pur>`\LARGE AB`</pur> | `KaTex:\footnotesize AB` | <pur>\footnotesize AB</pur>
-`KaTex:\Large AB` | <pur>`\Large AB`</pur> | `KaTex:\Large AB` | <pur>`\Large AB`</pur> | `KaTex:\scriptsize AB` | <pur>\scriptsize AB</pur>
-`KaTex:\large AB` | <pur>`\large AB`</pur> | `KaTex:\large AB` | <pur>`\large AB`</pur> | `KaTex:\tiny AB` | <pur>\tiny AB</pur>
+命令 | 示例
+:- | :-
+`KaTex:\Huge AB` | <pur>`\Huge AB`</pur>
+`KaTex:\huge AB` | <pur>`\huge AB`</pur>
+`KaTex:\LARGE AB` | <pur>`\LARGE AB`</pur>
+`KaTex:\Large AB` | <pur>`\Large AB`</pur>
+`KaTex:\large AB` | <pur>`\large AB`</pur>
+`KaTex:\normalsize AB` | <pur>`\normalsize AB`</pur>
+`KaTex:\small AB` | <pur>`\small AB</pur>
+`KaTex:\footnotesize AB` | <pur>`\footnotesize AB</pur>
+`KaTex:\scriptsize AB` | <pur>`\scriptsize AB</pur>
+`KaTex:\tiny AB` | <pur>`\tiny AB</pur>
 
 ### 样式
 <!--rehype:wrap-class=col-span-3-->
@@ -908,4 +913,3 @@ x = \begin{cases}
 
 - [LaTeX 官网](https://www.latex-project.org/) _(latex-project.org)_
 - [KaTeX 官网](https://katex.org/) _(katex.org)_
-- [symbols.pdf](https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf) _(cmor-faculty.rice.edu)_

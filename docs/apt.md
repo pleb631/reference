@@ -8,7 +8,7 @@ APT 清单查询
 
 ### 介绍
 <!--rehype:wrap-class=row-span-2-->
-APT（`A`dvanced `P`ackaging `T`ools）是`Debian`及其派生的`Linux`软件包管理器。APT可以自动下载，配置，安装二进制或者源代码格式的软件包，因此简化了Unix系统上管理软件的过程。APT最早被设计成`dpkg的前端`，用来处理deb格式的软件包。现在经过`APT-RPM`组织修改，APT已经可以安装在支持RPM的系统管理RPM包。
+APT（`A`dvanced `P`ackaging `T`ools）是 Debian、Ubuntu 及其衍生发行版的软件包管理工具，用于查询、安装、升级和移除 `.deb` 软件包。
 
 它结合了apt-get和apt-cache工具中最常用的命令以及选项与默认值。`apt`命令必须以具有`sudo`权限的用户运行。
 
@@ -60,13 +60,7 @@ $ sudo apt update
 $ sudo apt upgrade
 ```
 
-升级单个软件包。
-
-```bash
-$ sudo apt upgrade package_name
-```
-
-升级整个系统，则会删除当前安装的软件包。
+需要升级整个系统并允许调整依赖关系时，使用 `full-upgrade`；它可能移除冲突的软件包。
 
 ```bash
 $ sudo apt full-upgrade
@@ -181,16 +175,6 @@ $ sudo apt search package_name
 
 ```bash
 $ sudo apt show package_name
-```
-
-### edit-sources 快速换源
-
-允许您在首选的文本编辑器中编辑`sources.list(5)` 文件，同时还提供基本的健全性检查。
-
-首次换源可以使用`edit-sources`
-
-```bash
-$ sudo apt show edit-sources
 ```
 
 换源后更新一下软件包索引。

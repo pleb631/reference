@@ -133,7 +133,7 @@ attrib命令可以列出或修改磁盘上文件的属性，
 参数 | action
 :--- | :--
 `net start`              | 查看开启了哪些服务
-`net start 服务名`       | 开启服务；(如:net start telnet， net start schedule)
+`net start 服务名`       | 开启服务；（如：`net start schedule`）
 `net stop 服务名`        | 停止某服务
 `net time 目标ip`        | 查看对方时间
 `net view`               | 查看本地局域网内开启了哪些共享
@@ -185,12 +185,10 @@ attrib命令可以列出或修改磁盘上文件的属性，
 
 参数 | action
 :--- | :--
-`netstat -a`        | 查看开启了哪些端口,常用netstat -an
-`netstat -n`        | 查看端口的网络连接情况，常用netstat -an
-`netstat -v`        | 查看正在进行的工作
-`netstat -p 协议名`  | 例：netstat -p tcq/ip 查看某协议使用情况
-`netstat -s`        | 查看正在使用的所有协议使用情况
-`nbtstat -A ip`     | 对方136到139其中一个端口开了的话，就可查看对方最近登陆的用户名
+`netstat -a`        | 显示所有连接和侦听端口，常与 `-n` 组合使用
+`netstat -n`        | 以数字形式显示地址和端口
+`netstat -p 协议名` | 显示指定协议的连接，例如 `netstat -p tcp`
+`netstat -s`        | 显示各协议统计信息
 
 ### taskkill 命令
 
@@ -258,14 +256,11 @@ attrib命令可以列出或修改磁盘上文件的属性，
 
 参数 | action
 :--- | :--
-`ipconfig (winipcfg)`          | 查看本地ip，可加/all
+`ipconfig`                     | 查看本机 TCP/IP 配置；使用 `ipconfig /all` 查看完整信息
 `kill -F 进程名`               | 加-F参数后强制结束某进程
 `del -F 文件名`                | 加-F参数可删除只读文件
 `move 源路径文件　目的路径`    | 移动文件，可修改文件名
 `fc one.txt two.txt > 3st.txt` | 对比文件并输出到3st.txt
-`finger username @host`        | 查看最近用户登陆
-`telnet`                       | 进入本机的telnet
-`telnet ip 端口`               | 远程登陆服务器,默认端口为23
 <!--rehype:className=style-list-->
 
 ### （二）

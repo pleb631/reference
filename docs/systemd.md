@@ -14,18 +14,18 @@ Systemd 备忘清单
 `systemctl list-sockets` | 列出套接字和激活的内容
 `systemctl list-jobs` | 查看活动的 systemd 作业
 `systemctl list-unit-files` | 查看单元文件及其状态
-`systemctl list-units` | 显示单位是否已加载/活动
-`systemctl get-default` | 列出默认目标(如运行级别)
+`systemctl list-units` | 显示单元是否已加载或活动
+`systemctl get-default` | 显示默认目标（例如 `multi-user.target`）
 <!--rehype:className=style-list-->
 
 ### 改变系统状态
 
 :- | -
 :- | -
-`systemctl reboot` | 重启系统(reboot.target)
-`systemctl poweroff` | 关闭系统(poweroff.target)
-`systemctl emergency` | 进入紧急模式(emergency.target)
-`systemctl default` | 返回默认目标(multi-user.target)
+`systemctl reboot` | 重启系统（`reboot.target`）
+`systemctl poweroff` | 关闭系统（`poweroff.target`）
+`systemctl emergency` | 进入紧急模式（`emergency.target`）
+`systemctl default` | 启动默认目标
 <!--rehype:className=style-list-->
 
 ### 使用服务
@@ -33,20 +33,20 @@ Systemd 备忘清单
 
 :- | -
 :- | -
-`systemctl stop service` | <red>停止</red>正在运行的服务
-`systemctl start service` | 启动服务
-`systemctl restart service` | 重新启动正在运行的服务
-`systemctl reload service` | 重新加载服务中的所有配置文件
+`systemctl stop <service>` | <red>停止</red>正在运行的服务
+`systemctl start <service>` | 启动服务
+`systemctl restart <service>` | 重新启动服务
+`systemctl reload <service>` | 重新加载服务配置
 `systemctl daemon-reload` | 必须运行以重新加载更改的单元文件
-`systemctl status service` | 查看服务是否正在运行/启用
-`systemctl --failed` | 显示未能运行的服务
-`systemctl reset-failed` | 将任何单位从失败状态重置
-`systemctl enable service` | 使服务在启动时启动
-`systemctl disable service` | 禁用服务 - 不会在启动时启动
-`systemctl show service` | 显示服务(或其他单元)的属性
-`systemctl edit service` | 创建片段以放入单元文件
-`systemctl edit --full service` | 编辑整个单元文件以进行服务
-`systemctl -H host status network` | 远程运行任何 systemctl 命令
+`systemctl status <service>` | 查看服务状态
+`systemctl --failed` | 显示失败的单元
+`systemctl reset-failed` | 重置失败的单元状态
+`systemctl enable <service>` | 设为开机启动
+`systemctl disable <service>` | 取消开机启动
+`systemctl show <service>` | 显示服务或其他单元的属性
+`systemctl edit <service>` | 创建单元配置片段
+`systemctl edit --full <service>` | 编辑完整单元文件
+`systemctl -H <host> status <service>` | 在远程主机上查看服务状态
 <!--rehype:className=style-list-->
 
 ### 查看日志消息
@@ -55,7 +55,7 @@ Systemd 备忘清单
 :- | -
 :- | -
 `journalctl` | 显示所有收集的日志消息
-`journalctl -u network.service` | 查看网络服务消息
+`journalctl -u <service>` | 查看指定服务的日志
 `journalctl -f` | 关注出现的消息
 `journalctl -k` | 仅显示内核消息
 
@@ -68,7 +68,7 @@ SysVinit | Systemd | 说明
 `service SERVICE_NAME stop` | `systemctl stop SERVICE_NAME` | 用于停止服务(不永久重启)
 `service SERVICE_NAME restart` | `systemctl restart SERVICE_NAME` | 用于停止然后启动服务
 `service SERVICE_NAME reload` | `systemctl reload SERVICE_NAME` | 重新加载配置文件而不中断挂起的操作
-`service SERVICE_NAME condrestart` | `systemctl condrestart SERVICE_NAME` | 如果服务已在运行，则重新启动
+`service SERVICE_NAME condrestart` | `systemctl try-restart SERVICE_NAME` | 仅在服务已运行时重启
 `service SERVICE_NAME status` | `systemctl status SERVICE_NAME` | 判断服务当前是否正在运行
 `chkconfig SERVICE_NAME on` | `systemctl enable SERVICE_NAME` | 打开服务，以便在下次启动时启动，或其他触发器
 `chkconfig SERVICE_NAME off` | `systemctl disable SERVICE_NAME` | 为下次重新启动或任何其他触发器关闭服务

@@ -1,7 +1,7 @@
 HTTP 状态码备忘清单
 ===
 
-HTTP 状态码备忘清单。 每个 HTTP 状态代码的快速参考。
+HTTP 常用状态码与 REST API 返回码的快速参考。
 
 HTTP 状态码
 ---
@@ -29,7 +29,7 @@ HTTP 状态码
 <!--rehype:wrap-class=row-span-3-->
 
 - [400: Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1) _服务器不理解该请求_<!--rehype:tooltips-->
-- [401: Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1) _请求的页面需要用户名和密码_<!--rehype:tooltips-->
+- [401: Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1) _请求缺少有效的认证凭据_<!--rehype:tooltips-->
 - [402: Payment Required](https://tools.ietf.org/html/rfc7231#section-6.5.2) _您目前还不能使用此代码。402 状态码被创建最初用于表明请求的内容只有付费之后才能获取。目前不存在标准的使用约定_<!--rehype:tooltips-->
 - [403: Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3) _禁止了对于此页面的请求_<!--rehype:tooltips-->
 - [404: Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4) _服务器找不到请求的页面_<!--rehype:tooltips-->
@@ -39,10 +39,10 @@ HTTP 状态码
 - [408: Request Timeout](https://tools.ietf.org/html/rfc7231#section-6.5.7) _请求花费的时间比服务器准备等待的时间长_<!--rehype:tooltips-->
 - [409: Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8) _由于冲突，请求无法完成_<!--rehype:tooltips-->
 - [410: Gone](https://tools.ietf.org/html/rfc7231#section-6.5.9) _请求的页面不再可用_<!--rehype:tooltips-->
-- [411: Length Required](https://tools.ietf.org/html/rfc7231#section-6.5.10) _“Content-Length”未定义。 没有它，服务器将不会接受请求_<!--rehype:tooltips-->
+- [411: Length Required](https://tools.ietf.org/html/rfc7231#section-6.5.10) _服务器拒绝未提供所需 `Content-Length` 的请求_<!--rehype:tooltips-->
 - [412: Precondition Failed](https://tools.ietf.org/html/rfc7232#section-4.2) _请求中给出的前提条件被服务器评估为 false_<!--rehype:tooltips-->
-- [413: Payload Too Large](https://tools.ietf.org/html/rfc7231#section-6.5.11) _服务器不会接受请求，因为请求实体太大_<!--rehype:tooltips-->
-- [414: URI Too Long](https://tools.ietf.org/html/rfc7231#section-6.5.12) _服务器不会接受请求，因为 url 太长。 当您将“发布”请求转换为具有长查询信息的“获取”请求时发生_<!--rehype:tooltips-->
+- [413: Content Too Large](https://www.rfc-editor.org/rfc/rfc9110.html#name-413-content-too-large) _服务器拒绝处理内容过大的请求_<!--rehype:tooltips-->
+- [414: URI Too Long](https://www.rfc-editor.org/rfc/rfc9110.html#name-414-uri-too-long) _服务器拒绝处理目标 URI 过长的请求_<!--rehype:tooltips-->
 - [415: Unsupported Media Type](https://tools.ietf.org/html/rfc7231#section-6.5.13) _服务器不会接受请求，因为不支持媒体类型_<!--rehype:tooltips-->
 - [416: Range Not Satisfiable](https://tools.ietf.org/html/rfc7233#section-4.4) _请求的字节范围不可用且超出范围_<!--rehype:tooltips-->
 - [417: Expectation Failed](https://tools.ietf.org/html/rfc7231#section-6.5.14) _此服务器无法满足在 Expect 请求标头字段中给出的期望_<!--rehype:tooltips-->
@@ -62,9 +62,10 @@ HTTP 状态码
 - [302: Found](https://tools.ietf.org/html/rfc7231#section-6.4.3) _请求的页面已临时移动到新的 url_<!--rehype:tooltips-->
 - [303: See Other](https://tools.ietf.org/html/rfc7231#section-6.4.4) _请求的页面可以在不同的 url 下找到_<!--rehype:tooltips-->
 - [304: Not Modified](https://tools.ietf.org/html/rfc7232#section-4.1) _这是对 If-Modified-Since 或 If-None-Match 标头的响应代码，其中 URL 自指定日期以来未修改_<!--rehype:tooltips-->
-- [305: Use Proxy](https://tools.ietf.org/html/rfc7231#section-6.4.5) _请求的 URL 必须通过 Location 标头中提到的代理访问_<!--rehype:tooltips-->
-- [306: Unused](https://tools.ietf.org/html/rfc7231#section-6.4.6) _此代码在以前的版本中使用过。 它不再使用，但代码被保留_<!--rehype:tooltips-->
+- [305: Use Proxy](https://www.rfc-editor.org/rfc/rfc9110.html#name-305-use-proxy) _已弃用；不应使用此状态码配置代理。_<!--rehype:tooltips-->
+- [306: Unused](https://www.rfc-editor.org/rfc/rfc9110.html#name-306-unused) _此代码已不再使用，且被保留，新的实现不应使用它。_<!--rehype:tooltips-->
 - [307: Temporary Redirect](https://tools.ietf.org/html/rfc7231#section-6.4.7) _请求的页面已临时移动到新的 url_<!--rehype:tooltips-->
+- [308: Permanent Redirect](https://www.rfc-editor.org/rfc/rfc9110.html#name-308-permanent-redirect) _资源已永久移动到新的 URI；客户端重定向时不得修改请求方法。_<!--rehype:tooltips-->
 
 ### 5xx. 服务器错误
 
@@ -79,43 +80,23 @@ HTTP 状态码
 
  :- | -
 ---- | ----
-`200` | 返回成功，GET，DELETE 请求成功
-`204` | 无内容，POST 请求成功
+`200` | 请求成功，通常返回资源表示
+`201` | 资源创建成功，常用于 `POST`
+`204` | 请求成功且无响应体，常用于 `DELETE`
 `301` | 永久重定向
-`302/307` | 临时重定向
+`302/307` | 临时重定向；`307` 不改变请求方法
+`308` | 永久重定向且不改变请求方法
 `304` | 未修改，自上次请求以来
-`331` | 用户名正确，需要密码
-`332` | 需要登录帐户
 `400` | 错误请求，缺少 API 请求的必需属性
-`401` | 未授权，无效凭据进行身份验证将
-`403` | 禁地，该请求不被允许
-`404` | 未找到，无法访问资
-`405` | 方法不允许，不支持该请求
-`409` | 冲突，冲突资源已存在
-`412` | 该请求被拒绝
-`422` | 无法处理，无法处理该实体
-`429` | 请求过多，用户超出了应用速率限制
-`500` | 服务器错误，在处理请求时，服务器出现问题
-`530` | 未登录
-
-### 5xx 永久性否定
-<!--rehype:wrap-class=col-span-2-->
-
- :- | -
----- | ----
-`500` | 语法错误，命令无法识别。这可能包括诸如命令行太长之类的错误
-`501` | 在参数中有语法错误
-`502` | 未执行命令
-`503` | 错误的命令序列
-`504` | 未执行该参数的命令
-`530` | 未登录
-`532` | 存储文件需要帐户
-`550` | 未执行请求的操作。文件不可用（例如，未找到文件，没有访问权限）
-`551` | 请求的操作异常终止：未知的页面类型
-`552` | 请求的文件操作异常终止：超出存储分配（对于当前目录或数据集）
-`553` | 未执行请求的操作。不允许的文件名
-
-永久性否定的完成答复，该命令不成功，错误是永久性的。如果客户端重试命令，将再次出现同样的错误。
+`401` | 缺少或无效的认证凭据
+`403` | 服务器理解请求，但拒绝执行
+`404` | 资源不存在或不可用
+`405` | 资源不支持该请求方法
+`409` | 请求与资源当前状态冲突
+`412` | 请求前置条件不成立
+`422` | 服务器理解请求内容，但无法处理其中的指令
+`429` | 请求过多，已超过速率限制
+`500` | 服务器处理请求时遇到意外错误
 
 另见
 ----
@@ -123,9 +104,6 @@ HTTP 状态码
 - [常见 HTTP/FTP/WebSocket 错误代码大全](https://jaywcjlove.github.io/handbook/other/HTTP-status-codes.html) _(github.io)_
 - [HTTP 状态码列表](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) _(wikipedia.org)_
 - [FTP 状态码列表](https://en.wikipedia.org/wiki/List_of_FTP_server_return_codes) _(wikipedia.org)_
-- [MDN CloseEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/CloseEvent) _(mozilla.org)_
 - [HTTP 404](https://en.wikipedia.org/wiki/HTTP_404#Custom_error_pages) _(wikipedia.org)_
-- [List of FTP server return codes](https://en.wikipedia.org/wiki/List_of_FTP_server_return_codes) _(wikipedia.org)_
 - [HTTP概述](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Overview) _(mozilla.org)_
-- [Help for HTTP error 403: “Forbidden”](http://www.getnetgoing.com/HTTP-403.html) _(getnetgoing.com)_
 - [实用的 RESTful API 最佳实践](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api) _(vinaysahni.com)_

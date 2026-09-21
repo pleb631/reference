@@ -42,10 +42,10 @@ jobs:
     runs-on: ubuntu-latest
     # 步骤 根据步骤执行任务
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 'lts/*'
 
       - run: npm install
       - run: npm run build
@@ -192,10 +192,10 @@ jobs:
 
 ---
 
-- `Windows Server 2022` _(windows-latest)_ 或 _(windows-2022)_
-- `Ubuntu 20.04` _(ubuntu-latest)_ 或 _(ubuntu-20.04)_
-- `macOS Monterey 12` _(macos-12)_
-- `macOS Big Sur 11` _(macos-latest)_,_(macos-11)_
+- `Windows Server 2025` _(windows-latest)_ 或 _(windows-2025)_
+- `Ubuntu 24.04` _(ubuntu-latest)_ 或 _(ubuntu-24.04)_
+- `macOS 15` _(macos-15)_
+- `macOS 14` _(macos-14)_
 <!--rehype:className=style-arrow-->
 
 另见: [选择 GitHub 托管的运行器](https://docs.github.com/cn/actions/using-workflows/workflow-syntax-for-github-actions#选择-github-托管的运行器)
@@ -219,10 +219,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 'lts/*'
 
       - run: npm install
       - run: npm run build
@@ -499,7 +499,7 @@ steps:
 
 ```yml
 - name: Checkout
-  uses: actions/checkout@v3
+  uses: actions/checkout@v4
   with:
     path: main
     submodules: true
@@ -610,10 +610,10 @@ Artifacts 是 GitHub Actions 为您提供持久文件并在运行完成后使用
 
 ```yml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v4
   - run: mkdir -p path/to/artifact
   - run: echo hello > path/to/file/a.txt
-  - uses: actions/upload-artifact@v2
+  - uses: actions/upload-artifact@v4
     with:
       name: my-artifact
       path: path/to/artifact/a.txt
@@ -623,8 +623,8 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v2
-  - uses: actions/download-artifact@v2
+  - uses: actions/checkout@v4
+  - uses: actions/download-artifact@v4
     with:
       name: my-artifact
 ```
@@ -633,9 +633,9 @@ steps:
 
 ```yml
 - name: Setup Node
-  uses: actions/setup-node@v2
+  uses: actions/setup-node@v4
   with:
-    node-version: 14
+    node-version: 'lts/*'
 ```
 
 使用[矩阵策略](https://docs.github.com/cn/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategy) 在 nodejs 不同版本中运行
@@ -643,12 +643,12 @@ steps:
 ```yml
 strategy:
   matrix:
-    node-version: [10.x, 12.x, 14.x]
+    node-version: [lts/*, lts/-1]
 
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v4
   - name: 使用 Node ${{ matrix.node-version }}
-    uses: actions/setup-node@v1
+    uses: actions/setup-node@v4
     with:
       node-version: ${{ matrix.node-version }}
   - run: npm ci
@@ -729,34 +729,34 @@ steps:
     docker push ghcr.io/pleb631/reference:${{steps.changelog.outputs.version}}
 ```
 
-### 提交 commit 到 master 分支
+### 提交变更到默认分支
 <!--rehype:wrap-class=col-span-2-->
 
+工作流需要具备仓库写入权限：
+
 ```yml
-- name: 生成一个文件，并将它提交到 master 分支
+permissions:
+  contents: write
+```
+
+```yml
+- name: 生成文件并提交到默认分支
+  env:
+    DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
   run: |
-    # Strip git ref prefix from version
+    # 去掉 Git 引用前缀
     VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
     COMMIT=released-${VERSION}
-    # Strip "v" prefix from tag name
+    # 去掉标签名的 v 前缀
     [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
     echo "输出版本号：$VERSION"
-    # 将版本输出到当前 VERSION 文件中
+    # 将版本写入当前 VERSION 文件
     echo "$VERSION" > VERSION
-    echo "1. 输出Commit：$commit"
-    echo "2. Released $VERSION"
-    git fetch
     git config --local user.email "action@github.com"
     git config --local user.name "GitHub Action"
-    git add .
-    git commit -am $COMMIT
-    git branch -av
-    git pull origin master
-
-- name: 将上面的提交 push 到 master 分支
-  uses: ad-m/github-push-action@master
-  with:
-    github_token: ${{ secrets.GITHUB_TOKEN }}
+    git add VERSION
+    git diff --cached --quiet || git commit -m "$COMMIT"
+    git push origin "HEAD:$DEFAULT_BRANCH"
 ```
 
 ### 作业之间共享数据
@@ -772,7 +772,7 @@ jobs:
         run: |
           expr 1 + 1 > output.log
       - name: Upload output file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: output-log-file
           path: output.log
@@ -785,7 +785,7 @@ jobs:
   example-job:
     steps:
       - name: Download a single artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: output-log-file
 ```
@@ -862,16 +862,16 @@ steps:
 
 ```yml
 - name: Set up Docker Buildx
-  uses: docker/setup-buildx-action@v2
+  uses: docker/setup-buildx-action@v4
 - name: 登录 GitHub 容器注册表
-  uses: docker/login-action@v2
+  uses: docker/login-action@v4
   with:
     registry: ghcr.io
     username: ${{ github.actor }}
     password: ${{ secrets.GITHUB_TOKEN }}
 
 - name: 构建并推送 image:latest
-  uses: docker/build-push-action@v3
+  uses: docker/build-push-action@v7
   with:
     push: true
     context: .
@@ -879,7 +879,7 @@ steps:
     tags: ghcr.io/pleb631/reference:latest
 
 - name: 构建并推送 image:tags
-  uses: docker/build-push-action@v3
+  uses: docker/build-push-action@v7
   if: steps.create_tag.outputs.successful
   with:
     push: true
@@ -904,15 +904,15 @@ steps:
 
 ```yml
 - name: Set up Docker Buildx
-  uses: docker/setup-buildx-action@v2
+  uses: docker/setup-buildx-action@v4
 - name: 登录到 Docker Hub
-  uses: docker/login-action@v2
+  uses: docker/login-action@v4
   with:
     username: ${{ secrets.DOCKER_USER }}
     password: ${{ secrets.DOCKER_PASSWORD }}
 
 - name: 构建并推送 image:latest
-  uses: docker/build-push-action@v3
+  uses: docker/build-push-action@v7
   with:
     push: true
     context: .
@@ -920,7 +920,7 @@ steps:
     tags: ${{ secrets.DOCKER_USER }}/reference:latest
 
 - name: 构建并推送 image:tags
-  uses: docker/build-push-action@v3
+  uses: docker/build-push-action@v7
   if: steps.create_tag.outputs.successful
   with:
     push: true
@@ -932,10 +932,10 @@ steps:
 ### 检查签出仓库并安装 nodejs
 
 ```yml
-- uses: actions/checkout@v3
-- uses: actions/setup-node@v3
+- uses: actions/checkout@v4
+- uses: actions/setup-node@v4
   with:
-    node-version: 16
+  node-version: 'lts/*'
 ```
 
 ### 忽略失败
@@ -1021,7 +1021,7 @@ GitHub Actions
 jobs:
   job1:
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: echo "Run your script here"
 ```
 
@@ -1085,7 +1085,7 @@ deploy_prod:
   script:
     - echo "部署到生产服务器"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 ```
 
 GitHub Actions
@@ -1093,7 +1093,7 @@ GitHub Actions
 ```yml
 jobs:
   deploy_prod:
-    if: contains( github.ref, 'master')
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
     steps:
       - run: echo "部署到生产服务器"
@@ -1114,7 +1114,7 @@ GitHub Actions
 
 ```yml
 - name: Upload math result for job 1
-  uses: actions/upload-artifact@v3
+  uses: actions/upload-artifact@v4
   with:
     name: homework
     path: math-homework.txt
@@ -1195,7 +1195,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Cache node modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.npm
         key: v1-npm-deps-${{ hashFiles('**/package-lock.json') }}
@@ -1244,7 +1244,7 @@ jobs:
 
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 执行 package.json 文件中
       # 所有依赖项的全新安装

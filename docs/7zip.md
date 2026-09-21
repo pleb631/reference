@@ -41,10 +41,7 @@ $ brew install sevenzip
 :--- | :--- | :--- | :---
 `a` | **add：** 添加/创建压缩包 | `x` | **extract：** 解压（保留完整路径）
 `e` | **extract：** 解压（不保留目录名） | `l` | **list：** 列出压缩包内容
-`t` | **test：** 测试压缩包完整性 | `h` | **hash：** 计算文件哈希
-`u` | **update：** 更新压缩包内文件 | `d` | **delete：** 从压缩包中删除文件
-`rn` | **rename：** 重命名压缩包内文件 | `i` | **info：** 查看支持的格式信息
-`b` | **benchmark：** 性能测试 | &nbsp; | &nbsp;
+`t` | **test：** 测试压缩包完整性 | &nbsp; | &nbsp;
 
 ### 语法形式和选项
 
@@ -57,7 +54,6 @@ $ brew install sevenzip
 **解压（不保留目录）** | `7z e archive.7z -o输出目录`
 **列出内容** | `7z l archive.7z`
 **测试完整性** | `7z t archive.7z`
-**计算哈希** | `7z h -scrcSHA256 文件...`
 **创建分卷压缩包** | `7z a archive.7z 大文件.iso -v1g`
 <!--rehype:className=style-list-arrow-->
 
@@ -71,13 +67,8 @@ $ brew install sevenzip
 `-r[-\|0]` | 递归子目录（`-r` / `-r-` / `-r0`） | `-mx[N]` | 压缩等级：`-mx0`（不压缩） `-mx1`（最快）… `-mx9`（最强）
 `-mmt[N]` | 线程数（如 `-mmt4`） | `-y` | 所有询问默认回答 Yes
 `-ao{a\|s\|t\|u}` | 覆盖策略：a 全覆盖 / s 跳过 / t 仅覆盖旧文件 / u 自动重命名 | &nbsp; | &nbsp;
-`-v{Size}[b\|k\|m\|g]` | 分卷（如 `-v1g` / `-v500m`） | `-sdel` | 压缩后删除源文件
-`-sfx[{name}]` | 生成自解压压缩包（SFX） | `-bd` | 关闭进度指示器
-`-bb[0-3]` | 输出日志等级 | `-bt` | 输出执行时间统计
-`-so` | 输出到 stdout | `-si[{name}]` | 从 stdin 读入数据
-`-scrc[CRC64\|SHA1\|SHA256\|*]` | 指定校验/哈希算法（用于 `x/e/h`） | `@listfile` | 从列表文件读取文件名
+`-v{Size}[b\|k\|m\|g]` | 分卷（如 `-v1g` / `-v500m`） | &nbsp; | &nbsp;
 `-i...` | 仅包含匹配项（include） | `-x...` | 排除匹配项（exclude）
-`-slt` | `l` 命令输出技术信息 | `-spf` | 使用绝对路径
 
 7z 压缩示例
 --------
@@ -109,20 +100,6 @@ $ 7z a archive.7z dir1/ -mx9 -mmt4
 $ 7z a archive.7z example/ '-x!example/node_modules/*' '-x!example/dist/*'
 ```
 <!--rehype:className=wrap-text-->
-
-### 从列表文件读取待压缩文件
-
-```shell
-$ 7z a archive.7z @files.txt
-```
-
-`files.txt` 每行一个文件路径（相对或绝对路径均可）。
-
-### 压缩后删除源文件
-
-```shell
-$ 7z a archive.7z dir1/ -sdel
-```
 
 7z 解压示例
 --------

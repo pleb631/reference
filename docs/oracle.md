@@ -1,6 +1,8 @@
 Oracle 备忘清单
 ===
 
+Oracle SQL 与 PL/SQL 的常用查询、写入和序列操作快速参考。
+
 入门
 ---
 <!--rehype:body-class=cols-2-->
@@ -8,15 +10,16 @@ Oracle 备忘清单
 ### SELECT 语句
 
 ```sql
-SELECT * 
-FROM beverages 
-WHERE field1 = 'Kona' 
-  AND field2 = 'coffee' 
-  AND field3 = 122;
+SELECT beverage_id, name
+FROM beverages
+WHERE origin = 'Kona'
+  AND category = 'coffee';
 ```
 <!--rehype:className=wrap-text-->
 
 ### SELECT INTO 语句
+
+在 PL/SQL 中查询单行数据并赋值给变量；查询结果必须恰好一行。
 
 ```sql
 SELECT name, address, phone_number 
@@ -29,27 +32,20 @@ WHERE employee_id = 6;
 ### INSERT 语句
 <!--rehype:wrap-class=row-span-2-->
 
-使用 VALUES 关键字插入
+使用 `VALUES` 插入一行
 
 ```sql
-INSERT INTO table_name 
-VALUES ('Value1', 'Value2', ... );
-
-INSERT INTO table_name (Column1, Column2, ... ) 
-VALUES ( 'Value1', 'Value2', ... );
+INSERT INTO table_name (column1, column2)
+VALUES ('value1', 'value2');
 ```
 <!--rehype:className=wrap-text-->
 
 使用 SELECT 语句插入
 
 ```sql
-INSERT INTO table_name
-SELECT Value1, Value2, ...
-FROM table_name;
-
-INSERT INTO table_name (Column1, Column2, ...)
-SELECT Value1, Value2, ...
-FROM table_name;
+INSERT INTO target_table (column1, column2)
+SELECT column1, column2
+FROM source_table;
 ```
 <!--rehype:className=wrap-text-->
 
@@ -187,7 +183,7 @@ SELECT length2('hello world') FROM dual;
 SELECT length4('hello world') FROM dual;
 ```
 
-这些也返回 `11`，因为调用的函数是等价的
+对于仅包含 ASCII 字符的此示例，它们都返回 `11`；多字节字符下，按字节、字符和 Unicode 码位计数的结果可能不同。
 
 ### Instr
 <!--rehype:wrap-class=row-span-2-->

@@ -363,8 +363,6 @@ if (!gotTheLock) {
 `select-client-certificate` | 当一个客户证书被请求的时候发出 [#](https://www.electronjs.org/zh/docs/latest/api/app#事件-select-client-certificate)
 `login` | 当 webContents 要进行基本身份验证时触发 [#](https://www.electronjs.org/zh/docs/latest/api/app#事件-login)
 `gpu-info-update` | 每当有 GPU 信息更新时触发 [#](https://www.electronjs.org/zh/docs/latest/api/app#事件-gpu-info-update)
-~~`gpu-process-crashed`~~ ~~废弃~~ | 当 gpu 进程崩溃或关闭(杀死)时触发 [#](https://www.electronjs.org/zh/docs/latest/api/app#事件-gpu-process-crashed-已废弃)
-~~`renderer-process-crashed`~~ ~~废弃~~ | 渲染器进程崩溃或关闭(杀死)时触发 [#](https://www.electronjs.org/zh/docs/latest/api/app#事件-renderer-process-crashed-已废弃)
 `render-process-gone` | 渲染器进程意外消失时触发 [#](https://www.electronjs.org/zh/docs/latest/api/app#事件-render-process-gone)
 `child-process-gone` | 子进程意外消失时触发 [#](https://www.electronjs.org/zh/docs/latest/api/app#事件-child-process-gone)
 `accessibility-support-changed` | 当 Chrome 的辅助功能状态改变时触发 [#](https://www.electronjs.org/zh/docs/latest/api/app#事件-accessibility-support-changed--macos---windows-)
@@ -445,9 +443,8 @@ BrowserWindow
 `titleBarStyle.customButtonsOnHover` _(mac)_ | 隐藏的标题栏的全尺寸的内容窗口， 红绿灯按钮在鼠标悬停在窗口左上方时显示。**注意:**此选项目前是实验性的。
 `trafficLightPosition` _Point_ _(mac)_ | 在无边框窗口中设置灯绿灯按钮位置。
 `roundedCorners` _boolean_ _(mac)_ | 无边框窗口在 macOS 上，是否应该有圆角。 默认值为 _(true)_。 属性设置为 _(false)_ ，将阻止窗口是可全屏的。
-~~`fullscreenWindowTitle`~~ _boolean_ _(mac)_ ~~_已弃用_~~ | _titleBarStyle_ 设置为 _(hiddenInset)_ 时，在 macOS 全屏模式下标题栏显示标题。默认值为 _(false)_.
 `thickFrame` _boolean_ | 对 Windows 上的无框窗口使用 _(WS_THICKFRAME)_ 样式，会增加标准窗口框架。 设置为 _(false)_ 时将移除窗口的阴影和动画. 默认值为 _(true)_。
-`vibrancy` _string_ _(mac)_ | 为窗口添加一种类型的动态效果，仅 macOS。 可以是 _(appearance-based)_，_(light)_，_(dark)_，_(titlebar)_，_(selection)_，_(menu)_，_(popover)_，_(sidebar)_，_(medium-light)_，_(ultra-dark)_，_(header)_，_(sheet)_，_(window)_，_(hud)_，_(fullscreen-ui)_，_(tooltip)_，_(content)_，_(under-window)_ 或 _(under-page)_。 请注意 _(appearance-based)_，_(light)_，_(dark)_，_(medium-light)_ 和 _(ultra-dark)_ 已弃用，在 macOS Catalina (10.15) 中已经移除。
+`vibrancy` _string_ _(mac)_ | 为窗口添加动态效果，仅 macOS。可选 _(titlebar)_、_(selection)_、_(menu)_、_(popover)_、_(sidebar)_、_(header)_、_(sheet)_、_(window)_、_(hud)_、_(fullscreen-ui)_、_(tooltip)_、_(content)_、_(under-window)_ 或 _(under-page)_。
 `zoomToPageWidth` _boolean_ _(mac)_ | 在 macOS 上控制，当按住 option 点击工具栏绿色红绿灯按钮或点击窗口 &gt; 放大菜单项的行为。 如果为 _(true)_，窗口为将会缩放到适合宽度，若为 _(false)_ 将会放大到屏幕宽度。 这也会影响，直接调用 _(maximize())_ 的行为。 默认值为 _(false)_.
 `tabbingIdentifier` _string_ _(mac)_ | 选项卡组名称，允许在原生选择卡中打开窗口，macOS 10.12+ 支持。 Windows 中，有相同选项卡标识的将会组合在一起。 这会添加一个原生新增选项卡按钮到你窗口的选项卡栏，同时 _(app)_ 和窗口允许接收 _(new-window-for-tab)_ 事件。
 `webPreferences` _Object_ | 网页功能设置。

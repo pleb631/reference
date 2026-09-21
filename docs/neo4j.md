@@ -979,10 +979,10 @@ timestamp()
 自1970年1月1日UTC午夜以来的毫秒数
 
 ```cypher
-id(nodeOrRelationship)
+elementId(nodeOrRelationship)
 ```
 
-关系或节点的内部ID
+关系或节点的元素 ID（字符串；不要作为业务主键）
 
 ```cypher
 toInteger($expr)
@@ -1258,10 +1258,10 @@ endNode(a_relationship)
 关系的结束节点。
 
 ```cypher
-id(a_relationship)
+elementId(a_relationship)
 ```
 
-关系的内部ID
+关系的元素 ID
 
 ### 字符串函数
 
@@ -1477,82 +1477,73 @@ DROP INDEX index_name IF EXISTS
 <!--rehype:wrap-class=col-span-2 row-span-2-->
 
 ```cypher
-CREATE CONSTRAINT ON (p:Person)
-       ASSERT p.name IS UNIQUE
+CREATE CONSTRAINT person_name_unique
+       FOR (p:Person) REQUIRE p.name IS UNIQUE
 ```
 
 在标签为 Person 且属性为 name 的节点上创建唯一属性约束。如果更新或创建具有相同名称的该标签的任何其他节点，则写入操作将失败。此约束将创建一个相应的索引。
 
 ```cypher
-CREATE CONSTRAINT uniqueness ON (p:Person)
-       ASSERT p.age IS UNIQUE
+CREATE CONSTRAINT uniqueness
+       FOR (p:Person) REQUIRE p.age IS UNIQUE
 ```
 
 在标签为 Person 且属性为 age 的节点上创建唯一属性约束，命名为 uniqueness。如果更新或创建具有相同年龄的该标签的任何其他节点，则写入操作将失败。此约束将创建一个相应的索引。
 
 ```cypher
-CREATE CONSTRAINT ON (p:Person)
-       ASSERT p.surname IS UNIQUE
-       OPTIONS {indexProvider: 'native-btree-1.0'}
+CREATE CONSTRAINT person_surname_unique
+       FOR (p:Person) REQUIRE p.surname IS UNIQUE
 ```
 
-在标签为 Person 且属性为 surname 的节点上创建唯一属性约束，并使用 indexProvider native-btree-1.0 创建相应的索引。
+在标签为 Person 且属性为 surname 的节点上创建唯一属性约束。
 
 ```cypher
-CREATE CONSTRAINT ON (p:Person)
-       ASSERT p.name IS NOT NULL
+CREATE CONSTRAINT person_name_exists
+       FOR (p:Person) REQUIRE p.name IS NOT NULL
 ```
 
 (★) 在标签为 Person 且属性为 name 的节点上创建节点属性存在约束。如果该约束已存在，则抛出错误。如果创建具有该标签但没有 name 的节点，或者从具有 Person 标签的现有节点中删除 name 属性，则写入操作将失败。
 
 ```cypher
-CREATE CONSTRAINT node_exists IF NOT EXISTS ON (p:Person)
-       ASSERT p.name IS NOT NULL
+CREATE CONSTRAINT node_exists IF NOT EXISTS
+       FOR (p:Person) REQUIRE p.name IS NOT NULL
 ```
 
 (★) 如果标签为 Person 且属性为 name 的节点存在节点属性存在约束，或者名为 node_exists 的约束已存在，则不执行任何操作。如果不存在此类约束，则将创建该约束。
 
 ```cypher
-CREATE CONSTRAINT ON ()-[l:LIKED]-()
-       ASSERT l.when IS NOT NULL
+CREATE CONSTRAINT liked_when_exists
+       FOR ()-[l:LIKED]-() REQUIRE l.when IS NOT NULL
 ```
 
 (★) 在关系类型为 LIKED 且属性为 when 的关系上创建关系属性存在约束。如果创建具有此类型但没有 when 的关系，或者从具有 LIKED 类型的现有关系中删除 when 属性，则写入操作将失败。
 
 ```cypher
-CREATE CONSTRAINT relationship_exists ON ()-[l:LIKED]-()
-       ASSERT l.since IS NOT NULL
+CREATE CONSTRAINT relationship_exists
+       FOR ()-[l:LIKED]-() REQUIRE l.since IS NOT NULL
 ```
 
 (★) 在关系类型为 LIKED 且属性为 since 的关系上创建关系属性存在约束，并命名为 relationship_exists。如果创建具有此类型但没有 since 的关系，或者从具有 LIKED 类型的现有关系中删除 since 属性，则写入操作将失败。
 
 ```cypher
-SHOW UNIQUE CONSTRAINTS YIELD *
+SHOW CONSTRAINTS YIELD *
 ```
 
-列出所有唯一约束。
+列出所有约束。
 
 ```cypher
-CREATE CONSTRAINT ON (p:Person)
-      ASSERT (p.firstname, p.surname) IS NODE KEY
+CREATE CONSTRAINT person_fullname_key
+      FOR (p:Person) REQUIRE (p.firstname, p.surname) IS NODE KEY
 ```
 
 (★) 在标签为 Person 且属性为 firstname 和 surname 的节点上创建节点键约束。如果创建具有此标签但没有 firstname 和 surname 的节点，或者如果两者的组合不是唯一的，或者如果修改具有 Person 标签的现有节点上的 firstname 和/或 surname 属性以违反这些约束，则写入操作将失败。
 
 ```cypher
-CREATE CONSTRAINT node_key ON (p:Person)
-      ASSERT (p.name, p.surname) IS NODE KEY
+CREATE CONSTRAINT node_key
+      FOR (p:Person) REQUIRE (p.name, p.surname) IS NODE KEY
 ```
 
 (★) 在标签为 Person 且属性为 name 和 surname 的节点上创建节点键约束，并命名为 node_key。如果创建具有此标签但没有 name 和 surname 的节点，或者如果两者的组合不是唯一的，或者如果修改具有 Person 标签的现有节点上的 name 和/或 surname 属性以违反这些约束，则写入操作将失败。
-
-```cypher
-CREATE CONSTRAINT node_key_with_config ON (p:Person)
-      ASSERT (p.name, p.age) IS NODE KEY
-      OPTIONS {indexConfig: {`spatial.wgs-84.min`: [-100.0, -100.0], `spatial.wgs-84.max`: [100.0, 100.0]}}
-```
-
-(★) 在标签为 Person 且属性为 name 和 age 的节点上创建节点键约束，并命名为 node_key_with_config，以及给定的 spatial.wgs-84 设置以创建相应的索引。其他索引设置将使用它们的默认值。
 
 ```cypher
 DROP CONSTRAINT uniqueness
@@ -1571,7 +1562,7 @@ DROP CONSTRAINT uniqueness IF EXISTS
 - 尽可能使用参数而不是文字常量。这样可以让 Cypher 重用你的查询，而不必解析和构建新的执行计划。
 - 始终为你的变长模式设置一个上限。有可能一个查询会因为错误而无限制地访问图中的所有节点。
 - 只返回你需要的数据。避免返回整个节点和关系，而是选择你需要的数据并只返回那部分。
-- 使用 `PROFILE` / `EXPLAIN` 来分析你的查询性能。查看[查询调优](https://neo4j.com/docs/cypher-manual/4.3/query-tuning)了解更多关于这些以及其他主题的信息。
+- 使用 `PROFILE` / `EXPLAIN` 来分析查询性能。查看[查询调优](https://neo4j.com/docs/cypher-manual/current/planning-and-tuning/)了解更多信息。
 
 ### Neo4j 多数据库管理
 

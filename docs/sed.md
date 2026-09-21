@@ -17,11 +17,11 @@ $ sed [options] command [input-file]
 带管道
 
 ```shell
-$ cat report.txt | sed 's/Nick/John/g'
+$ sed 's/Nick/John/g' report.txt
 ```
 
 ```shell
-$ echo '123abc' | sed 's/[0-9]+//g'
+$ echo '123abc' | sed -E 's/[0-9]+//g'
 ```
 
 ### 选项示例
@@ -126,7 +126,7 @@ $ sed 's/old/new/[flags]' [input-file]
 |----------------|---------------|
 | `/ \| ^ @ ! #`  | 替换分隔符可以是任何字符 |
 | `&`            | 获取匹配的模式 |
-| `( ) \1 \2 \3` | 使用 `(` 和 `)` 进行分组。<br>使用 `\1`、`\2` 替换来引用组 |
+| `\( \) \1 \2 \3` | 基本正则使用 `\(`、`\)` 分组，并用 `\1`、`\2` 引用组；配合 `-E` 时使用 `()` |
 
 Sed 示例
 ----------
@@ -155,7 +155,7 @@ $ sed '5 s/old/new/' file.txt
 将“world”替换为“universe”，但前提是该行以“hello”开头
 
 ```shell
-$ sed '/hello/s/world/universe/' file.txt
+$ sed '/^hello/s/world/universe/' file.txt
 ```
 
 从每行的末尾删除“\”
@@ -167,7 +167,7 @@ $ sed 's/\\$//' file.txt
 删除每行开头的所有空格
 
 ```shell
-$ sed 's/^\s*//' file.txt
+$ sed 's/^[[:space:]]*//' file.txt
 ```
 
 删除评论。 即使是那些在行尾的

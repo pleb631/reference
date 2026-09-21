@@ -1859,78 +1859,36 @@ const jsonObj = {
 
 另见：[JSON 备忘单](./json.md)
 
-### XMLHttpRequest
-
-```javascript
-const xhr = new XMLHttpRequest();
-xhr.open('GET', 'mysite.com/getjson');
-```
-
-`XMLHttpRequest` 是一个浏览器级别的 API，它使客户端能够通过 JavaScript 编写数据传输脚本，而不是 JavaScript 语言的一部分。
-
-### GET
-
-```javascript
-const req = new XMLHttpRequest();
-req.responseType = 'json';
-req.open('GET', '/getdata?id=65');
-req.onload = () => {
-  console.log(xhr.response);
-};
-req.send();
-```
-
-### POST
+### Fetch 发送 JSON
 <!--rehype:wrap-class=row-span-2-->
 
 ```javascript
 const data = { weight: '1.5 KG' };
-const xhr = new XMLHttpRequest();
-// 初始化一个请求。
-xhr.open('POST', '/inventory/add');
-// 一个用于定义响应类型的枚举值
-xhr.responseType = 'json';
-// 发送请求以及数据。
-xhr.send(JSON.stringify(data));
-// 请求成功完成时触发。
-xhr.onload = () => {
-  console.log(xhr.response);
-}
-// 当 request 遭遇错误时触发。
-xhr.onerror = () => {
-  console.log(xhr.response);
-}
-```
 
-### fetch api
-<!--rehype:wrap-class=row-span-2-->
-
-```javascript
-fetch(url, {
+async function addInventory() {
+  const response = await fetch('/inventory/add', {
     method: 'POST',
     headers: {
-      'Content-type': 'application/json',
-      'apikey': apiKey
+      'Content-Type': 'application/json',
     },
-    body: data
-}).then(response => {
-  if (response.ok) {
-    return response.json();
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
   }
-  throw new Error('Request failed!');
-}, networkError => {
-  console.log(networkError.message)
-})
+
+  return response.json();
+}
 ```
 
 ### JSON 格式
 
 ```javascript
-fetch('url-that-returns-JSON')
-  .then(response => response.json())
-  .then(jsonResponse => {
-    console.log(jsonResponse);
-  });
+const response = await fetch('/getdata?id=65');
+if (!response.ok) throw new Error(`HTTP ${response.status}`);
+const jsonResponse = await response.json();
+console.log(jsonResponse);
 ```
 
 ### promise url 参数获取 API

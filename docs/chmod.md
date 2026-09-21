@@ -155,6 +155,8 @@ $ chmod a+rwx,u-x,g-x,o-wx example.txt
 
 ### chmod 777
 
+将文件或目录开放给所有用户读、写和执行，通常不应作为常规修复方案；先确认所有者、组和所需的最小权限。
+
 ```shell
 $ chmod 777 example.txt
 $ chmod u=rwx,g=rwx,o=rwx example.txt

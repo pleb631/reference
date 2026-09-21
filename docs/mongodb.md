@@ -50,10 +50,10 @@ CRUD
 
 ```mongodb
 db.coll.insertOne({ name: "Max" })
-db.coll.insert([{ name: "Max"}, {name:"Alex"}]) // 批量插入
-db.coll.insert([{ name: "Max"}, {name:"Alex"}], {ordered: false}) // 无序批量插入
-db.coll.insert({ date: ISODate()})
-db.coll.insert({ name: "Max"}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
+db.coll.insertMany([{ name: "Max"}, {name:"Alex"}]) // 批量插入
+db.coll.insertMany([{ name: "Max"}, {name:"Alex"}], {ordered: false}) // 无序批量插入
+db.coll.insertOne({ date: ISODate()})
+db.coll.insertOne({ name: "Max"}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
 ```
 
 ### 寻找文件
@@ -92,10 +92,9 @@ db.coll.find({date: ISODate("2020-09-25T13:57:17.180Z")})
 db.coll.find({name: "Max", age: 32}).explain("executionStats") 
 db.coll.distinct("name")
 
-// 数数
-db.coll.count({age: 32})          // 基于馆藏元数据的估计
-db.coll.estimatedDocumentCount()  // 基于馆藏元数据的估计
-db.coll.countDocuments({age: 32}) // 聚合管道的别名 - 准确计数
+// 计数
+db.coll.estimatedDocumentCount()  // 快速估算集合总文档数
+db.coll.countDocuments({age: 32}) // 按条件精确计数
 
 // Comparison 比较
 db.coll.find({"year": {$gt: 1970}})
@@ -159,57 +158,56 @@ db.coll.find().readConcern("majority")
 <!--rehype:wrap-class=col-span-3-->
 
 ```mongodb
-db.coll.update({"_id": 1}, {"year": 2016}) // 警告！ 替换整个文档
-db.coll.update({"_id": 1}, {$set: {"year": 2016, name: "Max"}})
-db.coll.update({"_id": 1}, {$unset: {"year": 1}})
-db.coll.update({"_id": 1}, {$rename: {"year": "date"} })
-db.coll.update({"_id": 1}, {$inc: {"year": 5}})
-db.coll.update({"_id": 1}, {$mul: {price: NumberDecimal("1.25"), qty: 2}})
-db.coll.update({"_id": 1}, {$min: {"imdb": 5}})
-db.coll.update({"_id": 1}, {$max: {"imdb": 8}})
-db.coll.update({"_id": 1}, {$currentDate: {"lastModified": true}})
-db.coll.update({"_id": 1}, {$currentDate: {"lastModified": {$type: "timestamp"}}})
+db.coll.replaceOne({"_id": 1}, {"year": 2016}) // 警告！替换整个文档
+db.coll.updateOne({"_id": 1}, {$set: {"year": 2016, name: "Max"}})
+db.coll.updateOne({"_id": 1}, {$unset: {"year": 1}})
+db.coll.updateOne({"_id": 1}, {$rename: {"year": "date"} })
+db.coll.updateOne({"_id": 1}, {$inc: {"year": 5}})
+db.coll.updateOne({"_id": 1}, {$mul: {price: NumberDecimal("1.25"), qty: 2}})
+db.coll.updateOne({"_id": 1}, {$min: {"imdb": 5}})
+db.coll.updateOne({"_id": 1}, {$max: {"imdb": 8}})
+db.coll.updateOne({"_id": 1}, {$currentDate: {"lastModified": true}})
+db.coll.updateOne({"_id": 1}, {$currentDate: {"lastModified": {$type: "timestamp"}}})
 
 // Array
-db.coll.update({"_id": 1}, {$push :{"array": 1}})
-db.coll.update({"_id": 1}, {$pull :{"array": 1}})
-db.coll.update({"_id": 1}, {$addToSet :{"array": 2}})
-db.coll.update({"_id": 1}, {$pop: {"array": 1}})  // 最后一个元素
-db.coll.update({"_id": 1}, {$pop: {"array": -1}}) // 第一个元素
-db.coll.update({"_id": 1}, {$pullAll: {"array" :[3, 4, 5]}})
-db.coll.update({"_id": 1}, {$push: {scores: {$each: [90, 92, 85]}}})
+db.coll.updateOne({"_id": 1}, {$push :{"array": 1}})
+db.coll.updateOne({"_id": 1}, {$pull :{"array": 1}})
+db.coll.updateOne({"_id": 1}, {$addToSet :{"array": 2}})
+db.coll.updateOne({"_id": 1}, {$pop: {"array": 1}})  // 最后一个元素
+db.coll.updateOne({"_id": 1}, {$pop: {"array": -1}}) // 第一个元素
+db.coll.updateOne({"_id": 1}, {$pullAll: {"array" :[3, 4, 5]}})
+db.coll.updateOne({"_id": 1}, {$push: {scores: {$each: [90, 92, 85]}}})
 db.coll.updateOne({"_id": 1, "grades": 80}, {$set: {"grades.$": 82}})
 db.coll.updateMany({}, {$inc: {"grades.$[]": 10}})
-db.coll.update({}, {$set: {"grades.$[element]": 100}}, {multi: true, arrayFilters: [{"element": {$gte: 100}}]})
+db.coll.updateMany({}, {$set: {"grades.$[element]": 100}}, {arrayFilters: [{"element": {$gte: 100}}]})
 
 // 更新很多
-db.coll.update({"year": 1999}, {$set: {"decade": "90's"}}, {"multi":true})
 db.coll.updateMany({"year": 1999}, {$set: {"decade": "90's"}})
 
 // FindOneAndUpdate 查找并更新
 db.coll.findOneAndUpdate({"name": "Max"}, {$inc: {"points": 5}}, {returnNewDocument: true})
 
 // Upsert 更新插入
-db.coll.update({"_id": 1}, {$set: {item: "apple"}, $setOnInsert: {defaultQty: 100}}, {upsert: true})
+db.coll.updateOne({"_id": 1}, {$set: {item: "apple"}, $setOnInsert: {defaultQty: 100}}, {upsert: true})
 
 // Replace 代替
 db.coll.replaceOne({"name": "Max"}, {"firstname": "Maxime", "surname": "Beugnet"})
 
 // Save 保存
-db.coll.save({"item": "book", "qty": 40})
+db.coll.insertOne({"item": "book", "qty": 40})
 
 // Write concern 写关注
-db.coll.update({}, {$set: {"x": 1}}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
+db.coll.updateOne({}, {$set: {"x": 1}}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
 ```
 
 ### 删除
 <!--rehype:wrap-class=col-span-3-->
 
 ```mongodb
-db.coll.remove({name: "Max"})
-db.coll.remove({name: "Max"}, {justOne: true})
-db.coll.remove({}) // 警告！删除所有文档但不删除集合本身及其索引定义
-db.coll.remove({name: "Max"}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
+db.coll.deleteMany({name: "Max"})
+db.coll.deleteOne({name: "Max"})
+db.coll.deleteMany({}) // 警告！删除所有文档但不删除集合本身及其索引定义
+db.coll.deleteMany({name: "Max"}, {"writeConcern": {"w": "majority", "wtimeout": 5000}})
 db.coll.findOneAndDelete({"name": "Max"})
 ```
 
