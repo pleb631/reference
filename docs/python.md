@@ -554,45 +554,7 @@ asyncio.run(main())
 
 `TaskGroup`（Python 3.11+）在退出上下文时等待全部任务；一个任务失败时会取消其余任务并汇总异常。不要在协程中调用阻塞 I/O，可用异步客户端或 `asyncio.to_thread()` 包装阻塞函数。
 
-工程实践
----
 
-### 模块入口
-
-```python
-def main() -> int:
-    return 0
-
-if __name__ == "__main__":
-    raise SystemExit(main())
-```
-
-把实际逻辑放进可测试的函数，模块入口只负责解析参数、配置日志和返回退出码。
-
-### 导入
-
-```python
-from pathlib import Path
-
-from package.models import User
-from package.services import load_user
-```
-
-避免 `from module import *`。标准库、第三方库和项目内模块分组导入；不要通过修改 `sys.path` 修复项目结构，应正确安装项目或使用 `uv run`。
-
-### 应避免的写法
-
-写法 | 推荐替代
-:- | :-
-`from module import *` | 显式导入名称或模块
-可变默认参数 `items=[]` | 默认设为 `None`，函数内创建
-手动拼接路径 | `pathlib.Path`
-裸 `except:` 或静默忽略异常 | 捕获具体异常并记录或重新抛出
-`pickle.loads()` 处理外部数据 | JSON、TOML 或经过验证的格式
-手动关闭文件和锁 | `with` 上下文管理器
-应用代码直接创建事件循环 | 顶层使用 `asyncio.run()`
-低层手动管理 `Future` | 协程、`TaskGroup` 或 Executor
-`pyenv` + `pipenv` 组合流程 | 使用 uv 管理解释器、环境与依赖
 <!--rehype:className=show-header-->
 
 另见
